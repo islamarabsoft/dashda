@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: mhanafy
+Build-Jdk: 9.0.4
+Implementation-Title: dashda
+Implementation-Version: 0.1.0-SNAPSHOT
+Implementation-Vendor-Id: com.dashda
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/dashda
+Created-By: Maven Integration for Eclipse
+
