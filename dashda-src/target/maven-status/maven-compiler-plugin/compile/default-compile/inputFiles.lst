@@ -1,0 +1,10 @@
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/service/components/UserService.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/data/repositories/AbstractDao.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/data/entities/UserHibernate.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/service/components/UserServiceImp.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/Application.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/controllers/CutomerInfo.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/data/repositories/UserDaoHibernateImpl.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/service/components/ServicesManager.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/data/entities/User.java
+/home/mhanafy/eclipse-workspaces/dashda/dashda-src/src/main/java/com/dashda/data/repositories/UserDao.java
