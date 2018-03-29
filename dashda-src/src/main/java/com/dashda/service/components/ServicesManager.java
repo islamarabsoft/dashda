@@ -21,6 +21,6 @@ import com.dashda.data.repositories.UserDao;
 @Transactional
 public class ServicesManager {
 
-	private final Logger log = LoggerFactory.getLogger(ServicesManager.class);
+	protected final Logger log = LoggerFactory.getLogger(ServicesManager.class);
 	
 }

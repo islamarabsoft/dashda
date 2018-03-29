@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <title>Hello App Engine</title>
+  </head>
+
+  <body>
+    <h1>Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+  
+    <table>
+      <tr>
+        <td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
+      </tr>
+      <tr>
+        <td><a href='/agent/agent-info'>Agent Information</a></td>
+      </tr>
+      <tr>
+        <td><a href='/manager/manager-info'>Manager Information</a></td>
+      </tr>
+      <tr>
+        <td><a href='/admin/customer-info'>Admin Information</a></td>
+      </tr>
+    </table>
+    
+    <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+    </form>
+  </body>
+</html>

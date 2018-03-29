@@ -35,7 +35,6 @@ public class UserServiceImp extends ServicesManager implements UserService {
 
 	@Override
 	public List<User> findListOfUsers() {
-
     	
 		//beginTransaction();
 		
