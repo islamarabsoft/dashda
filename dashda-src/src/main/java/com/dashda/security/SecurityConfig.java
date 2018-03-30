@@ -44,9 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/").permitAll().antMatchers("/agent/**").hasRole("AGENT")
 				.antMatchers("/manager/**")
 				.hasRole("MANAGER").antMatchers("/admin/**").hasRole("ADMIN")
-				.and().formLogin().loginPage("/login")
-				.permitAll().and().logout().permitAll();
-		//.and().httpBasic();  // Authenticate users with HTTP basic authentication
+//				.and().formLogin().loginPage("/login")
+//				.permitAll().and().logout().permitAll();
+				.and().httpBasic();  // Authenticate users with HTTP basic authentication
 	
 	}
 	
