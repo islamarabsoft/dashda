@@ -74,6 +74,7 @@ public class Application extends SpringBootServletInitializer  {
         properties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
+        properties.put("current_session_context_class", "thread");
         return properties;
 	}
 

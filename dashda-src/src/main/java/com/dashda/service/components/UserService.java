@@ -3,9 +3,7 @@
  */
 package com.dashda.service.components;
 
-import java.util.List;
-
-import com.dashda.data.entities.User;
+import com.dashda.controllers.dto.UserDTO;
 
 /**
  * @author mhanafy
@@ -13,5 +11,7 @@ import com.dashda.data.entities.User;
  */
 public interface UserService {
 
-	public List<User> findListOfUsers();
+	public String findListOfUsers();
+	
+	public UserDTO getUserInfo(String username);
 }

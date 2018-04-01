@@ -3,6 +3,7 @@
  */
 package com.dashda.service.components;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,9 @@ import com.dashda.data.repositories.UserDao;
  *
  */
 @Transactional
-public class ServicesManager {
+public abstract class ServicesManager {
 
 	protected final Logger log = LoggerFactory.getLogger(ServicesManager.class);
 	
+	protected ModelMapper mapper = new ModelMapper();
 }

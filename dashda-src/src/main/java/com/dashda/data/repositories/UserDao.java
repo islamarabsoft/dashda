@@ -22,4 +22,6 @@ public interface UserDao {
     public User find(int userId);
  
     public List <User> findAll();
+    
+    public User findUserByUsername(String username);
 }

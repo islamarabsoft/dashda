@@ -6,6 +6,7 @@ package com.dashda.data.repositories;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.User;
@@ -60,6 +61,15 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	public List<User> findAll() {
 		Criteria criteria = getSession().createCriteria(User.class);
 		return criteria.list();
+	}
+
+	@Override
+	public User findUserByUsername(String username) {
+		
+		Criteria criteria = getSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("username", username));
+		
+		return (User)criteria.uniqueResult();
 	}
 
 }
