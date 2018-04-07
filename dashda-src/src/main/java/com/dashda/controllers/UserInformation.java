@@ -28,6 +28,6 @@ public class UserInformation extends AbstractController{
 	public String userInformation(@AuthenticationPrincipal User user) throws JsonProcessingException {
 		
 		
-		return jasonObjectmapper.writeValueAsString(userService.getUserInfo(user.getUsername()));
+		return jsonObjectmapper.writeValueAsString(userService.getUserInfo(user.getUsername()));
 	}
 }

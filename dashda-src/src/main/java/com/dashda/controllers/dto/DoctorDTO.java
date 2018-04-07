@@ -12,6 +12,7 @@ import com.dashda.data.entities.Governorate;
  */
 public class DoctorDTO {
 
+	private Integer id;
 	private String doctorName;
 	private String speciality;
 	private String marketClass;
@@ -21,6 +22,18 @@ public class DoctorDTO {
 	private String districtName;
 	private String governorateName;
 	
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	/**
 	 * @return the doctorName
 	 */

@@ -3,15 +3,16 @@
  */
 package com.dashda.data.repositories;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeeDoctor;
+
 
 /**
  * @author mhanafy
@@ -29,6 +30,37 @@ public class EmployeeDoctorDaoImpl extends AbstractDao implements EmployeeDoctor
 		List<EmployeeDoctor> employeeDoctors = criteria.list(); 
 		
 		return employeeDoctors;
+	}
+
+	@Override
+	public void clearMyDoctorsList(List<EmployeeDoctor> employeeDoctors) {
+
+		EmployeeDoctor employeeDoctor;
+		
+		for (Iterator<EmployeeDoctor> iterator = employeeDoctors.iterator(); iterator.hasNext();) {
+			
+			employeeDoctor = (EmployeeDoctor) iterator.next();
+		
+			getSession().delete(employeeDoctor);
+		
+		}
+		
+	}
+	
+	@Override
+	public void createMyDoctorsList(List<EmployeeDoctor> employeeDoctors) {
+
+		EmployeeDoctor employeeDoctor;
+		
+		for (Iterator<EmployeeDoctor> iterator = employeeDoctors.iterator(); iterator.hasNext();) {
+			
+			employeeDoctor = (EmployeeDoctor) iterator.next();
+			
+			getSession().save(employeeDoctor);
+			getSession().flush();
+			getSession().clear();
+			
+		}
 	}
 
 }

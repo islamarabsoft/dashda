@@ -16,4 +16,8 @@ public interface EmployeeDoctorDao {
 
 
 	public List<EmployeeDoctor> employeeDoctorsByEmployee(Employee employee);
+
+	public void clearMyDoctorsList(List<EmployeeDoctor> employeeDoctors);
+
+	void createMyDoctorsList(List<EmployeeDoctor> employeeDoctors);
 }

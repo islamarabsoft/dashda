@@ -3,6 +3,10 @@
  */
 package com.dashda.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.dashda.service.components.ServicesManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -11,5 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public abstract class AbstractController {
 
-	protected ObjectMapper jasonObjectmapper = new ObjectMapper();
+	protected final Logger log = LoggerFactory.getLogger(AbstractController.class);
+	
+	protected ObjectMapper jsonObjectmapper = new ObjectMapper();
 }

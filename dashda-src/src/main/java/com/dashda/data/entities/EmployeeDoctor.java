@@ -6,6 +6,8 @@ package com.dashda.data.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,6 +21,11 @@ import javax.persistence.Table;
 @Table(name = "EMPLOYEE_DOCTOR")
 public class EmployeeDoctor implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private Employee employee;
 	private Doctor doctor;
@@ -55,6 +62,16 @@ public class EmployeeDoctor implements java.io.Serializable{
 	public int getId() {
 		return this.id;
 	}
+	
+	
+	/**
+	 * @param employee
+	 * @param doctor
+	 */
+	public EmployeeDoctor(Employee employee, Doctor doctor) {
+		this.employee = employee;
+		this.doctor = doctor;
+	}
 	/**
 	 * @param id the id to set
 	 */
@@ -81,6 +98,6 @@ public class EmployeeDoctor implements java.io.Serializable{
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
-	
+
 
 }

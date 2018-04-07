@@ -15,4 +15,6 @@ public interface MyDoctorsListService {
 
 	public List<DoctorDTO> myDoctorsList(String username);
 
+	public void saveMyDoctorsList(String username, List<Integer> doctors);
+
 }

@@ -78,6 +78,7 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 		
 		userDTO.setUserPermessionDTOs(userPermessionDTOs);
 		
+		
 		return userDTO;
 	}
 

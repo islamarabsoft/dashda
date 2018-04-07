@@ -28,7 +28,7 @@ public class DoctorsList extends AbstractController{
 	@RequestMapping("/doctors")
 	public String doctorsList(@AuthenticationPrincipal User user) throws JsonProcessingException {
 		
-		return jasonObjectmapper.writeValueAsString(doctorsListService.doctorsList(user.getUsername()));
+		return jsonObjectmapper.writeValueAsString(doctorsListService.doctorsList(user.getUsername()));
 	}
 	
 }
