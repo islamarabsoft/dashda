@@ -19,7 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  */
 @RestController
 @Secured("ROLE_DOCTORS_LIST")
-public class DoctorsList extends AbstractController{
+public class DoctorsListController extends AbstractController{
 
 	@Autowired
 	DoctorsListService doctorsListService;

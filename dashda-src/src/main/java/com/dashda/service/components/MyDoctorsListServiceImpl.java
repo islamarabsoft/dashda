@@ -63,8 +63,8 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 			
 			employeeDoctor = doctorsIt.next();
 			
-			mapper.map(employeeDoctor.getDoctor(), doctorDTO);
 			mapper.map(employeeDoctor.getDoctor().getContact(), doctorDTO);
+			mapper.map(employeeDoctor.getDoctor(), doctorDTO);
 			
 			doctorDTOs.add(doctorDTO);
 		}

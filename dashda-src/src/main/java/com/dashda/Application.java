@@ -23,7 +23,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
- 
 
 /**
  * @author mhanafy
@@ -45,8 +44,8 @@ public class Application extends SpringBootServletInitializer  {
 	
     @Autowired
     private Environment env;
-	
-
+    
+    
 	@Bean
     public DataSource dataSource() {
 		
