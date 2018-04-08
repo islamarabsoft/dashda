@@ -69,8 +69,10 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 			contact = doctor.getContact();
 			
 			doctorDTO = new DoctorDTO();
-			mapper.map(doctor, doctorDTO);
+			
 			mapper.map(doctor.getContact(), doctorDTO);
+			mapper.map(doctor, doctorDTO);
+			
 			
 			doctorsDTO.add(doctorDTO);
 		}

@@ -35,6 +35,7 @@ public class Contact implements java.io.Serializable {
 	private String phone6;
 	private Set users = new HashSet(0);
 	private Set doctors = new HashSet(0);
+	private Set employees = new HashSet(0);
 
 	public Contact() {
 	}
@@ -46,7 +47,7 @@ public class Contact implements java.io.Serializable {
 
 	public Contact(District district, Governorate governorate, String firstName, String lastName, String address,
 			String phone1, String phone2, String phone3, String phone4, String phone5, String phone6, Set users,
-			Set doctors) {
+			Set doctors, Set employees) {
 		this.district = district;
 		this.governorate = governorate;
 		this.firstName = firstName;
@@ -60,6 +61,7 @@ public class Contact implements java.io.Serializable {
 		this.phone6 = phone6;
 		this.users = users;
 		this.doctors = doctors;
+		this.employees = employees;
 	}
 
 	@Id
@@ -191,6 +193,21 @@ public class Contact implements java.io.Serializable {
 
 	public void setDoctors(Set doctors) {
 		this.doctors = doctors;
+	}
+
+	/**
+	 * @return the employees
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
+	public Set<Employee> getEmployees() {
+		return employees;
+	}
+
+	/**
+	 * @param employees the employees to set
+	 */
+	public void setEmployees(Set employees) {
+		this.employees = employees;
 	}
 
 }

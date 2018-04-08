@@ -1,0 +1,20 @@
+/**
+ * 
+ */
+package com.dashda.data.repositories;
+
+import java.util.List;
+
+import com.dashda.data.entities.Employee;
+import com.dashda.data.entities.Visit;
+
+/**
+ * @author mhanafy
+ *
+ */
+public interface VisitDao {
+
+	public void addVisit(Visit visit);
+
+	public List<Visit> findVisitItemsByEmployee(Employee employee);
+}

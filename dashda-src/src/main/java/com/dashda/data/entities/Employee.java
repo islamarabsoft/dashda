@@ -20,7 +20,8 @@ import javax.persistence.Table;
 public class Employee implements java.io.Serializable {
 
 	private int id;
-	private Employee employee;
+	private Contact contact;
+	private Employee manager;
 	private String employeeJobTitle;
 	private String employeeNumber;
 	private Set users = new HashSet(0);
@@ -28,8 +29,9 @@ public class Employee implements java.io.Serializable {
 	private Set employeesDoctors = new HashSet(0);
 	private Set visitsForEmployeeId = new HashSet(0);
 	private Set schedulesForEmployeeId = new HashSet(0);
-	private Set employees = new HashSet(0);
+	private Set managers = new HashSet(0);
 	private Set schedulesForSubordinateId = new HashSet(0);
+	private Set schedulesForManagerId = new HashSet(0);
 	private Set visitsForSubordinateId = new HashSet(0);
 
 	public Employee() {
@@ -39,11 +41,12 @@ public class Employee implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Employee(int id, Employee employee, String employeeJobTitle,
+	public Employee(int id, Contact contact, Employee manager, String employeeJobTitle,
 			String employeeNumber, Set users, Set employeesCoveredDistricts, Set employeesDoctors, Set visitsForEmployeeId,
-			Set schedulesForEmployeeId, Set employees, Set schedulesForSubordinateId, Set visitsForSubordinateId) {
+			Set schedulesForEmployeeId, Set managers, Set schedulesForSubordinateId, Set schedulesForManagerId,Set visitsForSubordinateId) {
 		this.id = id;
-		this.employee = employee;
+		this.contact = contact;
+		this.manager = manager;
 		this.employeeJobTitle = employeeJobTitle;
 		this.employeeNumber = employeeNumber;
 		this.users = users;
@@ -51,8 +54,9 @@ public class Employee implements java.io.Serializable {
 		this.employeesDoctors = employeesDoctors;
 		this.visitsForEmployeeId = visitsForEmployeeId;
 		this.schedulesForEmployeeId = schedulesForEmployeeId;
-		this.employees = employees;
+		this.managers = managers;
 		this.schedulesForSubordinateId = schedulesForSubordinateId;
+		this.schedulesForManagerId = schedulesForManagerId;
 		this.visitsForSubordinateId = visitsForSubordinateId;
 	}
 
@@ -68,14 +72,30 @@ public class Employee implements java.io.Serializable {
 	}
 
 
+	/**
+	 * @return the contact
+	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MANAGER_ID")
-	public Employee getEmployee() {
-		return this.employee;
+	@JoinColumn(name = "CONTACT_ID")
+	public Contact getContact() {
+		return contact;
 	}
 
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	/**
+	 * @param contact the contact to set
+	 */
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MANAGER_ID")
+	public Employee getManager() {
+		return this.manager;
+	}
+
+	public void setManager(Employee manager) {
+		this.manager = manager;
 	}
 	
 	@Column(name = "JOB_TITLE", length = 45)
@@ -147,13 +167,13 @@ public class Employee implements java.io.Serializable {
 		this.schedulesForEmployeeId = schedulesForEmployeeId;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-	public Set<Employee> getEmployees() {
-		return this.employees;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
+	public Set<Employee> getManagers() {
+		return this.managers;
 	}
 
-	public void setEmployees(Set employees) {
-		this.employees = employees;
+	public void setManagers(Set managers) {
+		this.managers = managers;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeBySubordinateId")
@@ -163,6 +183,15 @@ public class Employee implements java.io.Serializable {
 
 	public void setSchedulesForSubordinateId(Set schedulesForSubordinateId) {
 		this.schedulesForSubordinateId = schedulesForSubordinateId;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeByManagerId")
+	public Set<Schedule> getSchedulesForManagerId() {
+		return schedulesForManagerId;
+	}
+
+	public void setSchedulesForManagerId(Set schedulesForManagerId) {
+		this.schedulesForManagerId = schedulesForManagerId;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeBySubordinateId")

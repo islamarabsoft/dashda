@@ -61,7 +61,6 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 		
 		//Map primitive attributes 
 		User user = userDao.findUserByUsername(username);
-		user.getEmployee().getEmployee();
 		
 		mapper.map(user, userDTO);
 		
