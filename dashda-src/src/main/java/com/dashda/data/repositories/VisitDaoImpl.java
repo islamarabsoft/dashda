@@ -38,4 +38,21 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 		return criteria.list();
 	}
 
+	@Override
+	public Visit findVisitByIdAndNotComplete(Integer visitId) {
+		Criteria criteria = getSession().createCriteria(Visit.class);
+		criteria.add(Restrictions.eq("id", visitId));
+		criteria.add(Restrictions.isNull("completed"));
+		
+		return (Visit)criteria.uniqueResult();
+	}
+
+	@Override
+	public void updateVisit(Visit visit) {
+		getSession().update(visit);
+		getSession().flush();
+		getSession().clear();
+		
+	}
+
 }

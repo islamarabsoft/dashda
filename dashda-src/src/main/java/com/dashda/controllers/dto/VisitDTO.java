@@ -2,7 +2,7 @@ package com.dashda.controllers.dto;
 
 public class VisitDTO {
 
-	private int scheduleId;
+	private int visitId;
 	
 	private int doctorId;
 	
@@ -13,17 +13,17 @@ public class VisitDTO {
 	private String employeeName;
 
 	/**
-	 * @return the scheduleId
+	 * @return the visitId
 	 */
-	public int getScheduleId() {
-		return scheduleId;
+	public int getVisitId() {
+		return visitId;
 	}
 
 	/**
-	 * @param scheduleId the scheduleId to set
+	 * @param visitId the visitId to set
 	 */
-	public void setScheduleId(int scheduleId) {
-		this.scheduleId = scheduleId;
+	public void setVisitId(int visitId) {
+		this.visitId = visitId;
 	}
 
 	/**

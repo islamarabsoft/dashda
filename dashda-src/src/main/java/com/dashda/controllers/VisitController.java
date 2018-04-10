@@ -3,10 +3,13 @@
  */
 package com.dashda.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +34,16 @@ public class VisitController extends AbstractController {
 	@RequestMapping(method = RequestMethod.GET, value = "/visits")
 	public String visitItemsList(@AuthenticationPrincipal User user) throws JsonProcessingException{
 		return jsonObjectmapper.writeValueAsString(visitService.visitItemsList(user.getUsername()));
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/complete-visits")
+	public void completeVisits(@AuthenticationPrincipal User user, @RequestBody List<Integer> visits) {
+		visitService.completeVisits(user.getUsername(), visits);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/discard-visits")
+	public void discardVisits(@AuthenticationPrincipal User user, @RequestBody List<Integer> visits) {
+		visitService.dicardVisits(user.getUsername(), visits);
 	}
 }

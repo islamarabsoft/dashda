@@ -17,4 +17,8 @@ public interface VisitDao {
 	public void addVisit(Visit visit);
 
 	public List<Visit> findVisitItemsByEmployee(Employee employee);
+
+	public Visit findVisitByIdAndNotComplete(Integer visitId);
+
+	public void updateVisit(Visit visit);
 }

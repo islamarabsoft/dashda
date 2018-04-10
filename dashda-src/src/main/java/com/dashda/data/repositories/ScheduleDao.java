@@ -6,7 +6,6 @@ package com.dashda.data.repositories;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Schedule;
 
 /**

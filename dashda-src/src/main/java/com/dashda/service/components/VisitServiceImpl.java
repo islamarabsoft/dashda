@@ -15,6 +15,7 @@ import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.repositories.UserDao;
 import com.dashda.data.repositories.VisitDao;
+import com.google.appengine.repackaged.org.antlr.runtime.EarlyExitException;
 
 
 /**
@@ -35,6 +36,8 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 	private List<VisitDTO> visitDTOs;
 
 	private VisitDTO visitDTO;
+
+	private Visit visit;
 	
 	/* (non-Javadoc)
 	 * @see com.dashda.service.components.VisitService#visitItemsList(java.lang.String)
@@ -64,4 +67,33 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		return visitDTOs;
 	}
 
+	@Override
+	public void completeVisits(String username, List<Integer> visits) {
+		this.updateVisitStatus(visits, new Byte("1"));
+		
+	}
+
+	@Override
+	public void dicardVisits(String username, List<Integer> visits) {
+		this.updateVisitStatus(visits, new Byte("0"));
+		
+	}
+
+	private void updateVisitStatus(List<Integer> visits, byte status) {
+		for (Iterator<Integer> iterator = visits.iterator(); iterator.hasNext();) {
+			Integer visitId = (Integer) iterator.next();
+			
+			try {
+			visit = visitDao.findVisitByIdAndNotComplete(visitId);
+			
+			visit.setCompleted(status);
+			
+				
+				visitDao.updateVisit(visit);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
 }
