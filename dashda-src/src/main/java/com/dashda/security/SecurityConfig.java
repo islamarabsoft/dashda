@@ -54,4 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    }
 	    
 	    
+			public static void main(String [] args){
+				String encoded=new BCryptPasswordEncoder().encode("newagent");
+				System.out.println(encoded);
+			}
+	    
 }

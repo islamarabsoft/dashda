@@ -72,4 +72,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 		return (User)criteria.uniqueResult();
 	}
 
+	@Override
+	public void createUser(User user) {
+		getSession().save(user);
+		getSession().flush();
+		getSession().clear();
+		
+	}
+
 }

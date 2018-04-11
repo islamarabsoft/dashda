@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import com.dashda.controllers.dto.ScheduleDTO;
+import com.dashda.exception.ScheduleExceptionManager;
 
 /**
  * @author mhanafy
@@ -14,7 +15,7 @@ import com.dashda.controllers.dto.ScheduleDTO;
  */
 public interface ScheduleService {
 
-	void addScheduleItem(String username, ScheduleDTO scheduleItems)throws ParseException;
+	void addScheduleItem(String username, ScheduleDTO scheduleItems)throws ParseException, ScheduleExceptionManager;
 
 	void approveScheduleItems(String username, List<Integer> scheduleDTOs);
 

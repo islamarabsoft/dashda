@@ -32,6 +32,13 @@ public class District implements java.io.Serializable {
 	public District() {
 	}
 
+	/**
+	 * @param id
+	 */
+	public District(Integer id) {
+		this.id = id;
+	}
+
 	public District(Governorate governorate, String code) {
 		this.governorate = governorate;
 		this.code = code;

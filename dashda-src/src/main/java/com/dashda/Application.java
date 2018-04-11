@@ -18,11 +18,15 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
-
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author mhanafy
@@ -45,6 +49,21 @@ public class Application extends SpringBootServletInitializer  {
     @Autowired
     private Environment env;
     
+    
+    /**
+     * 
+     * THIS BEAN CURRENTLLY NOT USED
+     */
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer properties(){
+      PropertySourcesPlaceholderConfigurer pspc
+        = new PropertySourcesPlaceholderConfigurer();
+      Resource[] resources = new ClassPathResource[ ]
+        { new ClassPathResource("exception-messages.properties") };
+      pspc.setLocations( resources );
+      pspc.setIgnoreUnresolvablePlaceholders( true );
+      return pspc;
+    }
     
 	@Bean
     public DataSource dataSource() {
@@ -83,6 +102,11 @@ public class Application extends SpringBootServletInitializer  {
        HibernateTransactionManager txManager = new HibernateTransactionManager();
        txManager.setSessionFactory(sessionFactory);
        return txManager;
+    }
+    
+    @Bean
+    public PasswordEncoder generatePasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
     
 	@Override

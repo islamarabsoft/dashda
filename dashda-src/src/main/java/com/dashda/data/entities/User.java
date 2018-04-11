@@ -27,10 +27,10 @@ public class User implements java.io.Serializable {
 	private Contact contact;
 	private Employee employee;
 	private UserRole userRole;
-	private String name;
 	private String username;
 	private String password;
 	private byte active;
+	
 	private Date createdAt;
 
 	public User() {
@@ -47,13 +47,12 @@ public class User implements java.io.Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public User(Account account, Contact contact, Employee employee, UserRole userRole, String name, String username,
+	public User(Account account, Contact contact, Employee employee, UserRole userRole, String username,
 			String password, byte active, Date createdAt) {
 		this.account = account;
 		this.contact = contact;
 		this.employee = employee;
 		this.userRole = userRole;
-		this.name = name;
 		this.username = username;
 		this.password = password;
 		this.active = active;
@@ -112,15 +111,6 @@ public class User implements java.io.Serializable {
 		this.userRole = userRole;
 	}
 
-	@Column(name = "NAME", length = 45)
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@Column(name = "USERNAME", unique = true, nullable = false, length = 45)
 	public String getUsername() {
 		return this.username;
@@ -139,7 +129,7 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "ACTIVE", nullable = false)
+	@Column(name = "ACTIVE", nullable = false, insertable = false)
 	public byte getActive() {
 		return this.active;
 	}
@@ -149,7 +139,7 @@ public class User implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CREATED_AT", nullable = false, length = 19)
+	@Column(name = "CREATED_AT", nullable = false, length = 19, insertable = false, updatable = false)
 	public Date getCreatedAt() {
 		return this.createdAt;
 	}

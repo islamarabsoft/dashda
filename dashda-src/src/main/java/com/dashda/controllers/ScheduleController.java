@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.controllers.dto.ScheduleDTO;
+import com.dashda.exception.ScheduleExceptionManager;
 import com.dashda.service.components.ScheduleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -35,7 +36,7 @@ public class ScheduleController extends AbstractController{
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/add-schedule-item")
 	@Secured("ROLE_SCHEDULE_CREATOR")
-	public void addScheduleItem(@AuthenticationPrincipal User user, @RequestBody ScheduleDTO scheduleDTOs) throws ParseException {
+	public void addScheduleItem(@AuthenticationPrincipal User user, @RequestBody ScheduleDTO scheduleDTOs) throws ParseException, ScheduleExceptionManager {
 			scheduleService.addScheduleItem(user.getUsername(), scheduleDTOs);
 	}
 	

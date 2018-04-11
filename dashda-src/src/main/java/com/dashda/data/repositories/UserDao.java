@@ -24,4 +24,6 @@ public interface UserDao {
     public List <User> findAll();
     
     public User findUserByUsername(String username);
+
+	public void createUser(User user);
 }

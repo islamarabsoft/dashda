@@ -27,6 +27,13 @@ public class Governorate implements java.io.Serializable {
 	public Governorate() {
 	}
 
+	/**
+	 * @param id
+	 */
+	public Governorate(Integer id) {
+		this.id = id;
+	}
+
 	public Governorate(String name, Set districts, Set contacts) {
 		this.name = name;
 		this.districts = districts;

@@ -3,6 +3,8 @@
  */
 package com.dashda.service.components;
 
+import javax.validation.Valid;
+
 import com.dashda.controllers.dto.UserDTO;
 
 /**
@@ -11,7 +13,8 @@ import com.dashda.controllers.dto.UserDTO;
  */
 public interface UserService {
 
-	public String findListOfUsers();
 	
 	public UserDTO getUserInfo(String username);
+
+	public void createUser(@Valid UserDTO userDTO) throws UserServiceExceptioManager;
 }

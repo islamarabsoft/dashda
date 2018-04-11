@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dashda.exception.DoctorServiceExceptionManager;
 import com.dashda.service.components.DoctorsListService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -26,7 +27,7 @@ public class DoctorsListController extends AbstractController{
 	
 	
 	@RequestMapping("/doctors")
-	public String doctorsList(@AuthenticationPrincipal User user) throws JsonProcessingException {
+	public String doctorsList(@AuthenticationPrincipal User user) throws JsonProcessingException, DoctorServiceExceptionManager {
 		
 		return jsonObjectmapper.writeValueAsString(doctorsListService.doctorsList(user.getUsername()));
 	}

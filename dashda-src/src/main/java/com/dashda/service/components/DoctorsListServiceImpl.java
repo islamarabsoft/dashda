@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.DoctorDTO;
@@ -18,6 +20,7 @@ import com.dashda.data.entities.EmployeesCoveredDistrict;
 import com.dashda.data.entities.User;
 import com.dashda.data.repositories.DoctorDao;
 import com.dashda.data.repositories.UserDao;
+import com.dashda.exception.DoctorServiceExceptionManager;
 
 import ch.qos.logback.core.util.COWArrayList;
 
@@ -50,12 +53,19 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 
 	
 	@Override
-	public List<DoctorDTO> doctorsList(String username) {
+	public List<DoctorDTO> doctorsList(String username) throws DoctorServiceExceptionManager {
 		
 		User user = userDao.findUserByUsername(username);
 		districts = new ArrayList<District>();
+
 		
-		for(Iterator<EmployeesCoveredDistrict> employeesCoveredDistrictIt = user.getEmployee().getEmployeesCoveredDistricts().iterator(); 
+		if(user.getEmployee() == null)
+			throw new DoctorServiceExceptionManager(ERROR_CODE_1001);
+		if(user.getEmployee().getEmployeesCoveredDistricts().size() == 0)
+			throw new DoctorServiceExceptionManager(ERROR_CODE_1002);
+		
+		for(Iterator<EmployeesCoveredDistrict> employeesCoveredDistrictIt = 
+				user.getEmployee().getEmployeesCoveredDistricts().iterator(); 
 				employeesCoveredDistrictIt.hasNext();) {
 			districts.add(((EmployeesCoveredDistrict)employeesCoveredDistrictIt.next()).getDistrict());
 		}

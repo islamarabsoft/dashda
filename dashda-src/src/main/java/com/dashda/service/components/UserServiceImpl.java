@@ -7,19 +7,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.dashda.controllers.dto.UserDTO;
 import com.dashda.controllers.dto.UserPermessionDTO;
-import com.dashda.data.entities.Permission;
+import com.dashda.data.entities.Account;
+import com.dashda.data.entities.Contact;
+import com.dashda.data.entities.District;
+import com.dashda.data.entities.Governorate;
 import com.dashda.data.entities.User;
 import com.dashda.data.entities.UserRolePermission;
+import com.dashda.data.repositories.ContactDao;
 import com.dashda.data.repositories.UserDao;
-import com.dashda.data.repositories.UserDaoImpl;
-import com.google.apphosting.client.serviceapp.AuthService.UserPermissions;
 
 /**
  * @author mhanafy
@@ -35,21 +37,21 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 	@Autowired
 	private UserDao userDao;
 
+	@Autowired
+	private ContactDao contactDao;
+	
+	
+	@Autowired
+	private PasswordEncoder generatePasswordEncoder;
+	
+	
+	private User user;
+	private Contact contact;
 
-	@Override
-	public String findListOfUsers() {
-    	
-		//beginTransaction();
-		
-		List<User> users = userDao.findAll();
-		
-		String name = ((User)users.get(0)).getName();
-		//commitTransaction();
-		return name;
-		
-	}
+	private District district;
 
-
+	private Governorate governorate;
+	
 	@Override
 	public UserDTO getUserInfo(String username) {
 		
@@ -60,8 +62,9 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 		List<UserPermessionDTO> userPermessionDTOs = new ArrayList<UserPermessionDTO>();
 		
 		//Map primitive attributes 
-		User user = userDao.findUserByUsername(username);
-		
+		user = userDao.findUserByUsername(username);
+		mapper.map(user.getContact(), userDTO);
+		mapper.map(user.getEmployee(), userDTO);
 		mapper.map(user, userDTO);
 		
 		for(Iterator<UserRolePermission> userRolePermissionIt = user.getUserRole().getUserRolePermissions().iterator(); userRolePermissionIt.hasNext();) {
@@ -71,6 +74,7 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 			userPermessionDTO = new UserPermessionDTO();
 			userPermessionDTO.setId(userRolePermission.getId());
 			userPermessionDTO.setPermession(userRolePermission.getPermission().getPermission());
+
 			
 			userPermessionDTOs.add(userPermessionDTO);
 		}
@@ -81,4 +85,41 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 		return userDTO;
 	}
 
+
+	@Override
+	public void createUser(UserDTO userDTO) throws UserServiceExceptioManager {
+		System.out.println(generatePasswordEncoder.encode(userDTO.getPassword()));
+		if(userDao.findUserByUsername(userDTO.getUsername()) != null)
+			throw new UserServiceExceptioManager(ERROR_CODE_1008);
+		
+		contact = new Contact();
+		user = new User();
+		Account account = new Account(Integer.parseInt(userDTO.getAccountId()));
+		district = new District(Integer.parseInt(userDTO.getDistrictId()));
+		
+		governorate = new Governorate(Integer.parseInt(userDTO.getGovernorateId()));
+		
+		
+		contact.setDistrict(district);
+		contact.setGovernorate(governorate);
+		
+		mapper.map(userDTO, contact);
+		
+		
+		user.setAccount(account);
+		
+		mapper.map(userDTO, user);
+		System.out.println("am new new");
+		user.setPassword(generatePasswordEncoder.encode(userDTO.getPassword()));
+						
+		// persist on DB
+		contactDao.createContact(contact);
+		user.setContact(contact);
+		//user.setCreatedAt("");
+		userDao.createUser(user);
+			
+	}
+
+	
+	
 }

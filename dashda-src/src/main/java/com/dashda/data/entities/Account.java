@@ -30,8 +30,8 @@ public class Account implements java.io.Serializable {
 	public Account() {
 	}
 
-	public Account(int contactInfoId) {
-		this.contactInfoId = contactInfoId;
+	public Account(int id) {
+		this.id = id;
 	}
 
 	public Account(String name, String contactPersonName, String contactPersonPhone, int contactInfoId, Byte active,

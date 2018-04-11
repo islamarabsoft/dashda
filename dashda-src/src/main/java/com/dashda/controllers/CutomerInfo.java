@@ -31,12 +31,6 @@ public class CutomerInfo {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("/customer-info")
-	public String customerInfo() throws JsonProcessingException {
-		ObjectMapper mapper = new ObjectMapper();
-		
-		return mapper.writeValueAsString(userService.findListOfUsers());
-	}
 	
 	@RequestMapping("/logout")
 	public void logout(HttpSession session) {
