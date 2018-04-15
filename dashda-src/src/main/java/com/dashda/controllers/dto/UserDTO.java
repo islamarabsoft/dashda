@@ -22,7 +22,6 @@ public class UserDTO {
 	@NotEmpty
 	private String username;
 	@NotEmpty
-
 	private String password;
 	@NotEmpty
 	@Digits(fraction = 0, integer = 6)
@@ -47,9 +46,6 @@ public class UserDTO {
 	private String phone4;
 	private String phone5;
 	private String phone6;
-	private String employeeJobTitle;	
-	private String employeeNumber;
-	private String managerId;
 	private List<UserPermessionDTO> userPermessionDTOs;
 	
 	
@@ -76,22 +72,6 @@ public class UserDTO {
 
 	public void setUserPermessionDTOs(List<UserPermessionDTO> userPermessionDTOs) {
 		this.userPermessionDTOs = userPermessionDTOs;
-	}
-
-	public String getEmployeeJobTitle() {
-		return employeeJobTitle;
-	}
-
-	public void setEmployeeJobTitle(String employeeJobTitle) {
-		this.employeeJobTitle = employeeJobTitle;
-	}
-
-	public String getEmployeeNumber() {
-		return employeeNumber;
-	}
-
-	public void setEmployeeNumber(String employeeNumber) {
-		this.employeeNumber = employeeNumber;
 	}
 
 	/**
@@ -290,19 +270,6 @@ public class UserDTO {
 		this.phone6 = phone6;
 	}
 	
-	/**
-	 * @return the managerId
-	 */
-	public String getManagerId() {
-		return managerId;
-	}
-
-	/**
-	 * @param managerId the managerId to set
-	 */
-	public void setManagerId(String managerId) {
-		this.managerId = managerId;
-	}
 	
 	
 

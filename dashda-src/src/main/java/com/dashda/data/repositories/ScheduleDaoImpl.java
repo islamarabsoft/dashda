@@ -44,6 +44,16 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 		
 		return (Schedule)criteria.uniqueResult();
 	}
+	
+	@Override
+	public Schedule findPendingApprovalScheduleForManagerByID(Integer scheduleItemId, int managerId) {
+		Criteria criteria = getSession().createCriteria(Schedule.class);
+		criteria.add(Restrictions.eq("id", scheduleItemId));
+		criteria.add(Restrictions.eq("scheduleStatus.id", 1));
+		criteria.add(Restrictions.eq("employeeByManagerId.id", managerId));
+		
+		return (Schedule)criteria.uniqueResult();
+	}
 
 	@Override
 	public List<Schedule> findListofScheduleItemsPendingApprovalByEmployee(int employeeId) {

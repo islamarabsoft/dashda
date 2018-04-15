@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,19 +38,19 @@ public class ScheduleController extends AbstractController{
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/add-schedule-item")
 	@Secured("ROLE_SCHEDULE_CREATOR")
-	public void addScheduleItem(@AuthenticationPrincipal User user, @RequestBody ScheduleDTO scheduleDTOs) throws ParseException, ScheduleExceptionManager {
+	public void addScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTOs) throws ParseException, ScheduleExceptionManager {
 			scheduleService.addScheduleItem(user.getUsername(), scheduleDTOs);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/approve-schedule-item")
 	@Secured("ROLE_SCHEDULE_ADMIN")
-	public void approveScheduleItem(@AuthenticationPrincipal User user, @RequestBody List<Integer> scheduleItems) {
+	public void approveScheduleItem(@AuthenticationPrincipal User user, @RequestBody List<Integer> scheduleItems) throws ScheduleExceptionManager {
 				scheduleService.approveScheduleItems(user.getUsername(), scheduleItems);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/reject-schedule-item")
 	@Secured("ROLE_SCHEDULE_ADMIN")
-	public void rejectScheduleItem(@AuthenticationPrincipal User user, @RequestBody List<Integer> scheduleItems) {
+	public void rejectScheduleItem(@AuthenticationPrincipal User user, @RequestBody List<Integer> scheduleItems) throws ScheduleExceptionManager {
 		scheduleService.rejectScheduleItems(user.getUsername(), scheduleItems);
 	}
 	
@@ -66,15 +68,8 @@ public class ScheduleController extends AbstractController{
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/schedule-items-list-need-attention")
 	@Secured("ROLE_SCHEDULE_ADMIN")
-	public String scheduleItemsList(@AuthenticationPrincipal User user) throws JsonProcessingException {
+	public String scheduleItemsList(@AuthenticationPrincipal User user) throws JsonProcessingException, ScheduleExceptionManager {
 			List<ScheduleDTO> scheduleDTOs = scheduleService.scheduleItemsListNeedAttention(user.getUsername());
 			return jsonObjectmapper.writeValueAsString(scheduleDTOs);
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/schedules-list-need-attention")
-	@Secured("ROLE_SCHEDULE_ADMIN")
-	public String schedulesList(@AuthenticationPrincipal User user) throws JsonProcessingException {
-		List<ScheduleDTO> scheduleDTOs = scheduleService.schedulesNeedAttention(user.getUsername());
-		return jsonObjectmapper.writeValueAsString(scheduleDTOs);
 	}
 }

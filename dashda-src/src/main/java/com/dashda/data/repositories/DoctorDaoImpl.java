@@ -31,4 +31,14 @@ public class DoctorDaoImpl extends AbstractDao implements DoctorDao {
 		return doctors;
 	}
 
+	@Override
+	public Doctor findDoctorById(Integer doctorId) {
+		Criteria criteria = getSession().createCriteria(Doctor.class);
+		criteria.add(Restrictions.in("id", doctorId));
+		
+		Doctor doctor = (Doctor)criteria.uniqueResult(); 
+		
+		return doctor;
+	}
+
 }

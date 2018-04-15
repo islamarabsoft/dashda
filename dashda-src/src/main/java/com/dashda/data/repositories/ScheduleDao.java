@@ -24,4 +24,6 @@ public interface ScheduleDao {
 
 	List<Schedule> findListofScheduleItemsNeedAttention(int employeeId);
 
+	Schedule findPendingApprovalScheduleForManagerByID(Integer scheduleItemId, int managerId);
+
 }

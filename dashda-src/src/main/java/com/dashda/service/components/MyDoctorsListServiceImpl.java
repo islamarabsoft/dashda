@@ -15,8 +15,10 @@ import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeeDoctor;
 import com.dashda.data.entities.User;
+import com.dashda.data.repositories.DoctorDao;
 import com.dashda.data.repositories.EmployeeDoctorDao;
 import com.dashda.data.repositories.UserDao;
+import com.dashda.exception.MyDoctorsListServiceExceptionManager;
 
 /**
  * @author mhanafy
@@ -30,6 +32,9 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 	
 	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	DoctorDao doctorDao;
 	
 	private DoctorDTO doctorDTO;
 	
@@ -49,10 +54,12 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 	 * @see com.dashda.controllers.MyDoctorsListService#myDoctorsList(java.lang.String)
 	 */
 	@Override
-	public List<DoctorDTO> myDoctorsList(String username) {
+	public List<DoctorDTO> myDoctorsList(String username) throws MyDoctorsListServiceExceptionManager {
 		
 		user = userDao.findUserByUsername(username);
 		
+		if(user.getEmployee() == null)
+			throw new MyDoctorsListServiceExceptionManager(ERROR_CODE_1001);
 		
 		employeeDoctors = employeeDoctorDao.employeeDoctorsByEmployee(user.getEmployee());
 		
@@ -73,11 +80,14 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 	}
 
 	@Override
-	public void saveMyDoctorsList(String username, List<Integer> doctors) {
+	public void saveMyDoctorsList(String username, List<Integer> doctors) throws MyDoctorsListServiceExceptionManager {
 		
 		user = userDao.findUserByUsername(username);
 		
 		employee = user.getEmployee();
+		
+		if(employee == null)
+			throw new MyDoctorsListServiceExceptionManager(ERROR_CODE_1001);
 		
 		employeeDoctors = new ArrayList<EmployeeDoctor>();
 		
@@ -90,8 +100,11 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 		//Generate new list of EmployeeDoctors
 		for (Iterator<Integer> iterator = doctors.iterator(); iterator.hasNext();) {
 			Integer doctorId = (Integer) iterator.next();
-			log.info(doctorId+"");
-			doctor = new Doctor(doctorId);
+			
+			doctor = doctorDao.findDoctorById(doctorId);
+			
+			if(doctor == null)
+				throw new MyDoctorsListServiceExceptionManager(ERROR_CODE_1011 + " '" + doctorId + "'");
 			
 			employeeDoctor = new EmployeeDoctor(employee, doctor);
 			

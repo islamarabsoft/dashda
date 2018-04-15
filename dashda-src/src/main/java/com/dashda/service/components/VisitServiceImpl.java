@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.VisitDTO;
+import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.repositories.UserDao;
 import com.dashda.data.repositories.VisitDao;
+import com.dashda.exception.ScheduleExceptionManager;
+import com.dashda.exception.VisitServiceException;
 import com.google.appengine.repackaged.org.antlr.runtime.EarlyExitException;
 
 
@@ -39,12 +42,20 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 
 	private Visit visit;
 	
+	private Employee employee;
+
+	private User user;
+	
 	/* (non-Javadoc)
 	 * @see com.dashda.service.components.VisitService#visitItemsList(java.lang.String)
 	 */
 	@Override
-	public List<VisitDTO> visitItemsList(String username) {
+	public List<VisitDTO> visitItemsList(String username) throws VisitServiceException {
 		User user = userDao.findUserByUsername(username);
+		
+		employee = user.getEmployee();
+		if(employee == null)
+			throw new VisitServiceException(ERROR_CODE_1001);
 		
 		visits = visitDao.findVisitItemsByEmployee(user.getEmployee());
 		
@@ -55,6 +66,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 			
 			visitDTO = new VisitDTO();
 			
+			visitDTO.setVisitId(visit.getId());
 			visitDTO.setDoctorId(visit.getDoctor().getId());
 			visitDTO.setEmployeeId(visit.getEmployeeByEmployeeId().getId());
 			visitDTO.setEmployeeName(visit.getEmployeeByEmployeeId().getContact().getFirstName() 
@@ -68,32 +80,37 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 	}
 
 	@Override
-	public void completeVisits(String username, List<Integer> visits) {
-		this.updateVisitStatus(visits, new Byte("1"));
+	public void completeVisits(String username, List<Integer> visits) throws NumberFormatException, VisitServiceException {
+		user = userDao.findUserByUsername(username);
+		
+		this.updateVisitStatus(user, visits, new Byte("1"));
 		
 	}
 
 	@Override
-	public void dicardVisits(String username, List<Integer> visits) {
-		this.updateVisitStatus(visits, new Byte("0"));
+	public void dicardVisits(String username, List<Integer> visits) throws NumberFormatException, VisitServiceException {
+		user = userDao.findUserByUsername(username);
+		
+		this.updateVisitStatus(user, visits, new Byte("0"));
 		
 	}
 
-	private void updateVisitStatus(List<Integer> visits, byte status) {
+	private void updateVisitStatus(User user, List<Integer> visits, byte status) throws VisitServiceException {
+		employee = user.getEmployee();
+		
+		if(employee == null)
+			throw new VisitServiceException(ERROR_CODE_1001);
+		
 		for (Iterator<Integer> iterator = visits.iterator(); iterator.hasNext();) {
 			Integer visitId = (Integer) iterator.next();
+		
+			visit = visitDao.findUserVisitByIdAndNotComplete(visitId, employee.getId());
 			
-			try {
-			visit = visitDao.findVisitByIdAndNotComplete(visitId);
+			if(visit == null)
+				throw new VisitServiceException(ERROR_CODE_1004 +" '" +visitId+"'");
 			
 			visit.setCompleted(status);
-			
-				
-				visitDao.updateVisit(visit);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			
+			visitDao.updateVisit(visit);
 		}
 	}
 }

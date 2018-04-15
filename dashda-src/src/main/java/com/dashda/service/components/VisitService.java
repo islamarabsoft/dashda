@@ -5,16 +5,19 @@ package com.dashda.service.components;
 
 import java.util.List;
 
+import com.dashda.controllers.dto.VisitDTO;
+import com.dashda.exception.VisitServiceException;
+
 /**
  * @author mhanafy
  *
  */
 public interface VisitService {
 
-	Object visitItemsList(String username);
+	public List<VisitDTO> visitItemsList(String username) throws VisitServiceException;
 
-	void completeVisits(String username, List<Integer> visits);
+	public void completeVisits(String username, List<Integer> visits)throws VisitServiceException;
 
-	void dicardVisits(String username, List<Integer> visits);
+	public void dicardVisits(String username, List<Integer> visits)throws VisitServiceException;
 
 }

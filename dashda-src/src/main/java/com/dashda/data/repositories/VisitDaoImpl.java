@@ -34,6 +34,7 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 	public List<Visit> findVisitItemsByEmployee(Employee employee) {
 		Criteria criteria = getSession().createCriteria(Visit.class);
 		criteria.add(Restrictions.eq("employeeByEmployeeId.id", employee.getId()));
+		criteria.add(Restrictions.isNull("completed"));
 		
 		return criteria.list();
 	}
@@ -42,6 +43,16 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 	public Visit findVisitByIdAndNotComplete(Integer visitId) {
 		Criteria criteria = getSession().createCriteria(Visit.class);
 		criteria.add(Restrictions.eq("id", visitId));
+		criteria.add(Restrictions.isNull("completed"));
+		
+		return (Visit)criteria.uniqueResult();
+	}
+	
+	@Override
+	public Visit findUserVisitByIdAndNotComplete(Integer visitId, Integer employeeId) {
+		Criteria criteria = getSession().createCriteria(Visit.class);
+		criteria.add(Restrictions.eq("id", visitId));
+		criteria.add(Restrictions.eq("employeeByEmployeeId.id", employeeId));
 		criteria.add(Restrictions.isNull("completed"));
 		
 		return (Visit)criteria.uniqueResult();

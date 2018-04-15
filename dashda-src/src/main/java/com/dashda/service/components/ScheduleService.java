@@ -17,17 +17,16 @@ public interface ScheduleService {
 
 	void addScheduleItem(String username, ScheduleDTO scheduleItems)throws ParseException, ScheduleExceptionManager;
 
-	void approveScheduleItems(String username, List<Integer> scheduleDTOs);
+	void approveScheduleItems(String username, List<Integer> scheduleDTOs)throws ScheduleExceptionManager;
 
-	void rejectScheduleItems(String username, List<Integer> scheduleItems);
+	void rejectScheduleItems(String username, List<Integer> scheduleItems)throws ScheduleExceptionManager;
 
 	void approveSchedule(String username, int subordinateId);
 	
 	void rejectSchedule(String username, int subordinateId);
 
-	List<ScheduleDTO> scheduleItemsListNeedAttention(String username);
+	List<ScheduleDTO> scheduleItemsListNeedAttention(String username) throws ScheduleExceptionManager;
 
-	List<ScheduleDTO> schedulesNeedAttention(String username);
 
 }
 

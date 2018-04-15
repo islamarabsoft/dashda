@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dashda.controllers.dto.EmployeeUserDTO;
 import com.dashda.controllers.dto.UserDTO;
 import com.dashda.service.components.UserService;
 import com.dashda.service.components.UserServiceExceptioManager;
@@ -42,5 +43,12 @@ public class UserInformation extends AbstractController{
 	@RequestMapping(method = RequestMethod.POST, value = "/create-user")
 	public void createUser(@AuthenticationPrincipal User user, @Valid @RequestBody UserDTO userDTO) throws UserServiceExceptioManager {
 		userService.createUser(userDTO);
+	}
+	
+	
+	@Secured("ROLE_SYSTEM_ADMIN")
+	@RequestMapping(method = RequestMethod.POST, value = "/create-employee-user")
+	public void createEmployeeUser(@AuthenticationPrincipal User user, @Valid @RequestBody EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager {
+		userService.createEmployeeUser(employeeUserDTO);
 	}
 }

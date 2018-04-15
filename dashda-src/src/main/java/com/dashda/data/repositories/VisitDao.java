@@ -21,4 +21,6 @@ public interface VisitDao {
 	public Visit findVisitByIdAndNotComplete(Integer visitId);
 
 	public void updateVisit(Visit visit);
+
+	Visit findUserVisitByIdAndNotComplete(Integer visitId, Integer employeeId);
 }

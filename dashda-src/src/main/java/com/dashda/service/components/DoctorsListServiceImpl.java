@@ -72,6 +72,9 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 		
 		List<Doctor> doctors = doctorDao.doctorsList(districts);
 		
+		if(doctors.size() == 0)
+			throw new DoctorServiceExceptionManager(ERROR_CODE_1010);
+		
 		doctorsDTO = new ArrayList<DoctorDTO>();
 		
 		for(Iterator<Doctor> doctorsIt = doctors.iterator(); doctorsIt.hasNext();) {

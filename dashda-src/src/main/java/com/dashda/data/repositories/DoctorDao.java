@@ -16,4 +16,6 @@ public interface DoctorDao {
 
 	public List<Doctor> doctorsList(List<District> districts);
 
+	public Doctor findDoctorById(Integer doctorId);
+
 }

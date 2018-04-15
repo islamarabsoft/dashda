@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dashda.exception.MyDoctorsListServiceExceptionManager;
 import com.dashda.service.components.MyDoctorsListService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -29,13 +30,13 @@ public class MyDoctorsListController extends AbstractController {
 	MyDoctorsListService myDoctorsListService;
 	
 	@RequestMapping("/my-doctors")
-	public String myDoctorsList(@AuthenticationPrincipal User user) throws JsonProcessingException{
+	public String myDoctorsList(@AuthenticationPrincipal User user) throws JsonProcessingException, MyDoctorsListServiceExceptionManager{
 		
 		return jsonObjectmapper.writeValueAsString(myDoctorsListService.myDoctorsList(user.getUsername()));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/save-my-doctors-list")
-	public void saveMyDoctorsList(@AuthenticationPrincipal User user, @RequestBody List<Integer> doctors) throws JsonProcessingException {
+	public void saveMyDoctorsList(@AuthenticationPrincipal User user, @RequestBody List<Integer> doctors) throws JsonProcessingException, MyDoctorsListServiceExceptionManager {
 			myDoctorsListService.saveMyDoctorsList(user.getUsername(), doctors);
 	}
 }

@@ -62,5 +62,15 @@ public class EmployeeDoctorDaoImpl extends AbstractDao implements EmployeeDoctor
 			
 		}
 	}
+	
+	@Override
+	public EmployeeDoctor findEmployeeDoctorByEmployeeIdAndDoctorId(Integer employeeId, Integer doctorId) {
+		Criteria criteria = getSession().createCriteria(EmployeeDoctor.class);
+		criteria.add(Restrictions.in("employee.id", employeeId));
+		criteria.add(Restrictions.in("doctor.id", doctorId));
+		
+		
+		return (EmployeeDoctor)criteria.uniqueResult();
+	}
 
 }

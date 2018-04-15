@@ -1,11 +1,16 @@
 package com.dashda.data.entities;
 // Generated Apr 4, 2018 2:50:44 PM by Hibernate Tools 5.2.8.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -61,7 +66,7 @@ public class Employee implements java.io.Serializable {
 	}
 
 	@Id
-
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID", unique = true, nullable = false)
 	public int getId() {
 		return this.id;
@@ -185,7 +190,7 @@ public class Employee implements java.io.Serializable {
 		this.schedulesForSubordinateId = schedulesForSubordinateId;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeByManagerId")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeByManagerId", cascade=CascadeType.ALL)
 	public Set<Schedule> getSchedulesForManagerId() {
 		return schedulesForManagerId;
 	}

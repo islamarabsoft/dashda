@@ -20,4 +20,6 @@ public interface EmployeeDoctorDao {
 	public void clearMyDoctorsList(List<EmployeeDoctor> employeeDoctors);
 
 	void createMyDoctorsList(List<EmployeeDoctor> employeeDoctors);
+
+	EmployeeDoctor findEmployeeDoctorByEmployeeIdAndDoctorId(Integer employeeId, Integer doctorId);
 }
