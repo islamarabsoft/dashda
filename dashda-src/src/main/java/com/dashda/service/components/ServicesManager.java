@@ -61,6 +61,9 @@ public abstract class ServicesManager {
 	@Value("${ERROR_CODE_1013}")
 	protected String ERROR_CODE_1013;
 	
+	@Value("${ERROR_CODE_1014}")
+	protected String ERROR_CODE_1014;
+	
 	/**
 	 * THIS ATTRIBUTE NOT USED
 	 */

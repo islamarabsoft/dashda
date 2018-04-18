@@ -23,6 +23,7 @@ import com.dashda.data.entities.District;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Governorate;
 import com.dashda.data.entities.User;
+import com.dashda.data.entities.UserRoleClientTemplate;
 import com.dashda.data.entities.UserRolePermission;
 import com.dashda.data.repositories.ContactDao;
 import com.dashda.data.repositories.EmployeeDao;
@@ -60,51 +61,23 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 	private Governorate governorate;
 	
 	@Override
-	public UserDTO getUserInfo(String username) {
+	public UserDTO getUserInfo(String username) throws UserServiceExceptioManager {
 		
-		UserPermessionDTO userPermessionDTO;
-		UserRolePermission userRolePermission;
-		
-		
-		List<UserPermessionDTO> userPermessionDTOs = new ArrayList<UserPermessionDTO>();
-		
-		//Map primitive attributes 
 		user = userDao.findUserByUsername(username);
-		
-		if(user.getEmployee() != null) {
-			userDTO = new EmployeeUserDTO();
-			mapper.map(user.getEmployee(), userDTO);
-			if(user.getEmployee().getManager() != null)
-				((EmployeeUserDTO)userDTO).setManagerId(user.getEmployee().getManager().getId()+"");
-			
-		}else {
-			userDTO = new UserDTO();
-		}
-			
-		
-		mapper.map(user.getContact(), userDTO);
-
-		
-		mapper.map(user, userDTO);
-		
-		for(Iterator<UserRolePermission> userRolePermissionIt = user.getUserRole().getUserRolePermissions().iterator(); userRolePermissionIt.hasNext();) {
-			userRolePermission = userRolePermissionIt.next();
-			userRolePermission.getPermission().getPermission();
-			
-			userPermessionDTO = new UserPermessionDTO();
-			userPermessionDTO.setId(userRolePermission.getId());
-			userPermessionDTO.setPermession(userRolePermission.getPermission().getPermission());
-
-			
-			userPermessionDTOs.add(userPermessionDTO);
-		}
-		
-		userDTO.setUserPermessionDTOs(userPermessionDTOs);
-		userDTO.setPassword("***********");
+				
+		userDTO = prepareUserDTOObject(user);
 		
 		return userDTO;
 	}
 
+	@Override
+	public UserDTO authorizationInfo(String username, String password) throws UserServiceExceptioManager {
+		user = userDao.findActiveUserByUsernameAndPassword(username, generatePasswordEncoder.encode(password));
+		
+		userDTO = prepareUserDTOObject(user);
+		
+		return userDTO;
+	}
 
 	@Override
 	public void createUser(UserDTO userDTO) throws UserServiceExceptioManager {
@@ -180,5 +153,46 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 		userDao.createUser(user);
 		
 	}
+
+private UserDTO prepareUserDTOObject(User user) throws UserServiceExceptioManager {
+		
+	if(user == null)
+		throw new UserServiceExceptioManager(ERROR_CODE_1014);
+		
+		List<String> userPermessions = new ArrayList<String>();
+		List<String> userRoleClientTemplates = new ArrayList<String>();
+		
+		
+		if(user.getEmployee() != null) {
+			userDTO = new EmployeeUserDTO();
+			mapper.map(user.getEmployee(), userDTO);
+			if(user.getEmployee().getManager() != null)
+				((EmployeeUserDTO)userDTO).setManagerId(user.getEmployee().getManager().getId()+"");
+			
+		}else {
+			userDTO = new UserDTO();
+		}
+			
+		
+		mapper.map(user.getContact(), userDTO);
+		mapper.map(user, userDTO);
+		
+		for(Iterator<UserRolePermission> userRolePermissionIt = user.getUserRole().getUserRolePermissions().iterator(); userRolePermissionIt.hasNext();) {
+			userPermessions.add((userRolePermissionIt.next()).getPermission().getName());
+		}
+		
+		
+		for (Iterator<UserRoleClientTemplate> userRoleClienttemplateIt = user.getUserRole().getUserRoleClientTemplate().iterator(); userRoleClienttemplateIt.hasNext();) {
+			userRoleClientTemplates.add((userRoleClienttemplateIt.next()).getClientTemplate().getTemplate());
+		}
+		
+		userDTO.setUserPermessions(userPermessions);
+		userDTO.setClientTemplates(userRoleClientTemplates);
+		userDTO.setPassword("***********");
+		
+		return userDTO;
+		
+	}
+	
 	
 }

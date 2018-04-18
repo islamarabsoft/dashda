@@ -46,7 +46,8 @@ public class UserDTO {
 	private String phone4;
 	private String phone5;
 	private String phone6;
-	private List<UserPermessionDTO> userPermessionDTOs;
+	private List<String> userPermessions;
+	private List<String> clientTemplates;
 	
 	
 	public int getId() {
@@ -66,12 +67,21 @@ public class UserDTO {
 		this.username = username;
 	}
 
-	public List<UserPermessionDTO> getUserPermessionDTOs() {
-		return userPermessionDTOs;
+
+	public List<String> getUserPermessions() {
+		return userPermessions;
 	}
 
-	public void setUserPermessionDTOs(List<UserPermessionDTO> userPermessionDTOs) {
-		this.userPermessionDTOs = userPermessionDTOs;
+	public void setUserPermessions(List<String> userPermessions) {
+		this.userPermessions = userPermessions;
+	}
+
+	public List<String> getClientTemplates() {
+		return clientTemplates;
+	}
+
+	public void setClientTemplates(List<String> clientTemplates) {
+		this.clientTemplates = clientTemplates;
 	}
 
 	/**

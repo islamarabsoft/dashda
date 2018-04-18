@@ -80,4 +80,14 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 		
 	}
 
+	@Override
+	public User findActiveUserByUsernameAndPassword(String username, String password) {
+		Criteria criteria = getSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("username", username));
+		//criteria.add(Restrictions.eq("password", password));
+		criteria.add(Restrictions.eq("active", Byte.parseByte("1")));
+		
+		return (User)criteria.uniqueResult();
+	}
+
 }

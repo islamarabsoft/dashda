@@ -15,9 +15,11 @@ import com.dashda.controllers.dto.UserDTO;
 public interface UserService {
 
 	
-	public UserDTO getUserInfo(String username);
+	public UserDTO getUserInfo(String username) throws UserServiceExceptioManager;
 
 	public void createUser(@Valid UserDTO userDTO) throws UserServiceExceptioManager;
 	
 	public void createEmployeeUser(@Valid EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager;
+
+	public UserDTO authorizationInfo(String username, String password) throws UserServiceExceptioManager;
 }

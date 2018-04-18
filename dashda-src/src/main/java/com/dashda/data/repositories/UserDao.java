@@ -26,4 +26,6 @@ public interface UserDao {
     public User findUserByUsername(String username);
 
 	public void createUser(User user);
+
+	public User findActiveUserByUsernameAndPassword(String username, String password);
 }
