@@ -23,7 +23,6 @@ public class UserRole implements java.io.Serializable {
 	private String name;
 	private String userRole;
 	private Set userRolePermissions = new HashSet(0);
-	private Set userRoleClientTemplate = new HashSet(0);
 	private Set users = new HashSet(0);
 
 	public UserRole() {
@@ -78,15 +77,6 @@ public class UserRole implements java.io.Serializable {
 
 	public void setUserRolePermissions(Set userRolePermissions) {
 		this.userRolePermissions = userRolePermissions;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRole")
-	public Set<UserRoleClientTemplate> getUserRoleClientTemplate() {
-		return userRoleClientTemplate;
-	}
-
-	public void setUserRoleClientTemplate(Set userRoleClientTemplate) {
-		this.userRoleClientTemplate = userRoleClientTemplate;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRole")

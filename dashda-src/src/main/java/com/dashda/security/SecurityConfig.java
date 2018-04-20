@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authoritiesByUsernameQuery("SELECT USERNAME, PERMISSION FROM USER U " + 
 					"INNER JOIN USER_ROLE UR ON UR.ID = U.USER_ROLE_ID AND U.USERNAME = ? " + 
 					"INNER JOIN USER_ROLE_PERMISSION AS URP ON UR.ID = URP.USER_ROLE_ID " +
-					"INNER JOIN PERMISSION AS P ON URP.PERMISSION_ID = P.ID")
+					"INNER JOIN PERMISSION AS P ON URP.PERMISSION_ID = P.ID AND P.PERMISSION_TYPE_ID = 1")
 			.passwordEncoder(new BCryptPasswordEncoder());
 	    }
 

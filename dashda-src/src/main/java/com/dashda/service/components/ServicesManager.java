@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Transactional
+@PropertySource("classpath:exception-messages.properties")
 public abstract class ServicesManager {
 	
 	
@@ -64,6 +65,8 @@ public abstract class ServicesManager {
 	@Value("${ERROR_CODE_1014}")
 	protected String ERROR_CODE_1014;
 	
+	@Value("${ERROR_CODE_1015}")
+	protected String ERROR_CODE_1015;
 	/**
 	 * THIS ATTRIBUTE NOT USED
 	 */

@@ -16,18 +16,19 @@ import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.EmployeeUserDTO;
 import com.dashda.controllers.dto.UserDTO;
-import com.dashda.controllers.dto.UserPermessionDTO;
+import com.dashda.controllers.dto.ClaimDTO;
 import com.dashda.data.entities.Account;
 import com.dashda.data.entities.Contact;
 import com.dashda.data.entities.District;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Governorate;
+import com.dashda.data.entities.Permission;
 import com.dashda.data.entities.User;
-import com.dashda.data.entities.UserRoleClientTemplate;
 import com.dashda.data.entities.UserRolePermission;
 import com.dashda.data.repositories.ContactDao;
 import com.dashda.data.repositories.EmployeeDao;
 import com.dashda.data.repositories.UserDao;
+import com.google.appengine.repackaged.com.google.common.collect.ClassToInstanceMap;
 
 /**
  * @author mhanafy
@@ -159,9 +160,9 @@ private UserDTO prepareUserDTOObject(User user) throws UserServiceExceptioManage
 	if(user == null)
 		throw new UserServiceExceptioManager(ERROR_CODE_1014);
 		
-		List<String> userPermessions = new ArrayList<String>();
-		List<String> userRoleClientTemplates = new ArrayList<String>();
-		
+		List<ClaimDTO> claims = new ArrayList<ClaimDTO>();
+		ClaimDTO claim = null;
+		Permission permission = null;
 		
 		if(user.getEmployee() != null) {
 			userDTO = new EmployeeUserDTO();
@@ -177,17 +178,20 @@ private UserDTO prepareUserDTOObject(User user) throws UserServiceExceptioManage
 		mapper.map(user.getContact(), userDTO);
 		mapper.map(user, userDTO);
 		
-		for(Iterator<UserRolePermission> userRolePermissionIt = user.getUserRole().getUserRolePermissions().iterator(); userRolePermissionIt.hasNext();) {
-			userPermessions.add((userRolePermissionIt.next()).getPermission().getName());
+		
+		for (Iterator<UserRolePermission> userRolePermissionIt = 
+				user.getUserRole().getUserRolePermissions().iterator(); userRolePermissionIt.hasNext();) {
+			
+			permission = userRolePermissionIt.next().getPermission();
+			
+			if(permission.getPermissionType().getId() == 2) {
+				claim = new ClaimDTO(permission.getId(), permission.getName());
+				claims.add(claim);
+			}
+			
 		}
 		
-		
-		for (Iterator<UserRoleClientTemplate> userRoleClienttemplateIt = user.getUserRole().getUserRoleClientTemplate().iterator(); userRoleClienttemplateIt.hasNext();) {
-			userRoleClientTemplates.add((userRoleClienttemplateIt.next()).getClientTemplate().getTemplate());
-		}
-		
-		userDTO.setUserPermessions(userPermessions);
-		userDTO.setClientTemplates(userRoleClientTemplates);
+		userDTO.setClaims(claims);
 		userDTO.setPassword("***********");
 		
 		return userDTO;

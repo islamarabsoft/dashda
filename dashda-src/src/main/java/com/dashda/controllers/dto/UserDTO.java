@@ -46,8 +46,7 @@ public class UserDTO {
 	private String phone4;
 	private String phone5;
 	private String phone6;
-	private List<String> userPermessions;
-	private List<String> clientTemplates;
+	private List<ClaimDTO> claims;
 	
 	
 	public int getId() {
@@ -68,20 +67,13 @@ public class UserDTO {
 	}
 
 
-	public List<String> getUserPermessions() {
-		return userPermessions;
+	
+	public List<ClaimDTO> getClaims() {
+		return claims;
 	}
 
-	public void setUserPermessions(List<String> userPermessions) {
-		this.userPermessions = userPermessions;
-	}
-
-	public List<String> getClientTemplates() {
-		return clientTemplates;
-	}
-
-	public void setClientTemplates(List<String> clientTemplates) {
-		this.clientTemplates = clientTemplates;
+	public void setClaims(List<ClaimDTO> claims) {
+		this.claims = claims;
 	}
 
 	/**

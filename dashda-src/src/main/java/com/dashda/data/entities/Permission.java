@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,6 +24,7 @@ public class Permission implements java.io.Serializable {
 	private Integer id;
 	private String name;
 	private String permission;
+	private PermissionType permissionType;
 	private Set userRolePermissions = new HashSet(0);
 
 	public Permission() {
@@ -62,6 +65,17 @@ public class Permission implements java.io.Serializable {
 	public void setPermission(String permission) {
 		this.permission = permission;
 	}
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PERMISSION_TYPE_ID")
+	public PermissionType getPermissionType() {
+		return permissionType;
+	}
+
+	public void setPermissionType(PermissionType permissionType) {
+		this.permissionType = permissionType;
+	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "permission")
 	public Set<UserRolePermission> getUserRolePermissions() {
@@ -71,5 +85,7 @@ public class Permission implements java.io.Serializable {
 	public void setUserRolePermissions(Set userRolePermissions) {
 		this.userRolePermissions = userRolePermissions;
 	}
+	
+	
 
 }

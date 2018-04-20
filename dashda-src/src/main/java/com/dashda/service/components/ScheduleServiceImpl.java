@@ -43,7 +43,6 @@ import ch.qos.logback.core.spi.ScanException;
  */
 
 @Service("scheduleService")
-@PropertySource("classpath:exception-messages.properties")
 public class ScheduleServiceImpl extends ServicesManager implements ScheduleService {
 
 	@Autowired
