@@ -25,6 +25,25 @@ public class PermissionType {
 	private String name;
 	private Set<Permission> permissions = new HashSet<Permission>(0);
 	
+	
+	/**
+	 * 
+	 */
+	public PermissionType() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	/**
+	 * @param id
+	 */
+	public PermissionType(int id) {
+		super();
+		this.id = id;
+	}
+
+
 	@Id
 	
 	@Column(name = "ID", unique = true, nullable = false)

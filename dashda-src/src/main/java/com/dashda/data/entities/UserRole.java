@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "USER_ROLE")
-public class UserRole implements java.io.Serializable {
+public class UserRole implements java.io.Serializable, com.dashda.data.entities.Entity {
 
 	private Integer id;
 	private String name;

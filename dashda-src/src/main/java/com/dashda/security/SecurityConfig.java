@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	                realmName("Dashda Authintication").
 	                and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
 	                and().csrf().disable().
-	                authorizeRequests().antMatchers("/user/authorization-info").permitAll().anyRequest().authenticated();
+	                authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated();
 
 	    }
 

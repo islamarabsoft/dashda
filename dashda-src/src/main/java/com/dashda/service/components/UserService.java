@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import com.dashda.controllers.dto.EmployeeUserDTO;
 import com.dashda.controllers.dto.UserDTO;
+import com.dashda.exception.PermissionServiceExceptioManager;
+import com.dashda.exception.UserServiceExceptioManager;
 
 /**
  * @author mhanafy
@@ -22,4 +24,5 @@ public interface UserService {
 	public void createEmployeeUser(@Valid EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager;
 
 	public UserDTO authorizationInfo(String username, String password) throws UserServiceExceptioManager;
+	
 }

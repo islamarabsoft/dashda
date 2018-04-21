@@ -7,7 +7,7 @@ package com.dashda.exception;
  * @author mhanafy
  *
  */
-public class MyDoctorsListServiceExceptionManager extends DashdaExceptionHandling {
+public class PermissionServiceExceptioManager extends Exception {
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class MyDoctorsListServiceExceptionManager extends DashdaExceptionHandlin
 	/**
 	 * 
 	 */
-	public MyDoctorsListServiceExceptionManager() {
+	public PermissionServiceExceptioManager() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -28,7 +28,7 @@ public class MyDoctorsListServiceExceptionManager extends DashdaExceptionHandlin
 	 * @param arg2
 	 * @param arg3
 	 */
-	public MyDoctorsListServiceExceptionManager(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
+	public PermissionServiceExceptioManager(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
 		super(arg0, arg1, arg2, arg3);
 		// TODO Auto-generated constructor stub
 	}
@@ -37,7 +37,7 @@ public class MyDoctorsListServiceExceptionManager extends DashdaExceptionHandlin
 	 * @param arg0
 	 * @param arg1
 	 */
-	public MyDoctorsListServiceExceptionManager(String arg0, Throwable arg1) {
+	public PermissionServiceExceptioManager(String arg0, Throwable arg1) {
 		super(arg0, arg1);
 		// TODO Auto-generated constructor stub
 	}
@@ -45,19 +45,19 @@ public class MyDoctorsListServiceExceptionManager extends DashdaExceptionHandlin
 	/**
 	 * @param arg0
 	 */
-	public MyDoctorsListServiceExceptionManager(String arg0) {
+	public PermissionServiceExceptioManager(String arg0) {
 		super(arg0);
-		
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @param arg0
 	 */
-	public MyDoctorsListServiceExceptionManager(Throwable arg0) {
+	public PermissionServiceExceptioManager(Throwable arg0) {
 		super(arg0);
 		// TODO Auto-generated constructor stub
 	}
-
-
+	
+	
 
 }

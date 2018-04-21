@@ -28,6 +28,8 @@ import com.dashda.data.entities.UserRolePermission;
 import com.dashda.data.repositories.ContactDao;
 import com.dashda.data.repositories.EmployeeDao;
 import com.dashda.data.repositories.UserDao;
+import com.dashda.enums.PermissionTypeEnum;
+import com.dashda.exception.UserServiceExceptioManager;
 import com.google.appengine.repackaged.com.google.common.collect.ClassToInstanceMap;
 
 /**
@@ -184,7 +186,7 @@ private UserDTO prepareUserDTOObject(User user) throws UserServiceExceptioManage
 			
 			permission = userRolePermissionIt.next().getPermission();
 			
-			if(permission.getPermissionType().getId() == 2) {
+			if(permission.getPermissionType().getId() == PermissionTypeEnum.CLIENT_TEMPLATE.getValue()) {
 				claim = new ClaimDTO(permission.getId(), permission.getName());
 				claims.add(claim);
 			}

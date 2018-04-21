@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dashda.data.entities.Entity;
 import com.dashda.service.components.ServicesManager;
  
 
@@ -34,5 +35,11 @@ public abstract class AbstractDao {
  
     public void delete(Object entity) {
         getSession().delete(entity);
+    }
+    
+    public void save(Entity entity) {
+    	getSession().save(entity);
+    	getSession().flush();
+    	getSession().clear();
     }
 }

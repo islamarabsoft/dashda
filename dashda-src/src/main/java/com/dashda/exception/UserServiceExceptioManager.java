@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dashda.service.components;
+package com.dashda.exception;
 
 /**
  * @author mhanafy

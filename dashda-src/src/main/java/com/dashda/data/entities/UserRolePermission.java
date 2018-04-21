@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "USER_ROLE_PERMISSION")
-public class UserRolePermission implements java.io.Serializable {
+public class UserRolePermission implements java.io.Serializable, com.dashda.data.entities.Entity {
 
 	private Integer id;
 	private Permission permission;

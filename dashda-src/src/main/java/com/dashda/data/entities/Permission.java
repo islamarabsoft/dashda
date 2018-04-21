@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "PERMISSION")
-public class Permission implements java.io.Serializable {
+public class Permission implements java.io.Serializable, com.dashda.data.entities.Entity {
 
 	private Integer id;
 	private String name;
@@ -28,6 +28,18 @@ public class Permission implements java.io.Serializable {
 	private Set userRolePermissions = new HashSet(0);
 
 	public Permission() {
+	}
+
+	/**
+	 * @param name
+	 * @param permission
+	 * @param permissionType
+	 */
+	public Permission(String name, String permission, PermissionType permissionType) {
+		super();
+		this.name = name;
+		this.permission = permission;
+		this.permissionType = permissionType;
 	}
 
 	public Permission(String name, String permission, Set userRolePermissions) {
