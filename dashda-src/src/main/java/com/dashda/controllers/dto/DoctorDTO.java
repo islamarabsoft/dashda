@@ -10,7 +10,7 @@ import com.dashda.data.entities.Governorate;
  * @author mhanafy
  *
  */
-public class DoctorDTO {
+public class DoctorDTO implements AbstractDTO{
 
 	private Integer id;
 	private String doctorName;
@@ -21,6 +21,14 @@ public class DoctorDTO {
 	private String workingMorningPlace;
 	private String districtName;
 	private String governorateName;
+	private int assignedId;
+	private String address;
+	private String phone1;
+	private String phone2;
+	private String phone3;
+	private String phone4;
+	private String phone5;
+	private String phone6;
 	
 	/**
 	 * @return the id
@@ -214,13 +222,13 @@ public class DoctorDTO {
 	public void setPhone6(String phone6) {
 		this.phone6 = phone6;
 	}
-	private String address;
-	private String phone1;
-	private String phone2;
-	private String phone3;
-	private String phone4;
-	private String phone5;
-	private String phone6;
+	public int getAssignedId() {
+		return assignedId;
+	}
+	public void setAssignedId(int assignedId) {
+		this.assignedId = assignedId;
+	}
+
 	
 	
 }

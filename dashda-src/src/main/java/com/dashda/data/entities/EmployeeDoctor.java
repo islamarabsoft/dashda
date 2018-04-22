@@ -3,6 +3,8 @@
  */
 package com.dashda.data.entities;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,13 +21,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "EMPLOYEE_DOCTOR")
-public class EmployeeDoctor implements java.io.Serializable{
+public class EmployeeDoctor implements java.io.Serializable, com.dashda.data.entities.Entity{
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private Employee employee;
 	private Doctor doctor;
@@ -41,6 +41,7 @@ public class EmployeeDoctor implements java.io.Serializable{
 	 * @param id
 	 */
 	public EmployeeDoctor(int id) {
+		super();
 		this.id = id;
 	}
 	
@@ -58,7 +59,9 @@ public class EmployeeDoctor implements java.io.Serializable{
 	 * @return the id
 	 */
 	@Id
-	@Column(name = "ID", unique = true, nullable = false)
+	@GeneratedValue(strategy = IDENTITY)
+	
+	@Column(name = "ID", unique = true, nullable = false, updatable = false)
 	public int getId() {
 		return this.id;
 	}

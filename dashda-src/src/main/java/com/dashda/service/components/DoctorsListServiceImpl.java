@@ -12,10 +12,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import com.dashda.controllers.dto.AbstractDTO;
+import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.DoctorDTO;
+import com.dashda.controllers.dto.ListResponse;
 import com.dashda.data.entities.Contact;
 import com.dashda.data.entities.District;
 import com.dashda.data.entities.Doctor;
+import com.dashda.data.entities.EmployeeDoctor;
 import com.dashda.data.entities.EmployeesCoveredDistrict;
 import com.dashda.data.entities.User;
 import com.dashda.data.repositories.DoctorDao;
@@ -47,13 +51,13 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 	
 	private DoctorDTO doctorDTO;
 	
-	private List<DoctorDTO> doctorsDTO;
+	private List<AbstractDTO> doctorDTOs;
 	
 	private Contact contact;
 
 	
 	@Override
-	public List<DoctorDTO> doctorsList(String username) throws DoctorServiceExceptionManager {
+	public AppResponse doctorsList(String username) throws DoctorServiceExceptionManager {
 		
 		User user = userDao.findUserByUsername(username);
 		districts = new ArrayList<District>();
@@ -72,10 +76,12 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 		
 		List<Doctor> doctors = doctorDao.doctorsList(districts);
 		
-		if(doctors.size() == 0)
+		if(doctors.isEmpty())
 			throw new DoctorServiceExceptionManager(ERROR_CODE_1010);
 		
-		doctorsDTO = new ArrayList<DoctorDTO>();
+		doctorDTOs = new ArrayList<AbstractDTO>();
+		
+
 		
 		for(Iterator<Doctor> doctorsIt = doctors.iterator(); doctorsIt.hasNext();) {
 			doctor = (Doctor)doctorsIt.next();
@@ -87,11 +93,20 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 			mapper.map(doctor, doctorDTO);
 			
 			
-			doctorsDTO.add(doctorDTO);
+			
+			for (Iterator employeeDoctorIt = doctor.getEmployeesDoctors().iterator(); employeeDoctorIt.hasNext();) {
+				EmployeeDoctor employeeDoctor = (EmployeeDoctor) employeeDoctorIt.next();
+				if(employeeDoctor.getEmployee().getId() == user.getEmployee().getId())
+					doctorDTO.setAssignedId(employeeDoctor.getId());
+			}
+
+			
+			
+			doctorDTOs.add(doctorDTO);
 		}
 
 		
-		return doctorsDTO;
+		return okListResponse(doctorDTOs, "GET Service :: Doctors List");
 	}
 
 }

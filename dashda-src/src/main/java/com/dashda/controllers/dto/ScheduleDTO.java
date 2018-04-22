@@ -10,63 +10,60 @@ import javax.validation.constraints.NotEmpty;
  * @author mhanafy
  *
  */
-public class ScheduleDTO {
+public class ScheduleDTO implements AbstractDTO{
 
-	private int scheduleId;
-	@NotEmpty
+	private int id;
 	@Digits(fraction = 0, integer = 8)
-	private String doctorId;
+	private int doctorId;
 	@NotEmpty
 	private String scheduleDate;
 	
 	private int employeeId;
 	
-	private String employeeName;
 
-	public ScheduleDTO(String doctorId, String scheduleDate) {
+	public ScheduleDTO(int doctorId, String scheduleDate) {
 		super();
 		this.doctorId = doctorId;
 		this.scheduleDate = scheduleDate;
 	}
 
-	public ScheduleDTO(String doctorId, String scheduleDate, int employeeId, String employeeName) {
+	public ScheduleDTO(int doctorId, String scheduleDate, int employeeId) {
 		super();
 		this.doctorId = doctorId;
 		this.scheduleDate = scheduleDate;
 		this.employeeId = employeeId;
-		this.employeeName = employeeName;
+
 	}
 
 	public ScheduleDTO() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public ScheduleDTO(int scheduleId) {
+	public ScheduleDTO(int id) {
 		super();
-		this.scheduleId = scheduleId;
+		this.id = id;
 	}
 
-	public ScheduleDTO(int scheduleId, String doctorId, String scheduleDate, int employeeId) {
+	public ScheduleDTO(int id, int doctorId, String scheduleDate, int employeeId) {
 		super();
-		this.scheduleId = scheduleId;
+		this.id = id;
 		this.doctorId = doctorId;
 		this.scheduleDate = scheduleDate;
 		this.employeeId = employeeId;
 	}
 
-	public int getScheduleId() {
-		return scheduleId;
+	public int getId() {
+		return id;
 	}
 
-	public void setScheduleId(int scheduleId) {
-		this.scheduleId = scheduleId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getDoctorId() {
+	public int getDoctorId() {
 		return doctorId;
 	}
 
-	public void setDoctorId(String doctorId) {
+	public void setDoctorId(int doctorId) {
 		this.doctorId = doctorId;
 	}
 
@@ -86,11 +83,5 @@ public class ScheduleDTO {
 		this.employeeId = employeeId;
 	}
 
-	public String getEmployeeName() {
-		return employeeName;
-	}
 
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
 }

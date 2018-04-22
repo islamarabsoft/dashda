@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author mhanafy
  *
  */
-public class UserDTO {
+public class UserDTO{
 
 	private int id;
 	@NotEmpty

@@ -73,4 +73,15 @@ public class EmployeeDoctorDaoImpl extends AbstractDao implements EmployeeDoctor
 		return (EmployeeDoctor)criteria.uniqueResult();
 	}
 
+	@Override
+	public void addDoctorToMyList(EmployeeDoctor employeeDoctor) {
+		save(employeeDoctor);
+		
+	}
+
+	@Override
+	public void removeEmployeeDoctorById(int assignedId) {
+		getSession().delete(new EmployeeDoctor(assignedId));
+	}
+
 }

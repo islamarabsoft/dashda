@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,19 +38,24 @@ public class MyDoctorsListController extends AbstractController {
 	MyDoctorsListService myDoctorsListService;
 	
 	@RequestMapping("/my-doctors")
-	public ResponseEntity<List<DoctorDTO>> myDoctorsList(@AuthenticationPrincipal User user) throws JsonProcessingException, MyDoctorsListServiceExceptionManager{
+	public ResponseEntity<List<DoctorDTO>> myDoctorsList(@AuthenticationPrincipal User user) throws MyDoctorsListServiceExceptionManager{
 		
-		ResponseEntity<List<DoctorDTO>> responseEntity = new ResponseEntity<List<DoctorDTO>>
-									(myDoctorsListService.myDoctorsList(user.getUsername()), HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity (myDoctorsListService.myDoctorsList(user.getUsername()), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/save-my-doctors-list")
-	public void saveMyDoctorsList(@AuthenticationPrincipal User user, @RequestBody List<Integer> doctors) throws JsonProcessingException, MyDoctorsListServiceExceptionManager {
+	public void saveMyDoctorsList(@AuthenticationPrincipal User user, @RequestBody List<Integer> doctors) throws MyDoctorsListServiceExceptionManager {
 			myDoctorsListService.saveMyDoctorsList(user.getUsername(), doctors);
 	}
 	
-	
+	@RequestMapping(method = RequestMethod.POST, value = "/assign-doctor")
+	public ResponseEntity<EmployeeDoctorDTO> assignDoctorToMyList(@AuthenticationPrincipal User user,@Validated @RequestBody EmployeeDoctorDTO employeeDoctorDTO) throws MyDoctorsListServiceExceptionManager {
+			return returnResponseEntityCreated(myDoctorsListService.assignDoctorToMyList(user.getUsername(), employeeDoctorDTO.getDoctorId()));
+	}
 
+	@RequestMapping(method = RequestMethod.POST, value = "/unassign-doctor")
+	public ResponseEntity<EmployeeDoctorDTO> unassignDoctorToMyList(@AuthenticationPrincipal User user,@Validated @RequestBody EmployeeDoctorDTO employeeDoctorDTO) throws MyDoctorsListServiceExceptionManager {
+			return returnResponseEntityAccepted(myDoctorsListService.unassignDoctorToMyList(user.getUsername(), employeeDoctorDTO.getAssignedId()));
+	}
 	
 }

@@ -22,4 +22,8 @@ public interface EmployeeDoctorDao {
 	void createMyDoctorsList(List<EmployeeDoctor> employeeDoctors);
 
 	EmployeeDoctor findEmployeeDoctorByEmployeeIdAndDoctorId(Integer employeeId, Integer doctorId);
+
+	public void addDoctorToMyList(EmployeeDoctor employeeDoctor);
+
+	public void removeEmployeeDoctorById(int assignedId);
 }

@@ -9,9 +9,9 @@ package com.dashda.exception;
  */
 public class DashdaExceptionHandling extends Exception {
 
-	private String arErrorMessage = "AR"; 
-	private String enErrorMessage = "EN";
-	private String errorCode = "001";
+	private String arErrorMessage; 
+	private String enErrorMessage;
+	private String errorCode;
 
 	/**
 	 * 

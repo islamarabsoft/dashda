@@ -10,7 +10,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.dashda.controllers.EmployeeDoctorDTO;
 import com.dashda.controllers.dto.DoctorDTO;
+import com.dashda.controllers.dto.AppResponse;
 import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeeDoctor;
@@ -112,6 +114,48 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 		}
 		
 		employeeDoctorDao.createMyDoctorsList(employeeDoctors);
+	}
+
+	@Override
+	public AppResponse assignDoctorToMyList(String username, Integer doctorId)
+			throws MyDoctorsListServiceExceptionManager {
+		user = userDao.findUserByUsername(username);
+		
+		employee = user.getEmployee();
+		if(employee == null)
+			throw new MyDoctorsListServiceExceptionManager(ERROR_CODE_1001);
+		int employeeId = employee.getId();
+		
+		doctor = doctorDao.findDoctorById(doctorId);
+		if(doctor == null)
+			throw new MyDoctorsListServiceExceptionManager(ERROR_CODE_1011);
+		if(employeeDoctorDao.findEmployeeDoctorByEmployeeIdAndDoctorId(employeeId, doctorId) !=null)
+			throw new MyDoctorsListServiceExceptionManager("DoctorId {"+doctorId+"} already assigned to your list");
+		
+		employeeDoctor = new EmployeeDoctor();
+		employeeDoctor.setDoctor(doctor);
+		employeeDoctor.setEmployee(employee);
+		
+		employeeDoctorDao.addDoctorToMyList(employeeDoctor);
+		
+		EmployeeDoctorDTO employeeDoctorDTO = new EmployeeDoctorDTO();
+		
+		employeeDoctorDTO.setAssignedId(employeeDoctor.getId());
+		employeeDoctorDTO.setDoctorId(doctorId);
+		employeeDoctorDTO.setEmployeeId(employeeId);
+		
+		
+		return createResponse(employeeDoctorDTO, "Doctor Assigned to Employee List Successfully");
+	}
+
+	@Override
+	public AppResponse unassignDoctorToMyList(String username, int assignedId)
+			throws MyDoctorsListServiceExceptionManager {
+		if(assignedId == 0)	
+			throw new MyDoctorsListServiceExceptionManager("Assgined ID shouldn't be 0");
+		employeeDoctorDao.removeEmployeeDoctorById(assignedId);
+		
+		return deleteResponse("Object Deleted Successfully {"+assignedId+"}");
 	}
 
 }

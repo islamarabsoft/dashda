@@ -6,6 +6,7 @@ package com.dashda.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -41,10 +42,9 @@ public class UserInformation extends AbstractController{
 	
 	@Secured("ROLE_USER_INFO")
 	@RequestMapping("/user-info")
-	public String userInformation(@AuthenticationPrincipal User user) throws JsonProcessingException, UserServiceExceptioManager {
+	public ResponseEntity<UserDTO> userInformation(@AuthenticationPrincipal User user) throws JsonProcessingException, UserServiceExceptioManager {
 		
-		
-		return jsonObjectmapper.writeValueAsString(userService.getUserInfo(user.getUsername()));
+		return returnResponseEntityOk(userService.getUserInfo(user.getUsername()));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/authorization-info", params = {"username!=", "password!="})

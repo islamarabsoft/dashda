@@ -14,7 +14,7 @@ import com.dashda.data.entities.Schedule;
  */
 public interface ScheduleDao {
 
-	void addScheduleItem(Schedule schedule);
+	void saveScheduleItem(Schedule schedule);
 
 	void update(Schedule schedule) throws SQLException;
 

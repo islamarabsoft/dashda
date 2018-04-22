@@ -7,6 +7,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.dashda.service.components.ServicesManager;
+
 /**
  * @author mhanafy
  *
@@ -14,6 +19,8 @@ import java.util.Date;
 public class DateValidator {
 
 	public static boolean isThisDateValid(String dateToValidate, String dateFromat){
+		
+		final Logger log = LoggerFactory.getLogger(DateValidator.class);
 		
 		if(dateToValidate == null){
 			return false;
@@ -26,11 +33,12 @@ public class DateValidator {
 			
 			//if not valid, it will throw ParseException
 			Date date = sdf.parse(dateToValidate);
-			System.out.println(date);
+			
+			log.info(date+"");
 		
 		} catch (ParseException e) {
 			
-			e.printStackTrace();
+			log.error("ParseException :::: ", e);
 			return false;
 		}
 		

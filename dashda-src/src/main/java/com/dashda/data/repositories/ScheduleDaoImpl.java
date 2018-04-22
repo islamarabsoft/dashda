@@ -23,12 +23,8 @@ import com.dashda.data.entities.Schedule;
 public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 
 	@Override
-	public void addScheduleItem(Schedule schedule) {
-		
-		getSession().save(schedule);
-		getSession().flush();
-		getSession().clear();
-		
+	public void saveScheduleItem(Schedule schedule) {
+		save(schedule);
 	}
 
 	@Override

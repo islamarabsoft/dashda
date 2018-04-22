@@ -10,12 +10,14 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.controllers.dto.ScheduleDTO;
@@ -38,8 +40,16 @@ public class ScheduleController extends AbstractController{
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/add-schedule-item")
 	@Secured("ROLE_SCHEDULE_CREATOR")
-	public void addScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTOs) throws ParseException, ScheduleExceptionManager {
-			scheduleService.addScheduleItem(user.getUsername(), scheduleDTOs);
+	public ResponseEntity<ScheduleDTO> addScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTOs) throws ParseException, ScheduleExceptionManager {
+			return returnResponseEntityCreated(scheduleService.addScheduleItem(user.getUsername(), scheduleDTOs));
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/modify-schedule-item-data")
+	@Secured("ROLE_SCHEDULE_CREATOR")
+	public ResponseEntity<ScheduleDTO> modifyScheduleItem(@RequestParam(required = true) int scheduleId,
+			@RequestParam(required = true) String scheduleDate) throws ParseException, ScheduleExceptionManager {
+		
+			return returnResponseEntityOk(scheduleService.modifyScheduleItemData(scheduleId, scheduleDate));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/approve-schedule-item")

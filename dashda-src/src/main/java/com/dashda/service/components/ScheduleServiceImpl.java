@@ -11,12 +11,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.scheduling.SchedulingException;
 import org.springframework.stereotype.Service;
 
+import com.dashda.controllers.dto.AppResponse;
+import com.dashda.controllers.dto.ListResponse;
 import com.dashda.controllers.dto.ScheduleDTO;
 import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
@@ -34,8 +33,8 @@ import com.dashda.enums.ScheduleStatusEnum;
 import com.dashda.exception.ScheduleExceptionManager;
 import com.dashda.utilities.CompareDateWithoutTime;
 import com.dashda.utilities.DateValidator;
+import com.google.appengine.api.files.FileServicePb.CreateResponse;
 
-import ch.qos.logback.core.spi.ScanException;
 
 /**
  * @author mhanafy
@@ -79,7 +78,7 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 	private EmployeeDoctor employeeDoctor;
 	
 	@Override
-	public void addScheduleItem(String username, ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager  {
+	public AppResponse addScheduleItem(String username, ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager  {
 			
 		user = userDao.findUserByUsername(username);
 		
@@ -99,7 +98,7 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 			throw new ScheduleExceptionManager(ERROR_CODE_1013 + " '" + scheduleDTO.getScheduleDate()+ "'");
         	
 		
-		doctor = doctorDao.findDoctorById(Integer.parseInt(scheduleDTO.getDoctorId()));
+		doctor = doctorDao.findDoctorById(scheduleDTO.getDoctorId());
 		if(doctor == null)
 			throw new ScheduleExceptionManager(ERROR_CODE_1011 +" '"+ scheduleDTO.getDoctorId() +"'");
 		
@@ -116,7 +115,11 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 		schedule.setDatetime(scheduleDate);
 		schedule.setScheduleStatus(new ScheduleStatus(ScheduleStatusEnum.PENDING_APPROVAL.getValue()));
 		
-		scheduleDao.addScheduleItem(schedule);
+		scheduleDao.saveScheduleItem(schedule);
+		scheduleDTO.setId(schedule.getId());
+		scheduleDTO.setEmployeeId(schedule.getEmployeeByEmployeeId().getId());
+		
+		return createResponse(scheduleDTO, "Schedule Item Added Successfully");
 	}
 
 	@Override
@@ -148,22 +151,19 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 		employee = user.getEmployee();
 		if(employee == null)
 			throw new ScheduleExceptionManager(ERROR_CODE_1001);
-		System.out.println("Employee ID : " + employee.getId());
 		schedules = scheduleDao.findListofScheduleItemsNeedAttention(employee.getId());
 		
-		scheduleDTOs = new ArrayList<ScheduleDTO>();
+		scheduleDTOs = new ArrayList();
 		
 		for (Iterator<Schedule> iterator = schedules.iterator(); iterator.hasNext();) {
-			Schedule schedule = (Schedule) iterator.next();
+			schedule = iterator.next();
 			
 			scheduleDTO = new ScheduleDTO();
 			
-			scheduleDTO.setScheduleId(schedule.getId());
-			scheduleDTO.setDoctorId(schedule.getDoctor().getId()+"");
+			scheduleDTO.setId(schedule.getId());
+			scheduleDTO.setDoctorId(schedule.getDoctor().getId());
 			scheduleDTO.setScheduleDate(schedule.getDatetime()+"");
 			scheduleDTO.setEmployeeId(schedule.getEmployeeByEmployeeId().getId());
-			scheduleDTO.setEmployeeName(schedule.getEmployeeByEmployeeId().getContact().getFirstName() + " " 
-												+ schedule.getEmployeeByEmployeeId().getContact().getFirstName());
 			
 			scheduleDTOs.add(scheduleDTO);
 		}
@@ -203,8 +203,7 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 				scheduleDao.update(schedule);
 				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Visit Error ::: ", e);
 			}
 			
 		}
@@ -233,13 +232,40 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 				scheduleDao.update(schedule);
 				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Visit Error ::: ", e);
 			}
 		}
 		
 	}
 
 
+	@Override
+	public AppResponse modifyScheduleItemData(int scheduleId, String scheduleDate) throws ScheduleExceptionManager, ParseException{
+		
+		
+		
+		schedule = scheduleDao.findScheduleByID(scheduleId);
+		
+		if(schedule == null) 
+			throw new ScheduleExceptionManager("ERROR_CODE");
+		
+		if(!DateValidator.isThisDateValid(scheduleDate, "dd/MM/yyyy"))
+			throw new ScheduleExceptionManager(ERROR_CODE_1012 + " '" + scheduleDate + "'");
+		
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse(scheduleDate);
+		
+		if(CompareDateWithoutTime.compareTwoDates(new Date(), date) == -1)
+			throw new ScheduleExceptionManager(ERROR_CODE_1013 + " '" + scheduleDate + "'");
+		
+		schedule.setDatetime(date);
+		
+		scheduleDao.saveScheduleItem(schedule);
+	
+		scheduleDTO= new ScheduleDTO(scheduleId, schedule.getDoctor().getId(), 
+						schedule.getDatetime()+"", schedule.getEmployeeByEmployeeId().getId());
+		
+		
+		return okResponse(scheduleDTO, "Schedule Item Updated Successfully");
+	}
 
 }

@@ -3,9 +3,7 @@
  */
 package com.dashda.service.components;
 
-import java.util.List;
-
-import com.dashda.controllers.dto.DoctorDTO;
+import com.dashda.controllers.dto.AppResponse;
 import com.dashda.exception.DoctorServiceExceptionManager;
 
 /**
@@ -14,5 +12,5 @@ import com.dashda.exception.DoctorServiceExceptionManager;
  */
 public interface DoctorsListService {
 
-	public List<DoctorDTO> doctorsList(String username) throws DoctorServiceExceptionManager;
+	public AppResponse doctorsList(String username) throws DoctorServiceExceptionManager;
 }
