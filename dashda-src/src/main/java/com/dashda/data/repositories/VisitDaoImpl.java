@@ -3,6 +3,7 @@
  */
 package com.dashda.data.repositories;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -39,6 +40,15 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 		return criteria.list();
 	}
 
+	@Override
+	public List<Visit> findVisitInPeriodItemsByEmployee(Employee employee, Date fromDate, Date toDate) {
+		Criteria criteria = getSession().createCriteria(Visit.class);
+		criteria.add(Restrictions.eq("employeeByEmployeeId.id", employee.getId()));
+		criteria.add(Restrictions.isNull("completed"));
+		criteria.add(Restrictions.between("datetime", fromDate, toDate));
+		
+		return criteria.list();
+	}
 	@Override
 	public Visit findVisitByIdAndNotComplete(Integer visitId) {
 		Criteria criteria = getSession().createCriteria(Visit.class);

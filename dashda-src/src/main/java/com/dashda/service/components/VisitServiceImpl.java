@@ -3,14 +3,18 @@
  */
 package com.dashda.service.components;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.loader.custom.Return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.VisitDTO;
+import com.dashda.controllers.dto.VisitInquiryDTO;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
@@ -18,6 +22,7 @@ import com.dashda.data.repositories.UserDao;
 import com.dashda.data.repositories.VisitDao;
 import com.dashda.exception.ScheduleExceptionManager;
 import com.dashda.exception.VisitServiceException;
+import com.dashda.utilities.DateValidator;
 import com.google.appengine.repackaged.org.antlr.runtime.EarlyExitException;
 
 
@@ -36,7 +41,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 
 	private List<Visit> visits;
 	
-	private List<VisitDTO> visitDTOs;
+	private List visitDTOs;
 
 	private VisitDTO visitDTO;
 
@@ -50,33 +55,52 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 	 * @see com.dashda.service.components.VisitService#visitItemsList(java.lang.String)
 	 */
 	@Override
-	public List<VisitDTO> visitItemsList(String username) throws VisitServiceException {
+	public AppResponse visitItemsList(String username, VisitInquiryDTO visitInquiryDTO) throws VisitServiceException, ParseException {
 		User user = userDao.findUserByUsername(username);
 		
 		employee = user.getEmployee();
 		if(employee == null)
 			throw new VisitServiceException(ERROR_CODE_1001);
 		
-		visits = visitDao.findVisitItemsByEmployee(user.getEmployee());
+		visits = visitDao.findVisitInPeriodItemsByEmployee(employee, DateValidator.convertToDate(visitInquiryDTO.getFrom(), DateValidator.DATE_FORMATE_PATTERN),
+				DateValidator.convertToDate(visitInquiryDTO.getTo(), DateValidator.DATE_FORMATE_PATTERN));
 		
-		visitDTOs = new ArrayList<VisitDTO>();
+		visitDTOs = new ArrayList();
+		
+		String status = null;
+		String statusId = null;
 		
 		for (Iterator iterator = visits.iterator(); iterator.hasNext();) {
 			Visit visit = (Visit) iterator.next();
+			if(visit.getCompleted() == null) {
+				statusId = "1";
+				status = "Not Completed";
+			}else if(visit.getCompleted() == 1){
+				statusId = "2";
+				status = "Completed";
+			}else if(visit.getCompleted() == 0){
+				statusId = "3";
+				status = "Discard";
+			}
 			
+		
 			visitDTO = new VisitDTO();
 			
 			visitDTO.setVisitId(visit.getId());
 			visitDTO.setDoctorId(visit.getDoctor().getId());
 			visitDTO.setEmployeeId(visit.getEmployeeByEmployeeId().getId());
+			visitDTO.setDoctorName(visit.getDoctor().getContact().getFirstName() + " " + 
+					visit.getDoctor().getContact().getLastName());
 			visitDTO.setEmployeeName(visit.getEmployeeByEmployeeId().getContact().getFirstName() 
 							+ " " + visit.getEmployeeByEmployeeId().getContact().getLastName());		
 			visitDTO.setVisitDate(visit.getDatetime()+"");
+			visitDTO.setStatus(status);
+			visitDTO.setStatusId(statusId);
 			
 			visitDTOs.add(visitDTO);
 		}
 		
-		return visitDTOs;
+		return okListResponse(visitDTOs, "List Size: " + visitDTOs.size() );
 	}
 
 	@Override

@@ -64,14 +64,14 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 
 		
 		if(user.getEmployee() == null)
-			throw new DoctorServiceExceptionManager(ERROR_CODE_1001);
-		if(user.getEmployee().getEmployeesCoveredDistricts().size() == 0)
+			throw new DoctorServiceExceptionManager("ERROR_CODE_1001");
+		if(user.getEmployee().getEmployeesCoveredDistricts().isEmpty())
 			throw new DoctorServiceExceptionManager(ERROR_CODE_1002);
 		
 		for(Iterator<EmployeesCoveredDistrict> employeesCoveredDistrictIt = 
 				user.getEmployee().getEmployeesCoveredDistricts().iterator(); 
 				employeesCoveredDistrictIt.hasNext();) {
-			districts.add(((EmployeesCoveredDistrict)employeesCoveredDistrictIt.next()).getDistrict());
+			districts.add((employeesCoveredDistrictIt.next()).getDistrict());
 		}
 		
 		List<Doctor> doctors = doctorDao.doctorsList(districts);
@@ -79,12 +79,12 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 		if(doctors.isEmpty())
 			throw new DoctorServiceExceptionManager(ERROR_CODE_1010);
 		
-		doctorDTOs = new ArrayList<AbstractDTO>();
+		doctorDTOs = new ArrayList();
 		
 
 		
 		for(Iterator<Doctor> doctorsIt = doctors.iterator(); doctorsIt.hasNext();) {
-			doctor = (Doctor)doctorsIt.next();
+			doctor = doctorsIt.next();
 			contact = doctor.getContact();
 			
 			doctorDTO = new DoctorDTO();
@@ -97,7 +97,7 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 			for (Iterator employeeDoctorIt = doctor.getEmployeesDoctors().iterator(); employeeDoctorIt.hasNext();) {
 				EmployeeDoctor employeeDoctor = (EmployeeDoctor) employeeDoctorIt.next();
 				if(employeeDoctor.getEmployee().getId() == user.getEmployee().getId())
-					doctorDTO.setAssignedId(employeeDoctor.getId());
+					doctorDTO.setAssignedId(employeeDoctor.getId()+"");
 			}
 
 			
@@ -106,7 +106,7 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 		}
 
 		
-		return okListResponse(doctorDTOs, "GET Service :: Doctors List");
+		return okListResponse(doctorDTOs, "GET Service :: List Size "+ doctorDTOs.size());
 	}
 
 }

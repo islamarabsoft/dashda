@@ -7,7 +7,7 @@ package com.dashda.exception;
  * @author mhanafy
  *
  */
-public class MyDoctorsListServiceExceptionManager extends DashdaExceptionHandling {
+public class MyDoctorsListServiceExceptionManager extends AppExceptionHandler {
 
 	/**
 	 * 

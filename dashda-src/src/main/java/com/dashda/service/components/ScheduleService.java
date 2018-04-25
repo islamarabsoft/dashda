@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ListResponse;
+import com.dashda.controllers.dto.ScheduleActionDTO;
 import com.dashda.controllers.dto.ScheduleDTO;
 import com.dashda.exception.ScheduleExceptionManager;
 
@@ -19,17 +20,19 @@ public interface ScheduleService {
 
 	public AppResponse addScheduleItem(String username, ScheduleDTO scheduleItems)throws ParseException, ScheduleExceptionManager;
 
-	void approveScheduleItems(String username, List<Integer> scheduleDTOs)throws ScheduleExceptionManager;
+	AppResponse approveScheduleItems(String username, ScheduleActionDTO scheduleActionDTO)throws ScheduleExceptionManager;
 
-	void rejectScheduleItems(String username, List<Integer> scheduleItems)throws ScheduleExceptionManager;
+	AppResponse rejectScheduleItems(String username, ScheduleActionDTO scheduleActionDTO)throws ScheduleExceptionManager;
 
-	void approveSchedule(String username, int subordinateId);
-	
-	void rejectSchedule(String username, int subordinateId);
+//	AppResponse approveSchedule(String username, int subordinateId);
+//	
+//	AppResponse rejectSchedule(String username, int subordinateId);
 
-	List<ScheduleDTO> scheduleItemsListNeedAttention(String username) throws ScheduleExceptionManager;
+	public AppResponse scheduleItemsListNeedAttention(String username) throws ScheduleExceptionManager, ParseException;
 
 	public AppResponse modifyScheduleItemData(int scheduleId, String scheduleDate) throws ParseException, ScheduleExceptionManager;
+
+	public AppResponse removeScheduleItem(int scheduleId) throws ScheduleExceptionManager;
 
 
 }

@@ -21,7 +21,9 @@ public class DoctorDTO implements AbstractDTO{
 	private String workingMorningPlace;
 	private String districtName;
 	private String governorateName;
-	private int assignedId;
+	private String assignedId;
+	private String scheduleId;
+	private String scheduleDate;
 	private String address;
 	private String phone1;
 	private String phone2;
@@ -222,12 +224,25 @@ public class DoctorDTO implements AbstractDTO{
 	public void setPhone6(String phone6) {
 		this.phone6 = phone6;
 	}
-	public int getAssignedId() {
+	public String getAssignedId() {
 		return assignedId;
 	}
-	public void setAssignedId(int assignedId) {
+	public void setAssignedId(String assignedId) {
 		this.assignedId = assignedId;
 	}
+	public String getScheduleDate() {
+		return scheduleDate;
+	}
+	public void setScheduleDate(String scheduleDate) {
+		this.scheduleDate = scheduleDate;
+	}
+	public String getScheduleId() {
+		return scheduleId;
+	}
+	public void setScheduleId(String scheduleId) {
+		this.scheduleId = scheduleId;
+	}
+
 
 	
 	

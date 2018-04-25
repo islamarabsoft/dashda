@@ -86,7 +86,7 @@ public abstract class ServicesManager {
 	protected ModelMapper mapper = new ModelMapper();
 	
 
-	protected AppResponse deleteResponse(String message) {
+	protected AppResponse emptyResponse(String message) {
 		AppResponse appResponse = new AppResponse();
 		
 		appResponse.setStatus(202);

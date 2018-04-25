@@ -1,16 +1,15 @@
 package com.dashda.controllers.dto;
 
-public class VisitDTO {
+public class VisitDTO implements AbstractDTO{
 
 	private int visitId;
-	
 	private int doctorId;
-	
+	private String doctorName;
 	private String visitDate;
-	
 	private int employeeId;
-	
 	private String employeeName;
+	private String status;
+	private String statusId;
 
 	/**
 	 * @return the visitId
@@ -81,6 +80,30 @@ public class VisitDTO {
 	 */
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
+	}
+
+	public String getDoctorName() {
+		return doctorName;
+	}
+
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(String statusId) {
+		this.statusId = statusId;
 	}
 	
 	

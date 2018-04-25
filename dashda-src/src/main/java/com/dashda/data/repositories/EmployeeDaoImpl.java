@@ -3,11 +3,15 @@
  */
 package com.dashda.data.repositories;
 
+import java.util.List;
+import java.util.Set;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.Employee;
+import com.dashda.data.entities.Schedule;
 
 /**
  * @author mhanafy
@@ -29,6 +33,14 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 		getSession().save(employee);
 		getSession().flush();
 		getSession().clear();
+	}
+
+	@Override
+	public List<Employee> findEmployeeByScheduleList(Set<Schedule> schedulesHashset) {
+		Criteria criteria = getSession().createCriteria(Employee.class);
+		criteria.add(Restrictions.eq("schedulesForEmployeeId", schedulesHashset));
+		
+		return criteria.list();
 	}
 
 }

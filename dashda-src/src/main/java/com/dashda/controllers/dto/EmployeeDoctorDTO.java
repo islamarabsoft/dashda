@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.dashda.controllers;
+package com.dashda.controllers.dto;
 
 
-import com.dashda.controllers.dto.AbstractDTO;
+import javax.validation.constraints.Digits;
 
 /**
  * @author mhanafy
@@ -12,7 +12,9 @@ import com.dashda.controllers.dto.AbstractDTO;
  */
 public class EmployeeDoctorDTO implements AbstractDTO {
 
+	@Digits(integer=6, fraction=0)
 	private int assignedId;
+	@Digits(integer=6, fraction=0)
 	private int doctorId;
 	private int employeeId;
 	

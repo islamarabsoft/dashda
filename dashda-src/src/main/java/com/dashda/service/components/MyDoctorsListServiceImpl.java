@@ -3,6 +3,7 @@
  */
 package com.dashda.service.components;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,17 +11,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.dashda.controllers.EmployeeDoctorDTO;
 import com.dashda.controllers.dto.DoctorDTO;
+import com.dashda.controllers.dto.EmployeeDoctorDTO;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeeDoctor;
+import com.dashda.data.entities.Schedule;
 import com.dashda.data.entities.User;
 import com.dashda.data.repositories.DoctorDao;
 import com.dashda.data.repositories.EmployeeDoctorDao;
 import com.dashda.data.repositories.UserDao;
+import com.dashda.enums.ScheduleStatusEnum;
 import com.dashda.exception.MyDoctorsListServiceExceptionManager;
+import com.dashda.utilities.DateValidator;
 
 /**
  * @author mhanafy
@@ -40,7 +44,7 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 	
 	private DoctorDTO doctorDTO;
 	
-	private List<DoctorDTO> doctorDTOs;
+	private List doctorDTOs;
 	
 	private List<EmployeeDoctor> employeeDoctors;
 	
@@ -56,7 +60,7 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 	 * @see com.dashda.controllers.MyDoctorsListService#myDoctorsList(java.lang.String)
 	 */
 	@Override
-	public List<DoctorDTO> myDoctorsList(String username) throws MyDoctorsListServiceExceptionManager {
+	public AppResponse myDoctorsList(String username) throws MyDoctorsListServiceExceptionManager, ParseException {
 		
 		user = userDao.findUserByUsername(username);
 		
@@ -65,7 +69,7 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 		
 		employeeDoctors = employeeDoctorDao.employeeDoctorsByEmployee(user.getEmployee());
 		
-		doctorDTOs = new ArrayList<DoctorDTO>();
+		doctorDTOs = new ArrayList();
 		
 		for(Iterator<EmployeeDoctor> doctorsIt = employeeDoctors.iterator(); doctorsIt.hasNext();) {
 			doctorDTO = new DoctorDTO();
@@ -75,10 +79,21 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 			mapper.map(employeeDoctor.getDoctor().getContact(), doctorDTO);
 			mapper.map(employeeDoctor.getDoctor(), doctorDTO);
 			
+			for (Iterator scheduleIt = employeeDoctor.getDoctor().getSchedules().iterator(); scheduleIt.hasNext();) {
+				Schedule schedule = (Schedule) scheduleIt.next();
+				if(schedule.getScheduleStatus().getId() == ScheduleStatusEnum.PENDING_APPROVAL.getValue()) {
+
+					doctorDTO.setScheduleId(schedule.getId()+"");
+					doctorDTO.setScheduleDate(DateValidator.dateFormate(schedule.getDatetime()));
+				}
+			}
+			
+			doctorDTO.setAssignedId(employeeDoctor.getId()+"");
+			
 			doctorDTOs.add(doctorDTO);
 		}
 
-		return doctorDTOs;
+		return okListResponse(doctorDTOs, "GET Service :: List Size "+ doctorDTOs.size());
 	}
 
 	@Override
@@ -155,7 +170,7 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 			throw new MyDoctorsListServiceExceptionManager("Assgined ID shouldn't be 0");
 		employeeDoctorDao.removeEmployeeDoctorById(assignedId);
 		
-		return deleteResponse("Object Deleted Successfully {"+assignedId+"}");
+		return emptyResponse("Object Deleted Successfully {"+assignedId+"}");
 	}
 
 }

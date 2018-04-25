@@ -12,22 +12,24 @@ import javax.validation.constraints.NotEmpty;
  */
 public class ScheduleDTO implements AbstractDTO{
 
-	private int id;
 	@Digits(fraction = 0, integer = 8)
-	private int doctorId;
-	@NotEmpty
+	private int scheduleId;
+	@Digits(fraction = 0, integer = 8)
+	private String doctorId;
+	private String doctorName;
 	private String scheduleDate;
-	
-	private int employeeId;
+	private String employeeId;
+	private String employeeName;
+
 	
 
-	public ScheduleDTO(int doctorId, String scheduleDate) {
+	public ScheduleDTO(String doctorId, String scheduleDate) {
 		super();
 		this.doctorId = doctorId;
 		this.scheduleDate = scheduleDate;
 	}
 
-	public ScheduleDTO(int doctorId, String scheduleDate, int employeeId) {
+	public ScheduleDTO(String doctorId, String scheduleDate, String employeeId) {
 		super();
 		this.doctorId = doctorId;
 		this.scheduleDate = scheduleDate;
@@ -38,32 +40,32 @@ public class ScheduleDTO implements AbstractDTO{
 	public ScheduleDTO() {
 	}
 
-	public ScheduleDTO(int id) {
+	public ScheduleDTO(int scheduleId) {
 		super();
-		this.id = id;
+		this.scheduleId = scheduleId;
 	}
 
-	public ScheduleDTO(int id, int doctorId, String scheduleDate, int employeeId) {
+	public ScheduleDTO(int scheduleId, String doctorId, String scheduleDate, String employeeId) {
 		super();
-		this.id = id;
+		this.scheduleId = scheduleId;
 		this.doctorId = doctorId;
 		this.scheduleDate = scheduleDate;
 		this.employeeId = employeeId;
 	}
 
-	public int getId() {
-		return id;
+	public int getScheduleId() {
+		return scheduleId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setScheduleId(int scheduleId) {
+		this.scheduleId = scheduleId;
 	}
 
-	public int getDoctorId() {
+	public String getDoctorId() {
 		return doctorId;
 	}
 
-	public void setDoctorId(int doctorId) {
+	public void setDoctorId(String doctorId) {
 		this.doctorId = doctorId;
 	}
 
@@ -75,13 +77,30 @@ public class ScheduleDTO implements AbstractDTO{
 		this.scheduleDate = scheduleDate;
 	}
 
-	public int getEmployeeId() {
+	public String getEmployeeId() {
 		return employeeId;
 	}
 
-	public void setEmployeeId(int employeeId) {
+	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
+
+	public String getDoctorName() {
+		return doctorName;
+	}
+
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
+	}
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
 
 
 }

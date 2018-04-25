@@ -8,14 +8,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AppResponse;
+import com.dashda.controllers.dto.EmployeeSchedulesDTO;
 import com.dashda.controllers.dto.ListResponse;
+import com.dashda.controllers.dto.ScheduleActionDTO;
 import com.dashda.controllers.dto.ScheduleDTO;
 import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
@@ -25,6 +29,7 @@ import com.dashda.data.entities.ScheduleStatus;
 import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.repositories.DoctorDao;
+import com.dashda.data.repositories.EmployeeDao;
 import com.dashda.data.repositories.EmployeeDoctorDao;
 import com.dashda.data.repositories.ScheduleDao;
 import com.dashda.data.repositories.UserDao;
@@ -59,6 +64,9 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 	@Autowired
 	private EmployeeDoctorDao employeeDoctorDao;
 	
+	@Autowired
+	private EmployeeDao employeeDao;
+	
 	private Schedule schedule;
 	
 	private User user;
@@ -67,7 +75,7 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 
 	private ScheduleDTO scheduleDTO;
 
-	private List<ScheduleDTO> scheduleDTOs;
+	private List scheduleDTOs;
 	
 	private Visit visit;
 	
@@ -82,7 +90,7 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 			
 		user = userDao.findUserByUsername(username);
 		
-		Date scheduleDate = new SimpleDateFormat("dd/MM/yyyy").parse(scheduleDTO.getScheduleDate());
+		Date scheduleDate = new SimpleDateFormat(DateValidator.DATE_FORMATE_PATTERN).parse(scheduleDTO.getScheduleDate());
 		
 		employee = user.getEmployee();
 		
@@ -91,14 +99,14 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 		if(employee.getManager() == null)
 			throw new ScheduleExceptionManager(ERROR_CODE_1007) ;
 		
-		if(!DateValidator.isThisDateValid(scheduleDTO.getScheduleDate(), "dd/MM/yyyy"))
+		if(!DateValidator.isThisDateValid(scheduleDTO.getScheduleDate()))
 			throw new ScheduleExceptionManager(ERROR_CODE_1012 + " '" + scheduleDTO.getScheduleDate()+ "'");
 
 		if(CompareDateWithoutTime.compareTwoDates(new Date(), scheduleDate) == -1)
 			throw new ScheduleExceptionManager(ERROR_CODE_1013 + " '" + scheduleDTO.getScheduleDate()+ "'");
         	
 		
-		doctor = doctorDao.findDoctorById(scheduleDTO.getDoctorId());
+		doctor = doctorDao.findDoctorById(Integer.parseInt(scheduleDTO.getDoctorId()));
 		if(doctor == null)
 			throw new ScheduleExceptionManager(ERROR_CODE_1011 +" '"+ scheduleDTO.getDoctorId() +"'");
 		
@@ -116,66 +124,103 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 		schedule.setScheduleStatus(new ScheduleStatus(ScheduleStatusEnum.PENDING_APPROVAL.getValue()));
 		
 		scheduleDao.saveScheduleItem(schedule);
-		scheduleDTO.setId(schedule.getId());
-		scheduleDTO.setEmployeeId(schedule.getEmployeeByEmployeeId().getId());
+		scheduleDTO.setScheduleId(schedule.getId());
+		scheduleDTO.setEmployeeId(schedule.getEmployeeByEmployeeId().getId()+"");
 		
 		return createResponse(scheduleDTO, "Schedule Item Added Successfully");
 	}
 
 	@Override
-	public void approveScheduleItems(String username, List<Integer> scheduleItems) throws ScheduleExceptionManager {
-		this.updateScheduleStatus(username, scheduleItems, 2);
+	public AppResponse approveScheduleItems(String username, ScheduleActionDTO scheduleActionDTO) throws ScheduleExceptionManager {
+		this.updateScheduleStatus(username, scheduleActionDTO, ScheduleStatusEnum.APPROVED.getValue());
+		return emptyResponse("Schedule Approved");
 
 	}
 
 	@Override
-	public void rejectScheduleItems(String username, List<Integer> scheduleItems) throws ScheduleExceptionManager {
-		this.updateScheduleStatus(username, scheduleItems, 3);
+	public AppResponse rejectScheduleItems(String username, ScheduleActionDTO scheduleActionDTO) throws ScheduleExceptionManager {
+		this.updateScheduleStatus(username, scheduleActionDTO, ScheduleStatusEnum.REJECTED.getValue());
+		return emptyResponse("Schedule Rejected");
 		
 	}
 	
-	@Override
-	public void approveSchedule(String username, int employeeId) {
-		this.updateScheduleStatus(employeeId, 2);
-	}
+//	@Override
+//	public AppResponse approveSchedule(String username, int employeeId) {
+//		this.updateScheduleStatus(employeeId, ScheduleStatusEnum.APPROVED.getValue());
+//		return emptyResponse("Schedule Approved");
+//	}
+//	
+//	@Override
+//	public AppResponse rejectSchedule(String username, int employeeId) {
+//		this.updateScheduleStatus(employeeId, ScheduleStatusEnum.REJECTED.getValue());
+//		return emptyResponse("Schedule Rejected");
+//	}
 	
 	@Override
-	public void rejectSchedule(String username, int employeeId) {
-		this.updateScheduleStatus(employeeId, 3);
-	}
-	
-	@Override
-	public List<ScheduleDTO> scheduleItemsListNeedAttention(String username) throws ScheduleExceptionManager {
+	public AppResponse scheduleItemsListNeedAttention(String username) throws ScheduleExceptionManager, ParseException {
 		
 		user = userDao.findUserByUsername(username);
 		employee = user.getEmployee();
 		if(employee == null)
 			throw new ScheduleExceptionManager(ERROR_CODE_1001);
 		schedules = scheduleDao.findListofScheduleItemsNeedAttention(employee.getId());
+
 		
+		EmployeeSchedulesDTO employeeSchedulesDTO = null;
+		List employeeSchedulesDTOs = new ArrayList();;
 		scheduleDTOs = new ArrayList();
 		
-		for (Iterator<Schedule> iterator = schedules.iterator(); iterator.hasNext();) {
-			schedule = iterator.next();
+		
+				
+		for (Iterator scheduleIt = schedules.iterator(); scheduleIt.hasNext();) {
 			
-			scheduleDTO = new ScheduleDTO();
+			Schedule schedule = (Schedule) scheduleIt.next();
+			boolean inList = false;
 			
-			scheduleDTO.setId(schedule.getId());
-			scheduleDTO.setDoctorId(schedule.getDoctor().getId());
-			scheduleDTO.setScheduleDate(schedule.getDatetime()+"");
-			scheduleDTO.setEmployeeId(schedule.getEmployeeByEmployeeId().getId());
+			for (Iterator iterator = employeeSchedulesDTOs.iterator(); iterator.hasNext();) {
+				EmployeeSchedulesDTO employeeSchedulesDTO2 = (EmployeeSchedulesDTO) iterator.next();
+				if(employeeSchedulesDTO2.getEmployeeId().equals(schedule.getEmployeeByEmployeeId().getId()+""))
+					inList = true;
+			}
 			
-			scheduleDTOs.add(scheduleDTO);
+			if(!inList) {
+				employeeSchedulesDTO = new EmployeeSchedulesDTO();
+				employeeSchedulesDTO.setEmployeeId(schedule.getEmployeeByEmployeeId().getId()+"");
+				employeeSchedulesDTO.setEmployeeName(schedule.getEmployeeByEmployeeId().getContact().getFirstName() 
+						+" "+ schedule.getEmployeeByEmployeeId().getContact().getLastName());
+				scheduleDTOs = new ArrayList();
+				
+				for (Iterator scheduleItemInsideEmployeeIt = schedule.getEmployeeByEmployeeId().getSchedulesForEmployeeId().iterator(); 
+						scheduleItemInsideEmployeeIt.hasNext();) {
+					Schedule scheduleItemInsideEmployee = (Schedule) scheduleItemInsideEmployeeIt.next();
+					
+					if(scheduleItemInsideEmployee.getScheduleStatus().getId() == 1) {
+						scheduleDTO = new ScheduleDTO();
+						scheduleDTO.setScheduleId(scheduleItemInsideEmployee.getId());
+						scheduleDTO.setDoctorId(scheduleItemInsideEmployee.getDoctor().getId()+"");
+						scheduleDTO.setDoctorName(scheduleItemInsideEmployee.getDoctor().getDoctorName());
+						scheduleDTO.setEmployeeId(employeeSchedulesDTO.getEmployeeId());
+						scheduleDTO.setEmployeeName(employeeSchedulesDTO.getEmployeeName());
+						scheduleDTO.setScheduleDate(DateValidator.dateFormate(scheduleItemInsideEmployee.getDatetime()));
+						scheduleDTOs.add(scheduleDTO);
+					}
+				}
+				employeeSchedulesDTO.setSchedules(scheduleDTOs);
+				employeeSchedulesDTOs.add(employeeSchedulesDTO);
+				inList = false;
+			}
 		}
 		
-		return scheduleDTOs;
+		return okListResponse(employeeSchedulesDTOs, "List Size: " +scheduleDTOs.size());
 	}
 	
 
 	
-	private void updateScheduleStatus(String username, List<Integer> scheduleItems, int scheduleStatus) throws ScheduleExceptionManager {
-		for (Iterator<Integer> iterator = scheduleItems.iterator(); iterator.hasNext();) {
-			Integer scheduleItem = (Integer) iterator.next();
+	private void updateScheduleStatus(String username, ScheduleActionDTO scheduleActionDTO, int scheduleStatus) throws ScheduleExceptionManager {
+		List<Integer> scheduleDTOs = scheduleActionDTO.getScheduleDTOs();
+		
+		for (Iterator<Integer> iterator = scheduleDTOs.iterator(); iterator.hasNext();) {
+			Integer scheduleItem =  iterator.next();
 			user = userDao.findUserByUsername(username);
 			employee = user.getEmployee();
 			
@@ -247,12 +292,12 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 		schedule = scheduleDao.findScheduleByID(scheduleId);
 		
 		if(schedule == null) 
-			throw new ScheduleExceptionManager("ERROR_CODE");
+			throw new ScheduleExceptionManager("ERROR_CODE - no schedule Item");
 		
-		if(!DateValidator.isThisDateValid(scheduleDate, "dd/MM/yyyy"))
+		if(!DateValidator.isThisDateValid(scheduleDate))
 			throw new ScheduleExceptionManager(ERROR_CODE_1012 + " '" + scheduleDate + "'");
 		
-		Date date = new SimpleDateFormat("dd/MM/yyyy").parse(scheduleDate);
+		Date date = new SimpleDateFormat(DateValidator.DATE_FORMATE_PATTERN).parse(scheduleDate);
 		
 		if(CompareDateWithoutTime.compareTwoDates(new Date(), date) == -1)
 			throw new ScheduleExceptionManager(ERROR_CODE_1013 + " '" + scheduleDate + "'");
@@ -261,11 +306,22 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 		
 		scheduleDao.saveScheduleItem(schedule);
 	
-		scheduleDTO= new ScheduleDTO(scheduleId, schedule.getDoctor().getId(), 
-						schedule.getDatetime()+"", schedule.getEmployeeByEmployeeId().getId());
+		scheduleDTO= new ScheduleDTO(scheduleId, schedule.getDoctor().getId()+"", 
+						DateValidator.dateFormate(schedule.getDatetime())+"", schedule.getEmployeeByEmployeeId().getId()+"");
 		
 		
 		return okResponse(scheduleDTO, "Schedule Item Updated Successfully");
+	}
+
+	@Override
+	public AppResponse removeScheduleItem(int scheduleId) throws ScheduleExceptionManager {
+		schedule = scheduleDao.findScheduleByID(scheduleId);
+		if(schedule == null)
+			throw new ScheduleExceptionManager("Can't Find Schedlue Item");
+		
+		scheduleDao.deleteScheduleItem(schedule);
+		
+		return emptyResponse("Object Deleted Successfully {"+scheduleId+"}");
 	}
 
 }

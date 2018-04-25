@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dashda.controllers.dto.ScheduleActionDTO;
 import com.dashda.controllers.dto.ScheduleDTO;
 import com.dashda.exception.ScheduleExceptionManager;
 import com.dashda.service.components.ScheduleService;
@@ -40,30 +41,36 @@ public class ScheduleController extends AbstractController{
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/add-schedule-item")
 	@Secured("ROLE_SCHEDULE_CREATOR")
-	public ResponseEntity<ScheduleDTO> addScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTOs) throws ParseException, ScheduleExceptionManager {
-			return returnResponseEntityCreated(scheduleService.addScheduleItem(user.getUsername(), scheduleDTOs));
+	public ResponseEntity<ScheduleDTO> addScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager {
+			return returnResponseEntityCreated(scheduleService.addScheduleItem(user.getUsername(), scheduleDTO));
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value = "/modify-schedule-item-data")
-	@Secured("ROLE_SCHEDULE_CREATOR")
-	public ResponseEntity<ScheduleDTO> modifyScheduleItem(@RequestParam(required = true) int scheduleId,
-			@RequestParam(required = true) String scheduleDate) throws ParseException, ScheduleExceptionManager {
-		
-			return returnResponseEntityOk(scheduleService.modifyScheduleItemData(scheduleId, scheduleDate));
-	}
+//	@RequestMapping(method = RequestMethod.POST, value = "/modify-schedule-item")
+//	@Secured("ROLE_SCHEDULE_CREATOR")
+//	public ResponseEntity<ScheduleDTO> modifyScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager {
+//			return returnResponseEntityOk(scheduleService.modifyScheduleItemData(scheduleDTO.getScheduleId(), scheduleDTO.getScheduleDate()));
+//	}
+//	
+//	@RequestMapping(method = RequestMethod.POST, value = "/remove-schedule-item")
+//	@Secured("ROLE_SCHEDULE_CREATOR")
+//	public ResponseEntity<ScheduleDTO> removeScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager {
+//			return returnResponseEntityAccepted(scheduleService.removeScheduleItem(scheduleDTO.getScheduleId()));
+//	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/approve-schedule-item")
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/approve-schedule")
 	@Secured("ROLE_SCHEDULE_ADMIN")
-	public void approveScheduleItem(@AuthenticationPrincipal User user, @RequestBody List<Integer> scheduleItems) throws ScheduleExceptionManager {
-				scheduleService.approveScheduleItems(user.getUsername(), scheduleItems);
+	public void approveScheduleItem(@AuthenticationPrincipal User user, @RequestBody ScheduleActionDTO scheduleActionDTO) throws ScheduleExceptionManager {
+				scheduleService.approveScheduleItems(user.getUsername(), scheduleActionDTO);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/reject-schedule-item")
+	@RequestMapping(method = RequestMethod.POST, value = "/reject-schedule")
 	@Secured("ROLE_SCHEDULE_ADMIN")
-	public void rejectScheduleItem(@AuthenticationPrincipal User user, @RequestBody List<Integer> scheduleItems) throws ScheduleExceptionManager {
-		scheduleService.rejectScheduleItems(user.getUsername(), scheduleItems);
+	public ResponseEntity rejectScheduleItem(@AuthenticationPrincipal User user, @RequestBody ScheduleActionDTO scheduleActionDTO) throws ScheduleExceptionManager {
+		return returnResponseEntityOk(scheduleService.rejectScheduleItems(user.getUsername(), scheduleActionDTO));
 	}
-	
+
+	/**
 	@RequestMapping(method = RequestMethod.POST, value = "/approve-schedule")
 	@Secured("ROLE_SCHEDULE_ADMIN")
 	public void approveSchedule(@AuthenticationPrincipal User user, @RequestBody int employeeId) {
@@ -74,12 +81,11 @@ public class ScheduleController extends AbstractController{
 	@Secured("ROLE_SCHEDULE_ADMIN")
 	public void rejectSchedule(@AuthenticationPrincipal User user, @RequestBody int employeeId) {
 			scheduleService.rejectSchedule(user.getUsername(), employeeId);
-	}
+	}**/
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/schedule-items-list-need-attention")
 	@Secured("ROLE_SCHEDULE_ADMIN")
-	public String scheduleItemsList(@AuthenticationPrincipal User user) throws JsonProcessingException, ScheduleExceptionManager {
-			List<ScheduleDTO> scheduleDTOs = scheduleService.scheduleItemsListNeedAttention(user.getUsername());
-			return jsonObjectmapper.writeValueAsString(scheduleDTOs);
+	public ResponseEntity scheduleItemsList(@AuthenticationPrincipal User user) throws JsonProcessingException, ScheduleExceptionManager, ParseException {
+			return returnResponseEntityOk(scheduleService.scheduleItemsListNeedAttention(user.getUsername()));
 	}
 }

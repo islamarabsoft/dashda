@@ -3,6 +3,7 @@
  */
 package com.dashda.controllers;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.controllers.dto.DoctorDTO;
+import com.dashda.controllers.dto.EmployeeDoctorDTO;
 import com.dashda.exception.ApiError;
 import com.dashda.exception.MyDoctorsListServiceExceptionManager;
 import com.dashda.service.components.MyDoctorsListService;
@@ -38,9 +40,9 @@ public class MyDoctorsListController extends AbstractController {
 	MyDoctorsListService myDoctorsListService;
 	
 	@RequestMapping("/my-doctors")
-	public ResponseEntity<List<DoctorDTO>> myDoctorsList(@AuthenticationPrincipal User user) throws MyDoctorsListServiceExceptionManager{
+	public ResponseEntity myDoctorsList(@AuthenticationPrincipal User user) throws MyDoctorsListServiceExceptionManager, ParseException{
 		
-		return new ResponseEntity (myDoctorsListService.myDoctorsList(user.getUsername()), HttpStatus.OK);
+		return returnResponseEntityOk(myDoctorsListService.myDoctorsList(user.getUsername()));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/save-my-doctors-list")

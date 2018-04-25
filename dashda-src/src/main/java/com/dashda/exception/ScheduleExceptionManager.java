@@ -7,7 +7,7 @@ package com.dashda.exception;
  * @author mhanafy
  *
  */
-public class ScheduleExceptionManager extends DashdaExceptionHandling {
+public class ScheduleExceptionManager extends AppExceptionHandler {
 
 	/**
 	 * 

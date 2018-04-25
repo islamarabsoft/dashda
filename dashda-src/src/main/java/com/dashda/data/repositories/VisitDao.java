@@ -3,6 +3,7 @@
  */
 package com.dashda.data.repositories;
 
+import java.util.Date;
 import java.util.List;
 
 import com.dashda.data.entities.Employee;
@@ -23,4 +24,6 @@ public interface VisitDao {
 	public void updateVisit(Visit visit);
 
 	Visit findUserVisitByIdAndNotComplete(Integer visitId, Integer employeeId);
+
+	public List<Visit> findVisitInPeriodItemsByEmployee(Employee employee, Date fromDate, Date toDate);
 }

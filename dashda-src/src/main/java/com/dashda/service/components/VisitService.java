@@ -3,9 +3,12 @@
  */
 package com.dashda.service.components;
 
+import java.text.ParseException;
 import java.util.List;
 
+import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.VisitDTO;
+import com.dashda.controllers.dto.VisitInquiryDTO;
 import com.dashda.exception.VisitServiceException;
 
 /**
@@ -14,7 +17,7 @@ import com.dashda.exception.VisitServiceException;
  */
 public interface VisitService {
 
-	public List<VisitDTO> visitItemsList(String username) throws VisitServiceException;
+	public AppResponse visitItemsList(String username, VisitInquiryDTO visitInquiryDTO) throws VisitServiceException, ParseException;
 
 	public void completeVisits(String username, List<Integer> visits)throws VisitServiceException;
 

@@ -3,6 +3,7 @@
  */
 package com.dashda.service.components;
 
+import java.text.ParseException;
 import java.util.List;
 
 import com.dashda.controllers.dto.AppResponse;
@@ -15,7 +16,7 @@ import com.dashda.exception.MyDoctorsListServiceExceptionManager;
  */
 public interface MyDoctorsListService {
 
-	public List<DoctorDTO> myDoctorsList(String username) throws MyDoctorsListServiceExceptionManager;
+	public AppResponse myDoctorsList(String username) throws MyDoctorsListServiceExceptionManager, ParseException;
 
 	public void saveMyDoctorsList(String username, List<Integer> doctors)throws MyDoctorsListServiceExceptionManager;
 

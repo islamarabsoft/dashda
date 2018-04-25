@@ -69,4 +69,10 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 		return criteria.list();
 	}
 
+	@Override
+	public void deleteScheduleItem(Schedule schedule) {
+		getSession().delete(schedule);
+		
+	}
+
 }

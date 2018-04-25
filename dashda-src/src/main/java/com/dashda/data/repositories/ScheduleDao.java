@@ -26,4 +26,6 @@ public interface ScheduleDao {
 
 	Schedule findPendingApprovalScheduleForManagerByID(Integer scheduleItemId, int managerId);
 
+	public void deleteScheduleItem(Schedule schedule);
+
 }
