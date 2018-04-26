@@ -11,6 +11,7 @@ public class VisitDTO implements AbstractDTO{
 	private String status;
 	private String statusId;
 
+
 	/**
 	 * @return the visitId
 	 */
@@ -105,6 +106,8 @@ public class VisitDTO implements AbstractDTO{
 	public void setStatusId(String statusId) {
 		this.statusId = statusId;
 	}
+
+
 	
 	
 }

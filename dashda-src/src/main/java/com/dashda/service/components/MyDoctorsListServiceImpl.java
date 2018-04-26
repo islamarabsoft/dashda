@@ -19,9 +19,11 @@ import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeeDoctor;
 import com.dashda.data.entities.Schedule;
 import com.dashda.data.entities.User;
+import com.dashda.data.entities.Visit;
 import com.dashda.data.repositories.DoctorDao;
 import com.dashda.data.repositories.EmployeeDoctorDao;
 import com.dashda.data.repositories.UserDao;
+import com.dashda.data.repositories.VisitDao;
 import com.dashda.enums.ScheduleStatusEnum;
 import com.dashda.exception.MyDoctorsListServiceExceptionManager;
 import com.dashda.utilities.DateValidator;
@@ -42,27 +44,25 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 	@Autowired
 	DoctorDao doctorDao;
 	
+	@Autowired
+	VisitDao visitDao;
+	
 	private DoctorDTO doctorDTO;
-	
 	private List doctorDTOs;
-	
 	private List<EmployeeDoctor> employeeDoctors;
-	
 	private User user;
-	
 	private EmployeeDoctor employeeDoctor;
-	
 	private Doctor doctor;
-	
 	private Employee employee;
+
 	
 	/* (non-Javadoc)
 	 * @see com.dashda.controllers.MyDoctorsListService#myDoctorsList(java.lang.String)
 	 */
 	@Override
 	public AppResponse myDoctorsList(String username) throws MyDoctorsListServiceExceptionManager, ParseException {
-		
 		user = userDao.findUserByUsername(username);
+		
 		
 		if(user.getEmployee() == null)
 			throw new MyDoctorsListServiceExceptionManager(ERROR_CODE_1001);
@@ -89,6 +89,23 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 			}
 			
 			doctorDTO.setAssignedId(employeeDoctor.getId()+"");
+			
+			//Get Last visit
+			Visit visit = visitDao.findCompletedVisitByDoctorAndEmployee(employeeDoctor.getDoctor(), employeeDoctor.getEmployee());
+			if(visit != null) {
+				
+				String lastVisitStatus = null;
+				String lastVisitDate = null;
+				if(visit.getCompleted() == null) {
+					lastVisitStatus = "0";
+					lastVisitDate = DateValidator.dateFormate(visit.getDatetime());
+				}else if(visit.getCompleted() == 1){
+					lastVisitStatus = "1";
+					lastVisitDate = DateValidator.dateFormate(visit.getDatetime());
+				}
+				doctorDTO.setLastVisitStatus(lastVisitStatus);
+				doctorDTO.setLastVisitDate(lastVisitDate);
+			}
 			
 			doctorDTOs.add(doctorDTO);
 		}

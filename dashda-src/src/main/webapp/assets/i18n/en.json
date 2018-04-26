@@ -1,0 +1,255 @@
+{
+  "GLOBAL_MESSAGES": {
+    "NO_CONNECTION": "No internet access.",
+    "ERROR_TITLE": "Error",
+    "ALERT_TITLE": "Alert",
+    "RETRY": "Retry",
+    "EXIT": "Exit",
+    "CANCEL": "Cancel",
+    "Close":"Close",
+    "OK": "OK",
+    "SERVER_PROBLEM_WEB":"WAS Server Access Problem,check service url, access-origin and TEData Network or call WAS Admin",
+    "SERVER_PROBLEM": "Dear valued customer we couldn't reach our services right now. Please try again later",
+    "PLEASE_WAIT":"Please wait...",
+    "YES":"Yes",
+    "NO":"No",
+    "CONFIRMATION":"Confirmation",
+    "ERROR":"Error",
+    "503":"Dear valued customer,this service is temporary unavailable.Please contact 111, use online support for more information or try again later.",
+    "VAT":"Prices are subjected to 14% value added taxes.",
+    "OPS": "Oops!",
+    "REQUIRED_FIELD":"Required field",
+    "Female":"Female",
+    "Male":"Male",
+    "SORT":"Sort",
+    "FILTER":"Filter",
+    "CLEAR":"Clear",
+    "SAVE":"Save",
+    "FROM_DATE":"From Date",
+    "TO_DATE":"To Date",
+    "CUSTOMIZED_FILTER":"Customized Filter",
+    "SHOW_RESULT":"Show Result",
+    "DETAILS":"Details",
+    "MEDICINE":"Medicine",
+    "LABS":"Labs",
+    "RADIOLOGY":"Radiology",
+    "DELETE":"Delete",
+
+    "SATURDAY":"Saturday",
+    "SUNDAY":"Sunday",
+   "MONDAY":"Monday",
+    "TUESDAY":"Tuesday",
+    "WEDNESDAY":"Wednesday"	,
+    "THURSDAY":"Thursday",
+    "FRIDAY":"Friday",
+    "SATURDAY_SHORT":"Sat",
+    "SUNDAY_SHORT":"Sun",
+    "MONDAY_SHORT":"Mon",
+    "TUESDAY_SHORT":"Tue",
+    "WEDNESDAY_SHORT":"Wed"	,
+    "THURSDAY_SHORT":"Thu",
+    "FRIDAY_SHORT":"Fri"
+
+
+
+  },
+
+  "LOGIN": {
+
+    "LANG": "ع",
+    "USER_NAME": "User name",
+    "EMAIL":"Email",
+    "PASSWORD": "Password",
+    "FORGET_PASSWORD": "Forget Password?",
+    "CREATE_ACCOUNT":"Create Account",
+    "LOGIN": "Login",
+    "COPYRIGHT": "Copyrights © 2017 Mobi-Med.All rights reserved",
+    "INVALID_EMAIL":"Please make sure you have entered the complete email address.",
+    "INVALID_PASS":"Please enter a valid Password",
+    "EMPTY_PASS": "Please enter password",
+    "EMPTY_EMAIL":"Please enter email",
+    "INVALID_EMAIL_OR_PASSWORD":"Incorrect email or password"
+
+  },
+  "FORGET_PASSWORD": {
+    "TITLE":"Forgot Password",
+    "EMAIL":"Email",
+    "FORGET_PASSWORD":"Forget Password",
+    "LBL" :"Please enter your email to receive your password.",
+    "INVALID_EMAIL":"Please make sure you have entered the complete email address.",
+    "BTN_SEND":"Send",
+    "EMAIL_WILL_SEND":"An Email will be sent shortly."
+  },
+
+  "REGISTRATION":
+  {
+    "CREATE_ACCOUNT":"Create Account",
+    "REGISTRATION_FORM":"Registration Form",
+    "REGISTER":"Register",
+    "FIRST_NAME":"First Name",
+    "LAST_NAME":"Last Name",
+    "EMAIL":"Email",
+    "PASSWORD":"Password",
+    "CONFIRM_PASSWORD":"Confirm Password",
+    "MOBILE_NUMBER":"Mobile Number",
+"PASSWORD_LEIGHT":"6 characters at least",
+
+    "PASSWORD_CONFIRMATION_ERROR":"Doesn't match the password",
+    "GENDER":"Gender",
+
+    "DATE_OF_BIRTH":"Date of birth",
+    "SUCCESS_REGISTRATION":"Registration completed successfully"
+
+  },
+  "MENU": {
+    "DASHBOARD":"Dashboard",
+    "CHANGE_LANGUAGE":"عربي",
+    "FIND":"Find",
+    "MEDICAL_HISTORY":"Medical history",
+    "BOOKINGS":"Booking",
+    "ORDERS": "Orders (Soon)",
+    "FAVOURITE":"Favourite (Soon)",
+    "SUPPORT":"Support",
+    "ABOUT":"About",
+    "LOGOUT":"Logout"
+  },
+
+  "HOME": {
+    "TITLE": "Home",
+    "WELCOME_TEXT": "Welcome ",
+    "REFERRAL":"Referral",
+    "REPORTS":"Reports",
+    "CHAT":"Chat",
+    "REDEEM":"Redeem",
+    "LOG_OUT_MSG":"Are you sure that you want to logout?"
+
+
+  },
+
+  "PROFILE": {
+
+    "PROFILE_HEADER_TEXT" : "Profile",
+    "BASIC_INFO":"Basic Info",
+    "EDIT_BASIC_INFO":"Edit Basic Info",
+    "MEDICAL_INFO":"Medical Info",
+    "MEDICAL_RECORDS":"Medical Records",
+    "EDIT_PROFILE_TITLE" : "Edit Profile",
+   "MOBILE":"Mobile",
+    "EMAIL":"Email",
+    "DOB":"Date Of Birth",
+    "GENDER":"Gender",
+    "ALLERGIES":"Allergies",
+    "IMMUNIZATIONS":"Immunizations",
+    "CHRONIC_DISEASES":"Chronic Diseases",
+    "MEDICATIONS":"Medications",
+    "SURGERIES":"Surgeries",
+    "ATTACHMENT_FILES":"Attachment Files"
+
+
+  },
+  "MEDICAL_HISTORY":{
+    "TITLE":"Medical History",
+    "SORT_BY":"Sort By",
+    "DATE_NEW_FIRST":"Date - New First",
+    "DATE_OLD_FIRST":"Date - Old First",
+    "DOCTOR_NAME_ASC":"Doctor Name - ASC" ,
+    "DOCTOR_NAME_DESC":"Doctor Name - DESC",
+
+    "CATEGORIES":"Categories",
+    "DOCTOR_NAME":"Doctor Name",
+    "CLINIC_NAME":"Clinic Name",
+
+    "VISIT":"Visit",
+    "FOLLOWUP_VISIT":"Followup visit",
+    "BIO_PROFILE":"Bio Profile",
+    "PRESCRIPTION":"Prescription",
+    "VISIT_DETAILS":"Visit Details",
+    "DIAGNOSIS":"Diagnosis",
+    "PROCEDURES":"Procedures",
+    "GENERAL_NOTES":"General Notes",
+    "ATTACHMENT":"Attachment",
+      "DESCRIPTION":"Description",
+    "UPLOAD_ATTACHMENT":" Upload Attachment",
+    "WRITE_DESCRIPTION_HERE":"Write attachment description here",
+    "CHOOSE_FILE":"Choose File",
+    "FILE_UPLOADED":"File uploaded succesuccessfully.",
+    "ASK_REMOVE_FILE":"Are you sure you want to delete the file?",
+    "FILE_REMOVED":"File removed successfully.",
+    "PLEASE_SELECT_FILE":"Please select a file",
+    "PLEASE_ENTER_DESCRIPTION":"Please inter the description of file.",
+    "FILE_DOWNLOADED":"File downloaded  successfully.",
+    "OPEN":"Open"
+  },
+  "ORDERS":{
+    "ORDERS":"Orders",
+    "ORDER":"Order",
+    "MY_ORDERS":"My Orders",
+    "ADD_ORDER_DESCRIPTION":"Add new order with few clicks!",
+    "SERVICE_PROVIDER":"Service Provider",
+    "STATUS":"Status",
+    "PRICE":"Price",
+    "NEW_ORDER":"New Order",
+    "SELECT_PRESCRIPTION":"Add From Prescription (Optinal)",
+    "ITEM_NAME":"Item Name",
+    "QUANTITY":"Quantity",
+    "NOTE":"Note",
+    "ADD":"Add",
+    "ORDER_NOW":"Order Now",
+    "ADD_ITEM":"Add Item",
+    "ADD_VOUCHER":"Add Voucher",
+    "ENTER_VOUCHER":"Please enter voucher number, if you have one.",
+    "VOUCHER_NUMBER":"Voucher Number",
+    "DONT_HAVE":"Don't Have",
+    "ORDER_DETAILS":"Order Details",
+    "MY_ORDER":"My Order",
+    "TOTAL_PRICE":"Total Price",
+    "PATIENT_NOTE":"Patient Note",
+    "PROVIDER_NOTE":"Provider Note"
+  },
+  "SEARCH":{
+    "FIND":"Find",
+    "DOCTORS":"Doctors",
+    "PHARMACIES":"Pharmacies",
+    "LABORATORY":"Laboratory",
+    "CITY":"City",
+    "AREA":"Area",
+    "SPECIALTY":"Specialty",
+    "SUB_SPECIALTY":"Sup Specialty",
+    "NAME":"Name",
+"SEARCH_RESULT":"Search Result",
+    "BOOK_NOW":"Book",
+    "MAP_VIEW":"Map View",
+    "SEARCH_FILTER":"Search Filter",
+    "INSURANCE_COMPANY":"Insurance Company",
+    "COST":"Cost",
+    "DOCTOR_NAME":"Doctor Name",
+    "CLINIC_NAME":"Clinic Name"
+  },
+"BOOK":{
+  "BOOK":"Book",
+  "NEW_BOOKING":" New ",
+  "AVAILABLE":"Available",
+  "NOT_AVAILABLE":"Not Available",
+  "BOOKING":"Booking",
+  "MY_BOOKING":"My Bookings",
+  "BOOK_EASY_CLICKS": "Book your doctor with few clicks!",
+  "BOOK_NOW":"Book Now",
+  "EDIT":"ُEdit",
+  "CANCEL":"Cancel",
+
+ "SUCCESS_BOOKING": "Your booking done successfully.",
+  "SUCCESS_CANCEL_BOOKING": "Booking Canceled successfully.",
+  "EDIT_BOOK":"Edit Book",
+  "BOOKING_DETAILS":"Booking Details",
+  "CANCEL_YOUR_BOOKING":"Cancel your booking?",
+  "CANCEL_BOOK_CONFIRMATION":"Are you sure you want to cancel this Booking?"
+
+
+}
+
+
+
+
+
+
+}

@@ -6,6 +6,7 @@ package com.dashda.data.repositories;
 import java.util.Date;
 import java.util.List;
 
+import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Visit;
 
@@ -26,4 +27,6 @@ public interface VisitDao {
 	Visit findUserVisitByIdAndNotComplete(Integer visitId, Integer employeeId);
 
 	public List<Visit> findVisitInPeriodItemsByEmployee(Employee employee, Date fromDate, Date toDate);
+
+	public Visit findCompletedVisitByDoctorAndEmployee(Doctor doctor, Employee employee);
 }

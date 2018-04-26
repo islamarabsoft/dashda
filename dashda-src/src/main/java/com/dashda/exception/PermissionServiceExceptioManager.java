@@ -7,7 +7,7 @@ package com.dashda.exception;
  * @author mhanafy
  *
  */
-public class PermissionServiceExceptioManager extends Exception {
+public class PermissionServiceExceptioManager extends AppExceptionHandler {
 
 	/**
 	 * 

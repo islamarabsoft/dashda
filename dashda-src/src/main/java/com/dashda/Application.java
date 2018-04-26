@@ -64,7 +64,7 @@ public class Application extends SpringBootServletInitializer  {
       PropertySourcesPlaceholderConfigurer pspc
         = new PropertySourcesPlaceholderConfigurer();
       Resource[] resources = new ClassPathResource[ ]
-        { new ClassPathResource("exception-messages.properties") };
+        { new ClassPathResource("app-attribute.properties") };
       pspc.setLocations( resources );
       pspc.setIgnoreUnresolvablePlaceholders( true );
       return pspc;

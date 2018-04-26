@@ -45,17 +45,17 @@ public class ScheduleController extends AbstractController{
 			return returnResponseEntityCreated(scheduleService.addScheduleItem(user.getUsername(), scheduleDTO));
 	}
 	
-//	@RequestMapping(method = RequestMethod.POST, value = "/modify-schedule-item")
-//	@Secured("ROLE_SCHEDULE_CREATOR")
-//	public ResponseEntity<ScheduleDTO> modifyScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager {
-//			return returnResponseEntityOk(scheduleService.modifyScheduleItemData(scheduleDTO.getScheduleId(), scheduleDTO.getScheduleDate()));
-//	}
-//	
-//	@RequestMapping(method = RequestMethod.POST, value = "/remove-schedule-item")
-//	@Secured("ROLE_SCHEDULE_CREATOR")
-//	public ResponseEntity<ScheduleDTO> removeScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager {
-//			return returnResponseEntityAccepted(scheduleService.removeScheduleItem(scheduleDTO.getScheduleId()));
-//	}
+	@RequestMapping(method = RequestMethod.POST, value = "/modify-schedule-item")
+	@Secured("ROLE_SCHEDULE_CREATOR")
+	public ResponseEntity<ScheduleDTO> modifyScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager {
+			return returnResponseEntityOk(scheduleService.modifyScheduleItemData(scheduleDTO.getScheduleId(), scheduleDTO.getScheduleDate()));
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/remove-schedule-item")
+	@Secured("ROLE_SCHEDULE_CREATOR")
+	public ResponseEntity<ScheduleDTO> removeScheduleItem(@AuthenticationPrincipal User user, @Valid @RequestBody ScheduleDTO scheduleDTO) throws ParseException, ScheduleExceptionManager {
+			return returnResponseEntityAccepted(scheduleService.removeScheduleItem(scheduleDTO.getScheduleId()));
+	}
 	
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/approve-schedule")

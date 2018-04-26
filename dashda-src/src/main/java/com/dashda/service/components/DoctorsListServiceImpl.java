@@ -8,14 +8,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AbstractDTO;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.DoctorDTO;
-import com.dashda.controllers.dto.ListResponse;
 import com.dashda.data.entities.Contact;
 import com.dashda.data.entities.District;
 import com.dashda.data.entities.Doctor;
@@ -26,7 +23,6 @@ import com.dashda.data.repositories.DoctorDao;
 import com.dashda.data.repositories.UserDao;
 import com.dashda.exception.DoctorServiceExceptionManager;
 
-import ch.qos.logback.core.util.COWArrayList;
 
 /**
  * @author mhanafy
@@ -64,7 +60,7 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 
 		
 		if(user.getEmployee() == null)
-			throw new DoctorServiceExceptionManager("ERROR_CODE_1001");
+			throw new DoctorServiceExceptionManager(ERROR_CODE_1001);
 		if(user.getEmployee().getEmployeesCoveredDistricts().isEmpty())
 			throw new DoctorServiceExceptionManager(ERROR_CODE_1002);
 		

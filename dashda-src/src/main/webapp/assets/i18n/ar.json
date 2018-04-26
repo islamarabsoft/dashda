@@ -1,0 +1,77 @@
+{
+  "GLOBAL_MESSAGES": {
+    "NO_CONNECTION": "لا يوجد إتصال بشبكة الإنترنت.",
+    "ERROR_TITLE": "خطأ",
+    "ALERT_TITLE": "تنبيه",
+    "RETRY": "إعادة المحاولة",
+    "EXIT":"خروج",
+    "CANCEL": "إلغاء",
+    "Close":"اغلاق",
+    "OK": "موافق",
+    "SERVER_PROBLEM_WEB":"WAS Server Access Problem,check service url, access-origin and TEData Network or call WAS Admin",
+    "SERVER_PROBLEM":"عميلنا العزيز لا يمكن الوصول للخدمة في الوقت الحالي ، الرجاء المحاولة في وقت لاحق",
+    "PLEASE_WAIT":"برجاء الانتظار...",
+    "YES":"نعم",
+    "NO":"لا",
+    "CONFIRMATION":"تأكيد",
+    "ERROR":"خطأ",
+    "503":"عميلنا العزيز, هذه الخدمة غير متاحة في الوقت الحالي. من فضلك إتصل بـ111 , استعمل الدعم الفني الحي للمساعدة أو حاول في وقت لاحق.",
+    "VAT":"يضاف 14% ضريبة القيمة المضافة.",
+    "OPS": "عفوا!",
+    "REQUIRED_FIELD":"حقل مطلوب",
+    "Female":"انثى",
+    "Male":"ذكر",
+    "SORT":"رتب",
+    "FILTER":"تصفية",
+    "CLEAR":"مسح",
+    "SAVE":"حفظ",
+    "CUSTOMIZED_FILTER":"تصفية مخصصة",
+    "FROM_DATE":"التاريخ من",
+    "TO_DATE":"التاريخ إلى",
+    "SHOW_RESULT":"اظهر النتيجة",
+    "DETAILS":"تفاصيل",
+    "MEDICINE":"أدوية",
+    "LABS":"تحاليل",
+    "RADIOLOGY":"أشعة",
+    "DELETE":"حذف",
+    "SATURDAY":"السبت",
+    "SUNDAY":"الأحد",
+    "MONDAY":"الإثنين",
+    "TUESDAY":"الثلاثاء",
+    "WEDNESDAY":"الأربعاء",
+    "THURSDAY":"الخميس",
+    "FRIDAY":"الجمعة",
+    "SATURDAY_SHORT":"سبت",
+    "SUNDAY_SHORT":"أحد",
+    "MONDAY_SHORT":"إثن",
+    "TUESDAY_SHORT":"ثلاث",
+    "WEDNESDAY_SHORT":"أرب"	,
+    "THURSDAY_SHORT":"خمس",
+    "FRIDAY_SHORT":"جمع"
+  },
+
+  "LOGIN":
+  {
+
+    "LANG": "EN",
+    "USER_NAME":  "اسم المستخدم",
+    "EMAIL":"البريد الإلكتروني",
+    "PASSWORD": "كلمة السر",
+    "FORGET_PASSWORD": "نسيت كلمة المرور ؟",
+    "CREATE_ACCOUNT":"انشاء حساب",
+    "LOGIN": "دخول",
+    "COPYRIGHT":"جميع حقوق النشر محفوظة لشركة موبي ميد ٢٠١٧ ©.",
+    "INVALID_EMAIL":"الرجاء التأكد من إدخال البريد الإلكتروني بشكل صحيح",
+    "INVALID_PASS":" كلمة المرور غير صالحة",
+    "EMPTY_PASS":"الرجاء التأكد من إدخال كلمة المرور",
+    "EMPTY_EMAIL":"الرجاء التأكد من إدخال البريد الإلكتروني",
+    "INVALID_EMAIL_OR_PASSWORD":"بريد إلكتروني أو كلمة المرور غير صحيحة"
+
+  }
+
+
+
+
+}
+
+

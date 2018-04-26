@@ -26,55 +26,27 @@ import com.dashda.controllers.dto.OkResponse;
  *
  */
 @Transactional
-@PropertySource("classpath:exception-messages.properties")
+@PropertySource("classpath:app-attribute.properties")
 public abstract class ServicesManager {
 	
+	@Value("${PROPERTY_VALUE}")
+	protected String PROPERTY_VALUE;
 	
-	@Value("${ERROR_CODE_1001}")
-	protected String ERROR_CODE_1001;
-	
-	@Value("${ERROR_CODE_1002}")
-	protected String ERROR_CODE_1002;
-	
-
-	@Value("${ERROR_CODE_1003}")
-	protected String ERROR_CODE_1003;
-	
-	@Value("${ERROR_CODE_1004}")
-	protected String ERROR_CODE_1004;
-	
-	@Value("${ERROR_CODE_1005}")
-	protected String ERROR_CODE_1005;
-	
-	@Value("${ERROR_CODE_1006}")
-	protected String ERROR_CODE_1006;
-	
-	@Value("${ERROR_CODE_1007}")
-	protected String ERROR_CODE_1007;
-	
-	@Value("${ERROR_CODE_1008}")
-	protected String ERROR_CODE_1008;
-	
-	@Value("${ERROR_CODE_1009}")
-	protected String ERROR_CODE_1009;
-	
-	@Value("${ERROR_CODE_1010}")
-	protected String ERROR_CODE_1010;
-	
-	@Value("${ERROR_CODE_1011}")
-	protected String ERROR_CODE_1011;
-	
-	@Value("${ERROR_CODE_1012}")
-	protected String ERROR_CODE_1012;
-	
-	@Value("${ERROR_CODE_1013}")
-	protected String ERROR_CODE_1013;
-	
-	@Value("${ERROR_CODE_1014}")
-	protected String ERROR_CODE_1014;
-	
-	@Value("${ERROR_CODE_1015}")
-	protected String ERROR_CODE_1015;
+	protected static final String ERROR_CODE_1001 = "ERROR_CODE_1001";
+	protected static final String ERROR_CODE_1002 = "ERROR_CODE_1002";
+	protected static final String ERROR_CODE_1003 = "ERROR_CODE_1003";
+	protected static final String ERROR_CODE_1004 = "ERROR_CODE_1004";
+	protected static final String ERROR_CODE_1005 = "ERROR_CODE_1005";
+	protected static final String ERROR_CODE_1006 = "ERROR_CODE_1006";
+	protected static final String ERROR_CODE_1007 = "ERROR_CODE_1007";
+	protected static final String ERROR_CODE_1008 = "ERROR_CODE_1008";
+	protected static final String ERROR_CODE_1009 = "ERROR_CODE_1009";
+	protected static final String ERROR_CODE_1010 = "ERROR_CODE_1010";
+	protected static final String ERROR_CODE_1011 = "ERROR_CODE_1011";
+	protected static final String ERROR_CODE_1012 = "ERROR_CODE_1012";
+	protected static final String ERROR_CODE_1013 = "ERROR_CODE_1013";
+	protected static final String ERROR_CODE_1014 = "ERROR_CODE_1014";
+	protected static final String ERROR_CODE_1015 = "ERROR_CODE_1015";
 	/**
 	 * THIS ATTRIBUTE NOT USED
 	 */

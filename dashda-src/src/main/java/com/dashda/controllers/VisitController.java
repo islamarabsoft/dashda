@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dashda.controllers.dto.RequestInput;
 import com.dashda.controllers.dto.VisitDTO;
 import com.dashda.controllers.dto.VisitInquiryDTO;
 import com.dashda.exception.VisitServiceException;
@@ -38,18 +39,18 @@ public class VisitController extends AbstractController {
 	
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/visits")
-	public ResponseEntity<VisitDTO> visitItemsList(@AuthenticationPrincipal User user, @Validated @RequestBody VisitInquiryDTO visitInquiryDto) throws VisitServiceException, ParseException{
+	public ResponseEntity visitItemsList(@AuthenticationPrincipal User user, @Validated @RequestBody VisitInquiryDTO visitInquiryDto) throws VisitServiceException, ParseException{
 		return returnResponseEntityOk(visitService.visitItemsList(user.getUsername(), visitInquiryDto));
 	}
 	
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/complete-visits")
-	public void completeVisits(@AuthenticationPrincipal User user, @RequestBody List<Integer> visits) throws VisitServiceException {
-		visitService.completeVisits(user.getUsername(), visits);
+	public ResponseEntity completeVisits(@AuthenticationPrincipal User user, @RequestBody RequestInput requestInput) throws VisitServiceException {
+		return returnResponseEntityOk(visitService.completeVisits(user.getUsername(), requestInput));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/discard-visits")
-	public void discardVisits(@AuthenticationPrincipal User user, @RequestBody List<Integer> visits) throws VisitServiceException {
-		visitService.dicardVisits(user.getUsername(), visits);
+	public ResponseEntity discardVisits(@AuthenticationPrincipal User user, @RequestBody RequestInput requestInput) throws VisitServiceException {
+		return returnResponseEntityOk(visitService.dicardVisits(user.getUsername(), requestInput));
 	}
 }

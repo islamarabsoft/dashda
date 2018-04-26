@@ -7,7 +7,7 @@ package com.dashda.exception;
  * @author mhanafy
  *
  */
-public class VisitServiceException extends Exception {
+public class VisitServiceException extends AppExceptionHandler {
 
 	/**
 	 * 

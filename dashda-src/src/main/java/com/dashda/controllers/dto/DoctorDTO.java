@@ -24,6 +24,8 @@ public class DoctorDTO implements AbstractDTO{
 	private String assignedId;
 	private String scheduleId;
 	private String scheduleDate;
+	private String lastVisitStatus;
+	private String lastVisitDate;
 	private String address;
 	private String phone1;
 	private String phone2;
@@ -48,7 +50,7 @@ public class DoctorDTO implements AbstractDTO{
 	 * @return the doctorName
 	 */
 	public String getDoctorName() {
-		return doctorName;
+		return doctorName.replace("null", "");
 	}
 	/**
 	 * @param doctorName the doctorName to set
@@ -241,6 +243,18 @@ public class DoctorDTO implements AbstractDTO{
 	}
 	public void setScheduleId(String scheduleId) {
 		this.scheduleId = scheduleId;
+	}
+	public String getLastVisitStatus() {
+		return lastVisitStatus;
+	}
+	public void setLastVisitStatus(String lastVisitStatus) {
+		this.lastVisitStatus = lastVisitStatus;
+	}
+	public String getLastVisitDate() {
+		return lastVisitDate;
+	}
+	public void setLastVisitDate(String lastVisitDate) {
+		this.lastVisitDate = lastVisitDate;
 	}
 
 

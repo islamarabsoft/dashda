@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AppResponse;
+import com.dashda.controllers.dto.RequestInput;
 import com.dashda.controllers.dto.VisitDTO;
 import com.dashda.controllers.dto.VisitInquiryDTO;
 import com.dashda.data.entities.Employee;
@@ -69,6 +70,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		
 		String status = null;
 		String statusId = null;
+		String doctorName = null;
 		
 		for (Iterator iterator = visits.iterator(); iterator.hasNext();) {
 			Visit visit = (Visit) iterator.next();
@@ -83,14 +85,17 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 				status = "Discard";
 			}
 			
-		
+			
+			doctorName = visit.getDoctor().getContact().getFirstName();
+			if(visit.getDoctor().getContact().getLastName() != null)
+				doctorName += " " + visit.getDoctor().getContact().getLastName();
+			
 			visitDTO = new VisitDTO();
 			
 			visitDTO.setVisitId(visit.getId());
 			visitDTO.setDoctorId(visit.getDoctor().getId());
 			visitDTO.setEmployeeId(visit.getEmployeeByEmployeeId().getId());
-			visitDTO.setDoctorName(visit.getDoctor().getContact().getFirstName() + " " + 
-					visit.getDoctor().getContact().getLastName());
+			visitDTO.setDoctorName(doctorName);
 			visitDTO.setEmployeeName(visit.getEmployeeByEmployeeId().getContact().getFirstName() 
 							+ " " + visit.getEmployeeByEmployeeId().getContact().getLastName());		
 			visitDTO.setVisitDate(visit.getDatetime()+"");
@@ -104,18 +109,23 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 	}
 
 	@Override
-	public void completeVisits(String username, List<Integer> visits) throws NumberFormatException, VisitServiceException {
+	public AppResponse completeVisits(String username, RequestInput requestInput) throws NumberFormatException, VisitServiceException {
+		List<Integer> visits = requestInput.getIds();
+		
 		user = userDao.findUserByUsername(username);
 		
 		this.updateVisitStatus(user, visits, new Byte("1"));
 		
+		return emptyResponse("Visits status was updated successfully");
 	}
 
 	@Override
-	public void dicardVisits(String username, List<Integer> visits) throws NumberFormatException, VisitServiceException {
+	public AppResponse dicardVisits(String username, RequestInput requestInput) throws NumberFormatException, VisitServiceException {
+		List<Integer> visits = requestInput.getIds();
 		user = userDao.findUserByUsername(username);
 		
 		this.updateVisitStatus(user, visits, new Byte("0"));
+		return emptyResponse("Visits status was updated successfully");
 		
 	}
 

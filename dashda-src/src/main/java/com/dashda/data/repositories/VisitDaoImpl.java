@@ -3,15 +3,20 @@
  */
 package com.dashda.data.repositories;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Visit;
+
+import javassist.expr.NewArray;
 
 /**
  * @author mhanafy
@@ -74,6 +79,22 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 		getSession().flush();
 		getSession().clear();
 		
+	}
+
+	@Override
+	public Visit findCompletedVisitByDoctorAndEmployee(Doctor doctor, Employee employee) {
+		List status = new ArrayList();
+		status.add(new Byte("1"));
+		status.add(null);
+		
+		Criteria criteria = getSession().createCriteria(Visit.class);
+		criteria.add(Restrictions.eq("doctor", doctor));
+		criteria.add(Restrictions.eq("employeeByEmployeeId", employee));
+		criteria.add(Restrictions.in("completed", status));
+		criteria.addOrder(Order.desc("id"));
+		criteria.setMaxResults(1);
+		
+		return (Visit)criteria.uniqueResult();
 	}
 
 }
