@@ -47,6 +47,7 @@ public abstract class ServicesManager {
 	protected static final String ERROR_CODE_1013 = "ERROR_CODE_1013";
 	protected static final String ERROR_CODE_1014 = "ERROR_CODE_1014";
 	protected static final String ERROR_CODE_1015 = "ERROR_CODE_1015";
+	protected static final String ERROR_CODE_1016 = "ERROR_CODE_1016";
 	/**
 	 * THIS ATTRIBUTE NOT USED
 	 */

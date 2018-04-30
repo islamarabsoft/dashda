@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.EmployeeUserDTO;
 import com.dashda.controllers.dto.UserDTO;
+import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ClaimDTO;
 import com.dashda.data.entities.Account;
 import com.dashda.data.entities.Contact;
@@ -90,12 +91,12 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 
 
 	@Override
-	public void createEmployeeUser(@Valid EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager {
-		createUserEntity(employeeUserDTO);
-		
+	public AppResponse createEmployeeUser(@Valid EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager {
+		UserDTO userDTO = createUserEntity(employeeUserDTO);
+		return createResponse(userDTO, "Employee Created Successfully");
 	}
 
-	private void createUserEntity(UserDTO userDTO) throws UserServiceExceptioManager {
+	private UserDTO createUserEntity(UserDTO userDTO) throws UserServiceExceptioManager {
 		
 		if(userDao.findUserByUsername(userDTO.getUsername()) != null)
 			throw new UserServiceExceptioManager(ERROR_CODE_1008);
@@ -134,7 +135,7 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 			}
 			
 			mapper.map(userDTO, employee);
-			employee.setContact(contact);
+			
 			employee.setManager(manager);
 		}
 		
@@ -144,10 +145,13 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 		user.setPassword(generatePasswordEncoder.encode(userDTO.getPassword()));
 		user.setAccount(account);
 		
+		contactDao.createContact(contact);
+		employee.setContact(contact);
+		
 		// persist on DB
 		if(employee != null)
 			employeeDao.createEmployee(employee);
-		contactDao.createContact(contact);
+		
 		
 		if(employee != null)
 			user.setEmployee(employee);
@@ -155,6 +159,10 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 		
 		userDao.createUser(user);
 		
+		userDTO.setId(user.getId());
+		if(employee != null)
+			((EmployeeUserDTO)userDTO).setEmployeeId(employee.getId());
+		return userDTO;
 	}
 
 private UserDTO prepareUserDTOObject(User user) throws UserServiceExceptioManager {

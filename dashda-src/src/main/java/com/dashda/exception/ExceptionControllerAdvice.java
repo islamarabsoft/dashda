@@ -3,6 +3,8 @@
  */
 package com.dashda.exception;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -26,7 +29,8 @@ import com.dashda.utilities.SpringContext;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 	
-	private static final String GENERIC_MSG = "GENERIC_MSG";
+	private static final String GENERIC_MSG = "INTERNAL_ERROR";
+	private static final String ACCESS_DENIED = "AccessDenied";
 	
 	protected final Logger log = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 	
@@ -39,6 +43,10 @@ public class ExceptionControllerAdvice {
 			fault.setArErrorMessage(((AppExceptionHandler) ex).getArErrorMessage());
 			fault.setEnErrorMessage(((AppExceptionHandler) ex).getEnErrorMessage());
 			fault.setErrorCode(((AppExceptionHandler) ex).getErrorCode());
+		}else if(ex instanceof AccessDeniedException){
+			fault.setArErrorMessage(messages.get(ACCESS_DENIED, new Locale("ar")));
+			fault.setEnErrorMessage(messages.get(ACCESS_DENIED, Locale.US));
+			fault.setErrorCode(ACCESS_DENIED);
 		}else {
 			fault.setArErrorMessage(messages.get(GENERIC_MSG, new Locale("ar")));
 			fault.setEnErrorMessage(messages.get(GENERIC_MSG, Locale.US));

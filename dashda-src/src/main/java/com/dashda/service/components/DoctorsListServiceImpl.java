@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AbstractDTO;
 import com.dashda.controllers.dto.AppResponse;
+import com.dashda.controllers.dto.AssignDoctorDTO;
 import com.dashda.controllers.dto.DoctorDTO;
 import com.dashda.data.entities.Contact;
 import com.dashda.data.entities.District;
@@ -45,7 +46,7 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 	
 	private Doctor doctor;
 	
-	private DoctorDTO doctorDTO;
+	private AssignDoctorDTO assignDoctorDTO;
 	
 	private List<AbstractDTO> doctorDTOs;
 	
@@ -81,24 +82,21 @@ public class DoctorsListServiceImpl extends ServicesManager implements DoctorsLi
 		
 		for(Iterator<Doctor> doctorsIt = doctors.iterator(); doctorsIt.hasNext();) {
 			doctor = doctorsIt.next();
-			contact = doctor.getContact();
 			
-			doctorDTO = new DoctorDTO();
+			assignDoctorDTO = new AssignDoctorDTO();
 			
-			mapper.map(doctor.getContact(), doctorDTO);
-			mapper.map(doctor, doctorDTO);
-			
-			
+			mapper.map(doctor, assignDoctorDTO);
+			assignDoctorDTO.setGovernorateName(doctor.getDistrict().getGovernorate().getName());
 			
 			for (Iterator employeeDoctorIt = doctor.getEmployeesDoctors().iterator(); employeeDoctorIt.hasNext();) {
 				EmployeeDoctor employeeDoctor = (EmployeeDoctor) employeeDoctorIt.next();
 				if(employeeDoctor.getEmployee().getId() == user.getEmployee().getId())
-					doctorDTO.setAssignedId(employeeDoctor.getId()+"");
+					assignDoctorDTO.setAssignedId(employeeDoctor.getId()+"");
 			}
 
 			
 			
-			doctorDTOs.add(doctorDTO);
+			doctorDTOs.add(assignDoctorDTO);
 		}
 
 		

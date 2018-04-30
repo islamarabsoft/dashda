@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.dashda.controllers.dto.DoctorDTO;
 import com.dashda.controllers.dto.EmployeeDoctorDTO;
+import com.dashda.controllers.dto.MyDoctorDTO;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.data.entities.Doctor;
 import com.dashda.data.entities.Employee;
@@ -47,8 +48,8 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 	@Autowired
 	VisitDao visitDao;
 	
-	private DoctorDTO doctorDTO;
-	private List doctorDTOs;
+	private MyDoctorDTO myDoctorDTO;
+	private List myDoctorDTOs;
 	private List<EmployeeDoctor> employeeDoctors;
 	private User user;
 	private EmployeeDoctor employeeDoctor;
@@ -69,26 +70,26 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 		
 		employeeDoctors = employeeDoctorDao.employeeDoctorsByEmployee(user.getEmployee());
 		
-		doctorDTOs = new ArrayList();
+		myDoctorDTOs = new ArrayList();
 		
 		for(Iterator<EmployeeDoctor> doctorsIt = employeeDoctors.iterator(); doctorsIt.hasNext();) {
-			doctorDTO = new DoctorDTO();
+			myDoctorDTO = new MyDoctorDTO();
 			
 			employeeDoctor = doctorsIt.next();
-			
-			mapper.map(employeeDoctor.getDoctor().getContact(), doctorDTO);
-			mapper.map(employeeDoctor.getDoctor(), doctorDTO);
+
+			mapper.map(employeeDoctor.getDoctor(), myDoctorDTO);
+			myDoctorDTO.setGovernorateName(employeeDoctor.getDoctor().getDistrict().getGovernorate().getName());
 			
 			for (Iterator scheduleIt = employeeDoctor.getDoctor().getSchedules().iterator(); scheduleIt.hasNext();) {
 				Schedule schedule = (Schedule) scheduleIt.next();
 				if(schedule.getScheduleStatus().getId() == ScheduleStatusEnum.PENDING_APPROVAL.getValue()) {
 
-					doctorDTO.setScheduleId(schedule.getId()+"");
-					doctorDTO.setScheduleDate(DateValidator.dateFormate(schedule.getDatetime()));
+					myDoctorDTO.setScheduleId(schedule.getId()+"");
+					myDoctorDTO.setScheduleDate(DateValidator.dateFormate(schedule.getDatetime()));
 				}
 			}
 			
-			doctorDTO.setAssignedId(employeeDoctor.getId()+"");
+			myDoctorDTO.setAssignedId(employeeDoctor.getId()+"");
 			
 			//Get Last visit
 			Visit visit = visitDao.findCompletedVisitByDoctorAndEmployee(employeeDoctor.getDoctor(), employeeDoctor.getEmployee());
@@ -103,14 +104,14 @@ public class MyDoctorsListServiceImpl extends ServicesManager implements MyDocto
 					lastVisitStatus = "1";
 					lastVisitDate = DateValidator.dateFormate(visit.getDatetime());
 				}
-				doctorDTO.setLastVisitStatus(lastVisitStatus);
-				doctorDTO.setLastVisitDate(lastVisitDate);
+				myDoctorDTO.setLastVisitStatus(lastVisitStatus);
+				myDoctorDTO.setLastVisitDate(lastVisitDate);
 			}
 			
-			doctorDTOs.add(doctorDTO);
+			myDoctorDTOs.add(myDoctorDTO);
 		}
 
-		return okListResponse(doctorDTOs, "GET Service :: List Size "+ doctorDTOs.size());
+		return okListResponse(myDoctorDTOs, "GET Service :: List Size "+ myDoctorDTOs.size());
 	}
 
 	@Override

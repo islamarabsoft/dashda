@@ -241,9 +241,17 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 					visit.setDoctor(schedule.getDoctor());
 					visit.setDatetime(schedule.getDatetime());
 					visit.setEmployeeByEmployeeId(schedule.getEmployeeByEmployeeId());
-					visit.setEmployeeBySubordinateId(schedule.getEmployeeBySubordinateId());
+					//visit.setEmployeeBySubordinateId(schedule.getEmployeeBySubordinateId());
 					
 					visitDao.addVisit(visit);
+					if(scheduleActionDTO.getDubleVisit().equalsIgnoreCase("1")) {
+						Visit dubleVisit = new Visit();
+						dubleVisit.setDoctor(schedule.getDoctor());
+						dubleVisit.setDatetime(schedule.getDatetime());
+						dubleVisit.setEmployeeByEmployeeId(employee);
+						dubleVisit.setEmployeeBySubordinateId(schedule.getEmployeeByEmployeeId());
+						visitDao.addVisit(dubleVisit);
+					}
 				}
 				scheduleDao.update(schedule);
 				

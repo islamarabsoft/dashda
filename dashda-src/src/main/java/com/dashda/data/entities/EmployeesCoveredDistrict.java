@@ -1,9 +1,12 @@
 package com.dashda.data.entities;
 // Generated Apr 4, 2018 2:50:44 PM by Hibernate Tools 5.2.8.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "EMPLOYEES_COVERED_DISTRICT")
-public class EmployeesCoveredDistrict implements java.io.Serializable {
+public class EmployeesCoveredDistrict implements java.io.Serializable, com.dashda.data.entities.Entity {
 
 	private int id;
 	private District district;
@@ -34,8 +37,9 @@ public class EmployeesCoveredDistrict implements java.io.Serializable {
 	}
 
 	@Id
-
-	@Column(name = "ID", unique = true, nullable = false)
+	@GeneratedValue(strategy = IDENTITY)
+	
+	@Column(name = "ID", unique = true, nullable = false, updatable = false)
 	public int getId() {
 		return this.id;
 	}

@@ -5,9 +5,9 @@ package com.dashda.service.components;
 
 import javax.validation.Valid;
 
+import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.EmployeeUserDTO;
 import com.dashda.controllers.dto.UserDTO;
-import com.dashda.exception.PermissionServiceExceptioManager;
 import com.dashda.exception.UserServiceExceptioManager;
 
 /**
@@ -21,7 +21,7 @@ public interface UserService {
 
 	public void createUser(@Valid UserDTO userDTO) throws UserServiceExceptioManager;
 	
-	public void createEmployeeUser(@Valid EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager;
+	public AppResponse createEmployeeUser(@Valid EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager;
 
 	public UserDTO authorizationInfo(String username, String password) throws UserServiceExceptioManager;
 	

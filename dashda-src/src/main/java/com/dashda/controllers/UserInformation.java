@@ -62,8 +62,8 @@ public class UserInformation extends AbstractController{
 	
 	@Secured({"ROLE_USER_INFO", "ROLE_SYSTEM_ADMIN"})
 	@RequestMapping(method = RequestMethod.POST, value = "/create-employee-user")
-	public void createEmployeeUser(@AuthenticationPrincipal User user, @Valid @RequestBody EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager {
-		userService.createEmployeeUser(employeeUserDTO);
+	public ResponseEntity createEmployeeUser(@AuthenticationPrincipal User user, @Valid @RequestBody EmployeeUserDTO employeeUserDTO) throws UserServiceExceptioManager {
+		return returnResponseEntityCreated(userService.createEmployeeUser(employeeUserDTO));
 	}
 	
 	@Secured({"ROLE_USER_INFO", "ROLE_SYSTEM_ADMIN", "ROLE_ADMIN_CREATE_TEMPLATE"})
