@@ -53,7 +53,7 @@ public class EmployeeDistrictServiceImpl extends ServicesManager implements Empl
 		
 		employeesCoveredDistrictDao.assignDistrictToEmployee(coveredDistrict);
 		
-		employeeDistrictDTO.setEmployeeId(coveredDistrict.getId()+"");
+		employeeDistrictDTO.setAssignId(coveredDistrict.getId()+"");
 		return createResponse(employeeDistrictDTO, "District Assigned to Employee Successullty");
 	}
 

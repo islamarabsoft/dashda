@@ -20,7 +20,8 @@ import javax.persistence.Table;
 public class Governorate implements java.io.Serializable {
 
 	private Integer id;
-	private String name;
+	private String arName;
+	private String enName;
 	private Set districts = new HashSet(0);
 	private Set contacts = new HashSet(0);
 
@@ -34,8 +35,7 @@ public class Governorate implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Governorate(String name, Set districts, Set contacts) {
-		this.name = name;
+	public Governorate(Set districts, Set contacts) {
 		this.districts = districts;
 		this.contacts = contacts;
 	}
@@ -52,15 +52,23 @@ public class Governorate implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "NAME", length = 45)
-	public String getName() {
-		return this.name;
+	@Column(name = "AR_NAME", length = 45)
+	public String getArName() {
+		return this.arName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setArName(String arName) {
+		this.arName = arName;
 	}
 
+	@Column(name = "EN_NAME", length = 45)
+	public String getEnName() {
+		return this.enName;
+	}
+
+	public void setEnName(String enName) {
+		this.enName = enName;
+	}
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "governorate")
 	public Set<District> getDistricts() {
 		return this.districts;

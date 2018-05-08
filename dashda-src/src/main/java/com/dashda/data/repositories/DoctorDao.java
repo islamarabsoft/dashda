@@ -6,7 +6,7 @@ package com.dashda.data.repositories;
 import java.util.List;
 
 import com.dashda.data.entities.District;
-import com.dashda.data.entities.Doctor;
+import com.dashda.data.entities.ServiceProvider;
 
 /**
  * @author mhanafy
@@ -14,8 +14,8 @@ import com.dashda.data.entities.Doctor;
  */
 public interface DoctorDao {
 
-	public List<Doctor> doctorsList(List<District> districts);
+	public List<ServiceProvider> doctorsList(List<District> districts, int serviceProviderType);
 
-	public Doctor findDoctorById(Integer doctorId);
+	public ServiceProvider findDoctorById(Integer doctorId);
 
 }

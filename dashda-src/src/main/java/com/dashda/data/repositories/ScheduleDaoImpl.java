@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Schedule;
+import com.dashda.data.entities.ServiceProvider;
+import com.dashda.enums.ScheduleStatusEnum;
 
 
 /**
@@ -73,6 +75,16 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 	public void deleteScheduleItem(Schedule schedule) {
 		getSession().delete(schedule);
 		
+	}
+
+	@Override
+	public List<Schedule> findScheduleItemNotApproved(ServiceProvider serviceProvider, Employee employee) {
+		Criteria criteria = getSession().createCriteria(Schedule.class);
+		criteria.add(Restrictions.eq("serviceProvider", serviceProvider));
+		criteria.add(Restrictions.eq("employeeByEmployeeId", employee));
+		criteria.add(Restrictions.eq("scheduleStatus.id", ScheduleStatusEnum.PENDING_APPROVAL.getValue()));
+		
+		return criteria.list();
 	}
 
 }

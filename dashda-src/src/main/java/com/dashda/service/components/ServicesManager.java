@@ -26,11 +26,8 @@ import com.dashda.controllers.dto.OkResponse;
  *
  */
 @Transactional
-@PropertySource("classpath:app-attribute.properties")
 public abstract class ServicesManager {
 	
-	@Value("${PROPERTY_VALUE}")
-	protected String PROPERTY_VALUE;
 	
 	protected static final String ERROR_CODE_1001 = "ERROR_CODE_1001";
 	protected static final String ERROR_CODE_1002 = "ERROR_CODE_1002";
@@ -48,6 +45,12 @@ public abstract class ServicesManager {
 	protected static final String ERROR_CODE_1014 = "ERROR_CODE_1014";
 	protected static final String ERROR_CODE_1015 = "ERROR_CODE_1015";
 	protected static final String ERROR_CODE_1016 = "ERROR_CODE_1016";
+	protected static final String ERROR_CODE_1017 = "ERROR_CODE_1017";
+	protected static final String ERROR_CODE_1018 = "ERROR_CODE_1018";
+	protected static final String ERROR_CODE_1019 = "ERROR_CODE_1019";
+	protected static final String ERROR_CODE_1020 = "ERROR_CODE_1020";
+	protected static final String ERROR_CODE_1021 = "ERROR_CODE_1021";
+	protected static final String ERROR_CODE_1022 = "ERROR_CODE_1022";
 	/**
 	 * THIS ATTRIBUTE NOT USED
 	 */

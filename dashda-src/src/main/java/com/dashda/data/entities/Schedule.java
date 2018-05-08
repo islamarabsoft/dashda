@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
 public class Schedule implements java.io.Serializable, com.dashda.data.entities.Entity {
 
 	private Integer id;
-	private Doctor doctor;
+	private ServiceProvider serviceProvider;
 	private Employee employeeByEmployeeId;
 	private Employee employeeBySubordinateId;
 	private Employee employeeByManagerId;
@@ -37,9 +37,9 @@ public class Schedule implements java.io.Serializable, com.dashda.data.entities.
 		this.id = id;
 	}
 
-	public Schedule(Doctor doctor, Employee employeeByEmployeeId, Employee employeeBySubordinateId,
+	public Schedule(ServiceProvider serviceProvider, Employee employeeByEmployeeId, Employee employeeBySubordinateId,
 			Employee employeeByManagerID, ScheduleStatus scheduleStatus, Date datetime) {
-		this.doctor = doctor;
+		this.serviceProvider = serviceProvider;
 		this.employeeByEmployeeId = employeeByEmployeeId;
 		this.employeeBySubordinateId = employeeBySubordinateId;
 		this.employeeByManagerId = employeeByManagerID;
@@ -60,13 +60,13 @@ public class Schedule implements java.io.Serializable, com.dashda.data.entities.
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "DOCUTOR_ID")
-	public Doctor getDoctor() {
-		return this.doctor;
+	@JoinColumn(name = "SERVICE_PROVIDER_ID")
+	public ServiceProvider getServiceProvider() {
+		return this.serviceProvider;
 	}
 
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
+	public void setServiceProvider(ServiceProvider serviceProvider) {
+		this.serviceProvider = serviceProvider;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

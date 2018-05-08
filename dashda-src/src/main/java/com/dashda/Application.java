@@ -113,6 +113,12 @@ public class Application extends SpringBootServletInitializer  {
         properties.put("hibernate.c3p0.min_size", env.getRequiredProperty("hibernate.c3p0.min_size"));
         properties.put("hibernate.c3p0.timeout", env.getRequiredProperty("hibernate.c3p0.timeout"));
         
+        //properties.put("hibernate.c3p0.unreturnedConnectionTimeout=30", env.getRequiredProperty("hibernate.c3p0.unreturnedConnectionTimeout=30"));
+        properties.put("hibernate.c3p0.debugUnreturnedConnectionStackTraces", env.getRequiredProperty("hibernate.c3p0.debugUnreturnedConnectionStackTraces"));
+        properties.put("hibernate.c3p0.maxConnectionAge", env.getRequiredProperty("hibernate.c3p0.maxConnectionAge"));
+        properties.put("hibernate.c3p0.maxIdleTime", env.getRequiredProperty("hibernate.c3p0.maxIdleTime"));
+        properties.put("hibernate.c3p0.maxIdleTimeExcessConnections", env.getRequiredProperty("hibernate.c3p0.maxIdleTimeExcessConnections"));
+        
         return properties;
 	}
 

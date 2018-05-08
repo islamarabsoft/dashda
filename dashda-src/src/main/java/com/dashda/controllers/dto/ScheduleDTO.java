@@ -15,23 +15,23 @@ public class ScheduleDTO implements AbstractDTO{
 	@Digits(fraction = 0, integer = 8)
 	private int scheduleId;
 	@Digits(fraction = 0, integer = 8)
-	private String doctorId;
-	private String doctorName;
+	private String serviceProviderId;
+	private String serviceProviderName;
 	private String scheduleDate;
 	private String employeeId;
 	private String employeeName;
 
 	
 
-	public ScheduleDTO(String doctorId, String scheduleDate) {
+	public ScheduleDTO(String serviceProviderId, String scheduleDate) {
 		super();
-		this.doctorId = doctorId;
+		this.serviceProviderId = serviceProviderId;
 		this.scheduleDate = scheduleDate;
 	}
 
-	public ScheduleDTO(String doctorId, String scheduleDate, String employeeId) {
+	public ScheduleDTO(String serviceProviderId, String scheduleDate, String employeeId) {
 		super();
-		this.doctorId = doctorId;
+		this.serviceProviderId = serviceProviderId;
 		this.scheduleDate = scheduleDate;
 		this.employeeId = employeeId;
 
@@ -45,10 +45,10 @@ public class ScheduleDTO implements AbstractDTO{
 		this.scheduleId = scheduleId;
 	}
 
-	public ScheduleDTO(int scheduleId, String doctorId, String scheduleDate, String employeeId) {
+	public ScheduleDTO(int scheduleId, String serviceProviderId, String scheduleDate, String employeeId) {
 		super();
 		this.scheduleId = scheduleId;
-		this.doctorId = doctorId;
+		this.serviceProviderId = serviceProviderId;
 		this.scheduleDate = scheduleDate;
 		this.employeeId = employeeId;
 	}
@@ -61,12 +61,12 @@ public class ScheduleDTO implements AbstractDTO{
 		this.scheduleId = scheduleId;
 	}
 
-	public String getDoctorId() {
-		return doctorId;
+	public String getServiceProviderId() {
+		return serviceProviderId;
 	}
 
-	public void setDoctorId(String doctorId) {
-		this.doctorId = doctorId;
+	public void setServiceProviderId(String serviceProviderId) {
+		this.serviceProviderId = serviceProviderId;
 	}
 
 	public String getScheduleDate() {
@@ -85,12 +85,12 @@ public class ScheduleDTO implements AbstractDTO{
 		this.employeeId = employeeId;
 	}
 
-	public String getDoctorName() {
-		return doctorName;
+	public String getServiceProviderName() {
+		return serviceProviderName;
 	}
 
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
+	public void setServiceProviderName(String serviceProviderName) {
+		this.serviceProviderName = serviceProviderName;
 	}
 
 	public String getEmployeeName() {

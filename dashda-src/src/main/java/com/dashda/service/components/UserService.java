@@ -17,7 +17,7 @@ import com.dashda.exception.UserServiceExceptioManager;
 public interface UserService {
 
 	
-	public UserDTO getUserInfo(String username) throws UserServiceExceptioManager;
+	public AppResponse getUserInfo(String username) throws UserServiceExceptioManager;
 
 	public void createUser(@Valid UserDTO userDTO) throws UserServiceExceptioManager;
 	

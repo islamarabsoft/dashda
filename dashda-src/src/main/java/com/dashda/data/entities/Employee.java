@@ -31,7 +31,7 @@ public class Employee implements java.io.Serializable {
 	private String employeeNumber;
 	private Set users = new HashSet(0);
 	private Set employeesCoveredDistricts = new HashSet(0);
-	private Set employeesDoctors = new HashSet(0);
+	private Set employeesServiceProviders = new HashSet(0);
 	private Set visitsForEmployeeId = new HashSet(0);
 	private Set schedulesForEmployeeId = new HashSet(0);
 	private Set managers = new HashSet(0);
@@ -47,7 +47,7 @@ public class Employee implements java.io.Serializable {
 	}
 
 	public Employee(int id, Contact contact, Employee manager, String employeeJobTitle,
-			String employeeNumber, Set users, Set employeesCoveredDistricts, Set employeesDoctors, Set visitsForEmployeeId,
+			String employeeNumber, Set users, Set employeesCoveredDistricts, Set employeesServiceProviders, Set visitsForEmployeeId,
 			Set schedulesForEmployeeId, Set managers, Set schedulesForSubordinateId, Set schedulesForManagerId,Set visitsForSubordinateId) {
 		this.id = id;
 		this.contact = contact;
@@ -56,7 +56,7 @@ public class Employee implements java.io.Serializable {
 		this.employeeNumber = employeeNumber;
 		this.users = users;
 		this.employeesCoveredDistricts = employeesCoveredDistricts;
-		this.employeesDoctors = employeesDoctors;
+		this.employeesServiceProviders = employeesServiceProviders;
 		this.visitsForEmployeeId = visitsForEmployeeId;
 		this.schedulesForEmployeeId = schedulesForEmployeeId;
 		this.managers = managers;
@@ -143,15 +143,15 @@ public class Employee implements java.io.Serializable {
 	 * @return the employeesDoctor
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-	public Set<EmployeeDoctor> getEmployeesDoctors() {
-		return employeesDoctors;
+	public Set<EmployeeServiceProvider> getEmployeeServiceProviders() {
+		return employeesServiceProviders;
 	}
 
 	/**
 	 * @param employeesDoctor the employeesDoctor to set
 	 */
-	public void setEmployeesDoctors(Set employeesDoctors) {
-		this.employeesDoctors = employeesDoctors;
+	public void setEmployeeServiceProviders(Set employeesServiceProviders) {
+		this.employeesServiceProviders = employeesServiceProviders;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeByEmployeeId")

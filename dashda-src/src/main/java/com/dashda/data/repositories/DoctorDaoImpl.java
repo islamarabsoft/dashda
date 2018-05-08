@@ -10,7 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.District;
-import com.dashda.data.entities.Doctor;
+import com.dashda.data.entities.ServiceProvider;
 
 
 /**
@@ -21,22 +21,24 @@ import com.dashda.data.entities.Doctor;
 public class DoctorDaoImpl extends AbstractDao implements DoctorDao {
 
 	@Override
-	public List<Doctor> doctorsList(List<District> districts) {
+	public List<ServiceProvider> doctorsList(List<District> districts, int serviceProviderType) {
 		
-		Criteria criteria = getSession().createCriteria(Doctor.class);
+		Criteria criteria = getSession().createCriteria(ServiceProvider.class);
 		criteria.add(Restrictions.in("district", districts));
+		if(serviceProviderType != 0)
+			criteria.add(Restrictions.eq("serviceProviderType.id", serviceProviderType));
 		
-		List<Doctor> doctors = criteria.list(); 
+		List<ServiceProvider> doctors = criteria.list(); 
 		
 		return doctors;
 	}
 
 	@Override
-	public Doctor findDoctorById(Integer doctorId) {
-		Criteria criteria = getSession().createCriteria(Doctor.class);
+	public ServiceProvider findDoctorById(Integer doctorId) {
+		Criteria criteria = getSession().createCriteria(ServiceProvider.class);
 		criteria.add(Restrictions.in("id", doctorId));
 		
-		Doctor doctor = (Doctor)criteria.uniqueResult(); 
+		ServiceProvider doctor = (ServiceProvider)criteria.uniqueResult(); 
 		
 		return doctor;
 	}

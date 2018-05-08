@@ -17,14 +17,15 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "VISIT")
-public class Visit implements java.io.Serializable {
+public class Visit implements java.io.Serializable,com.dashda.data.entities.Entity {
 
 	private int id;
-	private Doctor doctor;
+	private ServiceProvider serviceProvider;
 	private Employee employeeByEmployeeId;
 	private Employee employeeBySubordinateId;
 	private Date datetime;
-	private Byte completed;
+	private String comment;
+	private VisitStatus visitStatus;
 
 	public Visit() {
 	}
@@ -33,14 +34,14 @@ public class Visit implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Visit(int id, Doctor doctor, Employee employeeByEmployeeId, Employee employeeBySubordinateId, Date datetime,
-			Byte completed) {
+	public Visit(int id, ServiceProvider serviceProvider, Employee employeeByEmployeeId, Employee employeeBySubordinateId, Date datetime,
+			VisitStatus visitStatus) {
 		this.id = id;
-		this.doctor = doctor;
+		this.serviceProvider = serviceProvider;
 		this.employeeByEmployeeId = employeeByEmployeeId;
 		this.employeeBySubordinateId = employeeBySubordinateId;
 		this.datetime = datetime;
-		this.completed = completed;
+		this.visitStatus = visitStatus;
 	}
 
 	@Id
@@ -55,13 +56,13 @@ public class Visit implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "DOCUTOR_ID")
-	public Doctor getDoctor() {
-		return this.doctor;
+	@JoinColumn(name = "SERVICE_PROVIDER_ID")
+	public ServiceProvider getServiceProvider() {
+		return this.serviceProvider;
 	}
 
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
+	public void setServiceProvider(ServiceProvider serviceProvider) {
+		this.serviceProvider = serviceProvider;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -94,13 +95,26 @@ public class Visit implements java.io.Serializable {
 		this.datetime = datetime;
 	}
 
-	@Column(name = "COMPLETED")
-	public Byte getCompleted() {
-		return this.completed;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "VISIT_STATUS_ID", insertable = false)
+	public VisitStatus getVisitStatus() {
+		return visitStatus;
 	}
 
-	public void setCompleted(Byte completed) {
-		this.completed = completed;
+	public void setVisitStatus(VisitStatus visitStatus) {
+		this.visitStatus = visitStatus;
 	}
+
+	@Column(name = "COMMENT", length = 100)
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	
+
 
 }

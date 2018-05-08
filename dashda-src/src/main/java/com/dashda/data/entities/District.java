@@ -23,8 +23,8 @@ public class District implements java.io.Serializable {
 
 	private Integer id;
 	private Governorate governorate;
-	private String name;
-	private String code;
+	private String arName;
+	private String enName;
 	private Set employeesCoveredDistricts = new HashSet(0);
 	private Set contacts = new HashSet(0);
 	private Set doctors = new HashSet(0);
@@ -39,16 +39,15 @@ public class District implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public District(Governorate governorate, String code) {
+	public District(Governorate governorate) {
 		this.governorate = governorate;
-		this.code = code;
 	}
 
-	public District(Governorate governorate, String name, String code, Set employeesCoveredDistricts, Set contacts,
+	public District(Governorate governorate, String arName, String enName, Set employeesCoveredDistricts, Set contacts,
 			Set doctors) {
 		this.governorate = governorate;
-		this.name = name;
-		this.code = code;
+		this.arName = arName;
+		this.enName = enName;
 		this.employeesCoveredDistricts = employeesCoveredDistricts;
 		this.contacts = contacts;
 		this.doctors = doctors;
@@ -76,22 +75,22 @@ public class District implements java.io.Serializable {
 		this.governorate = governorate;
 	}
 
-	@Column(name = "NAME", length = 45)
-	public String getName() {
-		return this.name;
+	@Column(name = "AR_NAME", length = 45)
+	public String getArName() {
+		return this.arName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setArName(String arName) {
+		this.arName = arName;
 	}
 
-	@Column(name = "CODE", nullable = false, length = 7)
-	public String getCode() {
-		return this.code;
+	@Column(name = "EN_NAME", length = 45)
+	public String getEnName() {
+		return this.enName;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setEnName(String enName) {
+		this.enName = enName;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
@@ -113,7 +112,7 @@ public class District implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
-	public Set<Doctor> getDoctors() {
+	public Set<ServiceProvider> getDoctors() {
 		return this.doctors;
 	}
 

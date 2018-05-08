@@ -42,16 +42,16 @@ public class UserInformation extends AbstractController{
 	
 	@Secured("ROLE_USER_INFO")
 	@RequestMapping("/user-info")
-	public ResponseEntity<UserDTO> userInformation(@AuthenticationPrincipal User user) throws JsonProcessingException, UserServiceExceptioManager {
+	public ResponseEntity userInformation(@AuthenticationPrincipal User user) throws JsonProcessingException, UserServiceExceptioManager {
 		
 		return returnResponseEntityOk(userService.getUserInfo(user.getUsername()));
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/authorization-info", params = {"username!=", "password!="})
-	public String authorizationInfo(@RequestParam(required = true) String username, 
-			@RequestParam(required = true) String password) throws JsonProcessingException, UserServiceExceptioManager {
-		return jsonObjectmapper.writeValueAsString(userService.authorizationInfo(username, password));
-	}
+//	@RequestMapping(method = RequestMethod.POST, value = "/authorization-info", params = {"username!=", "password!="})
+//	public String authorizationInfo(@RequestParam(required = true) String username, 
+//			@RequestParam(required = true) String password) throws JsonProcessingException, UserServiceExceptioManager {
+//		return jsonObjectmapper.writeValueAsString(userService.authorizationInfo(username, password));
+//	}
 	
 	@Secured({"ROLE_USER_INFO", "ROLE_SYSTEM_ADMIN"})
 	@RequestMapping(method = RequestMethod.POST, value = "/create-user")

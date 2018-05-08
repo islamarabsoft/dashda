@@ -5,6 +5,8 @@ package com.dashda.controllers.dto;
 
 
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 
 /**
  * @author mhanafy
@@ -13,9 +15,10 @@ import javax.validation.constraints.Digits;
 public class EmployeeDoctorDTO implements AbstractDTO {
 
 	@Digits(integer=6, fraction=0)
+	@Positive
 	private int assignedId;
 	@Digits(integer=6, fraction=0)
-	private int doctorId;
+	private int serviceProviderId;
 	private int employeeId;
 	
 	
@@ -25,11 +28,12 @@ public class EmployeeDoctorDTO implements AbstractDTO {
 	public void setAssignedId(int assignedId) {
 		this.assignedId = assignedId;
 	}
-	public int getDoctorId() {
-		return doctorId;
+
+	public int getServiceProviderId() {
+		return serviceProviderId;
 	}
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
+	public void setServiceProviderId(int serviceProviderId) {
+		this.serviceProviderId = serviceProviderId;
 	}
 	public int getEmployeeId() {
 		return employeeId;

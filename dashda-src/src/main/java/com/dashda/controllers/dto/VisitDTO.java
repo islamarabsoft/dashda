@@ -3,13 +3,15 @@ package com.dashda.controllers.dto;
 public class VisitDTO implements AbstractDTO{
 
 	private int visitId;
-	private int doctorId;
-	private String doctorName;
+	private int serviceProviderId;
+	private String serviceProviderName;
+	private String serviceProviderTypeId;
 	private String visitDate;
 	private int employeeId;
 	private String employeeName;
 	private String status;
 	private String statusId;
+	private String comment;
 
 
 	/**
@@ -29,15 +31,15 @@ public class VisitDTO implements AbstractDTO{
 	/**
 	 * @return the doctorId
 	 */
-	public int getDoctorId() {
-		return doctorId;
+	public int getServiceProviderId() {
+		return serviceProviderId;
 	}
 
 	/**
 	 * @param doctorId the doctorId to set
 	 */
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
+	public void setServiceProviderId(int doctorId) {
+		this.serviceProviderId = doctorId;
 	}
 
 
@@ -83,12 +85,21 @@ public class VisitDTO implements AbstractDTO{
 		this.employeeName = employeeName;
 	}
 
-	public String getDoctorName() {
-		return doctorName;
+	public String getServiceProviderName() {
+		return serviceProviderName;
 	}
 
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
+	public void setServiceProviderName(String serviceProviderName) {
+		this.serviceProviderName = serviceProviderName;
+	}
+
+	
+	public String getServiceProviderTypeId() {
+		return serviceProviderTypeId;
+	}
+
+	public void setServiceProviderTypeId(String serviceProviderTypeId) {
+		this.serviceProviderTypeId = serviceProviderTypeId;
 	}
 
 	public String getStatus() {
@@ -105,6 +116,14 @@ public class VisitDTO implements AbstractDTO{
 
 	public void setStatusId(String statusId) {
 		this.statusId = statusId;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 

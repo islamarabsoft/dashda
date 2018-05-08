@@ -65,13 +65,13 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 	private Governorate governorate;
 	
 	@Override
-	public UserDTO getUserInfo(String username) throws UserServiceExceptioManager {
+	public AppResponse getUserInfo(String username) throws UserServiceExceptioManager {
 		
 		user = userDao.findUserByUsername(username);
 				
 		userDTO = prepareUserDTOObject(user);
 		
-		return userDTO;
+		return okResponse(userDTO, "User Info");
 	}
 
 	@Override

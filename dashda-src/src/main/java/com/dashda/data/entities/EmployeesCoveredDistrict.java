@@ -19,18 +19,18 @@ import javax.persistence.Table;
 @Table(name = "EMPLOYEES_COVERED_DISTRICT")
 public class EmployeesCoveredDistrict implements java.io.Serializable, com.dashda.data.entities.Entity {
 
-	private int id;
+	private Integer id;
 	private District district;
 	private Employee employee;
 
 	public EmployeesCoveredDistrict() {
 	}
 
-	public EmployeesCoveredDistrict(int id) {
+	public EmployeesCoveredDistrict(Integer id) {
 		this.id = id;
 	}
 
-	public EmployeesCoveredDistrict(int id, District district, Employee employee) {
+	public EmployeesCoveredDistrict(Integer id, District district, Employee employee) {
 		this.id = id;
 		this.district = district;
 		this.employee = employee;
@@ -40,11 +40,11 @@ public class EmployeesCoveredDistrict implements java.io.Serializable, com.dashd
 	@GeneratedValue(strategy = IDENTITY)
 	
 	@Column(name = "ID", unique = true, nullable = false, updatable = false)
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

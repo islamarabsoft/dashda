@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author mhanafy
  *
  */
-@CrossOrigin
+@CrossOrigin({@code Access-Control-Allow-Headers})
 public abstract class AbstractController {
 
 	protected final Logger log = LoggerFactory.getLogger(AbstractController.class);

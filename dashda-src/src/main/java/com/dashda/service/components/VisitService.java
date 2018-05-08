@@ -4,12 +4,11 @@
 package com.dashda.service.components;
 
 import java.text.ParseException;
-import java.util.List;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.RequestInput;
-import com.dashda.controllers.dto.VisitDTO;
-import com.dashda.controllers.dto.VisitInquiryDTO;
+import com.dashda.controllers.dto.VisitAddCommentInputDTO;
+import com.dashda.controllers.dto.VisitCompleteInputDTO;
+import com.dashda.controllers.dto.VisitListInputDTO;
 import com.dashda.exception.VisitServiceException;
 
 /**
@@ -18,10 +17,16 @@ import com.dashda.exception.VisitServiceException;
  */
 public interface VisitService {
 
-	public AppResponse visitItemsList(String username, VisitInquiryDTO visitInquiryDTO) throws VisitServiceException, ParseException;
+	public AppResponse visitItemsList(String username, VisitListInputDTO visitInquiryDTO) throws VisitServiceException, ParseException;
 
-	public AppResponse completeVisits(String username, RequestInput requestInput)throws VisitServiceException;
+	public AppResponse completeVisit(String username, VisitCompleteInputDTO visitCompleteInput)throws VisitServiceException;
 
-	public AppResponse dicardVisits(String username, RequestInput requestInput)throws VisitServiceException;
+	public AppResponse addComment(String username, VisitAddCommentInputDTO visitAddCommentInputDTO)throws VisitServiceException;
+	
+	public void discardAllVisitsItemsBeforeHoursDuration(int hours);
+	
+	
+	
+	//public AppResponse dicardVisits(String username, RequestInput requestInput)throws VisitServiceException;
 
 }
