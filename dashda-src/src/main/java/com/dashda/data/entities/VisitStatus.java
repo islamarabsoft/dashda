@@ -23,7 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name= "VISIT_STATUS")
-public class VisitStatus implements Serializable, com.dashda.data.entities.Entity{
+public class VisitStatus implements Serializable, com.dashda.data.entities.BaseEntity{
 
 	private int id;
 	private String name;

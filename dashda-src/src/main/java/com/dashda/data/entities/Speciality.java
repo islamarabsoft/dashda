@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name= "SPECIALTY")
-public class Speciality implements Serializable, com.dashda.data.entities.Entity{
+public class Speciality implements Serializable, com.dashda.data.entities.BaseEntity{
 
 	private Integer id;
 	private String name;

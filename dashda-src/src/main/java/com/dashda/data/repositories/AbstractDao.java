@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dashda.data.entities.EmployeeServiceProvider;
-import com.dashda.data.entities.Entity;
+import com.dashda.data.entities.BaseEntity;
  
 
 public abstract class AbstractDao < T extends Serializable >{
@@ -36,7 +36,11 @@ public abstract class AbstractDao < T extends Serializable >{
         this.DAOClass = DAOClass;
      }
     
-    /**
+    public Class<T> getDAOClass() {
+		return DAOClass;
+	}
+
+	/**
      * Don't Use Before Setting <br>
      * DAOClass value on child class <br>
      * Like <br>
@@ -74,7 +78,7 @@ public abstract class AbstractDao < T extends Serializable >{
         getSession().delete(entity);
     }
     
-    public void save(Entity entity) {
+    public void save(BaseEntity entity) {
     	getSession().save(entity);
     	getSession().flush();
     	getSession().clear();

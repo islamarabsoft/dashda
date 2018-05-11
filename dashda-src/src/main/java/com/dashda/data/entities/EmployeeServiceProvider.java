@@ -21,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "EMPLOYEE_SERVICE_PROVIDER")
-public class EmployeeServiceProvider implements java.io.Serializable, com.dashda.data.entities.Entity{
+public class EmployeeServiceProvider implements java.io.Serializable, com.dashda.data.entities.BaseEntity{
 	
 	/**
 	 * 

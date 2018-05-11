@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "EMPLOYEES_COVERED_DISTRICT")
-public class EmployeesCoveredDistrict implements java.io.Serializable, com.dashda.data.entities.Entity {
+public class EmployeesCoveredDistrict implements java.io.Serializable, com.dashda.data.entities.BaseEntity {
 
 	private Integer id;
 	private District district;

@@ -31,7 +31,6 @@ import com.dashda.data.repositories.EmployeeDao;
 import com.dashda.data.repositories.UserDao;
 import com.dashda.enums.PermissionTypeEnum;
 import com.dashda.exception.UserServiceExceptioManager;
-import com.google.appengine.repackaged.com.google.common.collect.ClassToInstanceMap;
 
 /**
  * @author mhanafy

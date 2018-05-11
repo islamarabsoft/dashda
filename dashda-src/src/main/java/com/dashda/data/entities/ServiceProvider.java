@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "SERVICE_PROVIDER")
-public class ServiceProvider implements java.io.Serializable, com.dashda.data.entities.Entity {
+public class ServiceProvider implements java.io.Serializable, com.dashda.data.entities.BaseEntity {
 
 	private Integer id;
 	private String arName;

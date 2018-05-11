@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "VISIT")
-public class Visit implements java.io.Serializable,com.dashda.data.entities.Entity {
+public class Visit implements java.io.Serializable,com.dashda.data.entities.BaseEntity {
 
 	private int id;
 	private ServiceProvider serviceProvider;

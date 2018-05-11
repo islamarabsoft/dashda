@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "SCHEDULE")
-public class Schedule implements java.io.Serializable, com.dashda.data.entities.Entity {
+public class Schedule implements java.io.Serializable, com.dashda.data.entities.BaseEntity {
 
 	private Integer id;
 	private ServiceProvider serviceProvider;

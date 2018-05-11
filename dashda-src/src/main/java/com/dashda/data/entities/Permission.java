@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "PERMISSION")
-public class Permission implements java.io.Serializable, com.dashda.data.entities.Entity {
+public class Permission implements java.io.Serializable, com.dashda.data.entities.BaseEntity {
 
 	private Integer id;
 	private String name;
