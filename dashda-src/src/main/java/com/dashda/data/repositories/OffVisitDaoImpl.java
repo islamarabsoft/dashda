@@ -7,12 +7,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.OffVisit;
 import com.dashda.enums.OffVisitStatusEnum;
+import com.dashda.utilities.DateUtilities;
 
 /**
  * @author mhanafy
@@ -64,6 +66,7 @@ public class OffVisitDaoImpl extends AbstractDao implements OffVisitDao {
 		Criteria criteria = getSession().createCriteria(OffVisit.class);
 		criteria.add(Restrictions.eq("offVisitStatus.id", OffVisitStatusEnum.PENDING_APPROVAL.getValue()));
 		criteria.add(Restrictions.eq("manager.id", managerId));
+		criteria.addOrder(Order.desc("id"));
 		
 		return criteria.list();
 	}
@@ -72,9 +75,16 @@ public class OffVisitDaoImpl extends AbstractDao implements OffVisitDao {
 	@Override
 	public List<OffVisit> findOffVisitsAfterToday(Employee employee) {
 		Criteria criteria = getSession().createCriteria(OffVisit.class);
-		criteria.add(Restrictions.gt("dateTime", new Date()));
+		criteria.add(Restrictions.ge("dateTime", DateUtilities.getZeroTimeDate(new Date())));
 		criteria.add(Restrictions.eq("employee", employee));
+		criteria.addOrder(Order.desc("dateTime"));
 		
 		return criteria.list();
+	}
+
+
+	@Override
+	public void approvOffVisitRequest(OffVisit offVisit) {
+		update(offVisit);
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dashda.service.components;
+package com.dashda.data.repositories;
 
 import com.dashda.controllers.dto.AbstractDTO;
 
@@ -16,6 +16,7 @@ public class OffVisitDTO implements AbstractDTO {
 	private String offVisitReason;
 	private String employeeName;
 	private String offVisitDate;
+	private String comment;
 	private String status;
 	private int statusId;
 	
@@ -51,6 +52,12 @@ public class OffVisitDTO implements AbstractDTO {
 	}
 	public void setOffVisitDate(String offVisitDate) {
 		this.offVisitDate = offVisitDate;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	public String getStatus() {
 		return status;

@@ -30,7 +30,7 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 	}
 
 	@Override
-	public void update(Schedule schedule) throws SQLException {
+	public void update(Schedule schedule){
 		getSession().update(schedule);
 		
 	}

@@ -21,4 +21,6 @@ public interface OffVisitDao {
 
 	public List<OffVisit> findOffVisitsAfterToday(Employee employee);
 
+	public void approvOffVisitRequest(OffVisit offVisit);
+
 }

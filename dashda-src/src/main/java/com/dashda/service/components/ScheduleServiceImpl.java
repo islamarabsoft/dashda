@@ -253,7 +253,7 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 				}
 				scheduleDao.update(schedule);
 				
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				log.error("Visit Error ::: ", e);
 			}
 			
@@ -282,7 +282,7 @@ public class ScheduleServiceImpl extends ServicesManager implements ScheduleServ
 				}				
 				scheduleDao.update(schedule);
 				
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				log.error("Visit Error ::: ", e);
 			}
 		}

@@ -23,6 +23,7 @@ import com.dashda.data.entities.OffVisit;
 import com.dashda.data.entities.OffVisitReason;
 import com.dashda.data.entities.OffVisitStatus;
 import com.dashda.data.entities.User;
+import com.dashda.data.repositories.OffVisitDTO;
 import com.dashda.data.repositories.OffVisitDao;
 import com.dashda.data.repositories.OffVisitReasonDao;
 import com.dashda.data.repositories.UserDao;
@@ -94,6 +95,9 @@ public class OffVisitServiceImpl extends ServicesManager implements OffVisitServ
 			offVisit = offVisitDao.findOffVisit(offVisitId);
 			if(offVisit == null)
 				throw new OffVisitServiceException(ERROR_CODE_1024);
+			if(offVisit.getOffVisitStatus().getId() == OffVisitStatusEnum.ACCEPTED.getValue() 
+					|| offVisit.getOffVisitStatus().getId() == OffVisitStatusEnum.REJECTED.getValue()) 
+				throw new OffVisitServiceException(ERROR_CODE_1025);
 		}
 		
 		if(offVisitId == 0) {
@@ -131,6 +135,10 @@ public class OffVisitServiceImpl extends ServicesManager implements OffVisitServ
 		OffVisit offVisit = offVisitDao.findOffVisit(deleteOffVisitInputDTO.getOffVisitId());
 		if(offVisit == null)
 			throw new OffVisitServiceException(ERROR_CODE_1024);
+		
+		if(offVisit.getOffVisitStatus().getId() == OffVisitStatusEnum.ACCEPTED.getValue() 
+				|| offVisit.getOffVisitStatus().getId() == OffVisitStatusEnum.REJECTED.getValue()) 
+			throw new OffVisitServiceException(ERROR_CODE_1025);
 		
 		offVisitDao.removeOffVisit(offVisit);
 		return emptyResponse("Off Visit Deleted Successfully");
@@ -176,6 +184,7 @@ public class OffVisitServiceImpl extends ServicesManager implements OffVisitServ
 			offVisitDTO.setOffVisitDate(DateUtilities.dateFormate(offVisit.getDateTime()));
 			offVisitDTO.setStatus(offVisit.getOffVisitStatus().getName());
 			offVisitDTO.setStatusId(offVisit.getOffVisitStatus().getId());
+			offVisitDTO.setComment(offVisit.getComment());
 			
 			offVisitDTOs.add(offVisitDTO);
 		}

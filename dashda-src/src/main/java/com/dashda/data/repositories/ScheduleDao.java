@@ -18,7 +18,7 @@ public interface ScheduleDao {
 
 	void saveScheduleItem(Schedule schedule);
 
-	void update(Schedule schedule) throws SQLException;
+	void update(Schedule schedule);
 
 	Schedule findScheduleByID(Integer scheduleItem);
 

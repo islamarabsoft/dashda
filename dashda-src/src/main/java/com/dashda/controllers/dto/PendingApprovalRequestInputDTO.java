@@ -8,8 +8,8 @@ public class PendingApprovalRequestInputDTO implements AbstractDTO {
 	private String employeeName;
 	private String requestTypeId;
 	
-	private String serviceProviderId;
-	private String serviceProviderName;
+	private int serviceProviderId;
+	private int serviceProviderTypeId;
 	
 	private String reason;
 	private String comment;
@@ -54,20 +54,20 @@ public class PendingApprovalRequestInputDTO implements AbstractDTO {
 		this.requestTypeId = requestTypeId;
 	}
 
-	public String getServiceProviderId() {
+	public int getServiceProviderId() {
 		return serviceProviderId;
 	}
 
-	public void setServiceProviderId(String serviceProviderId) {
+	public void setServiceProviderId(int serviceProviderId) {
 		this.serviceProviderId = serviceProviderId;
 	}
 
-	public String getServiceProviderName() {
-		return serviceProviderName;
+	public int getServiceProviderTypeId() {
+		return serviceProviderTypeId;
 	}
 
-	public void setServiceProviderName(String serviceProviderName) {
-		this.serviceProviderName = serviceProviderName;
+	public void setServiceProviderTypeId(int serviceProviderTypeId) {
+		this.serviceProviderTypeId = serviceProviderTypeId;
 	}
 
 	public String getReason() {
