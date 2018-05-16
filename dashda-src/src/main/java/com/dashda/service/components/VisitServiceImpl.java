@@ -166,6 +166,8 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		log.info("Current Date is {"+date+"}");
 		log.info("Engin Should Discard All Not Completed Visits Before {"+hours+"} Hours");
 		log.info("Engin Should Discard All Not Completed Visits Before {"+executionDate+"}");
+		visitDao.discardAllVisitsBeforeDate(executionDate);
+		log.info("Engin Should Discard All Not Completed Visits Successfully");
 		
 	}
 	

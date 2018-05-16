@@ -33,4 +33,6 @@ public interface VisitDao {
 	public Visit findCompletedVisitByDoctorAndEmployee(ServiceProvider doctor, Employee employee);
 
 	public List<Visit> findVisitNotComplete(ServiceProvider serviceProvider, Employee employee);
+
+	public void discardAllVisitsBeforeDate(Date executionDate);
 }

@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -125,6 +127,14 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 		criteria.add(Restrictions.in("visitStatus.id", VisitStatusEnum.PLANNED.getValue()));
 		
 		return criteria.list();
+	}
+
+	@Override
+	public void discardAllVisitsBeforeDate(Date executionDate) {
+		Query query = getSession().createQuery("update Visit set visitStatus.id = 3 where datetime < :date and visitStatus.id = 1");
+		query.setParameter("date", executionDate);
+		query.executeUpdate();
+		
 	}
 
 
