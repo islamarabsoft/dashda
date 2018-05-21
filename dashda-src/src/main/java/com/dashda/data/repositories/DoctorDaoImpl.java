@@ -6,6 +6,7 @@ package com.dashda.data.repositories;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,9 @@ public class DoctorDaoImpl extends AbstractDao implements DoctorDao {
 		criteria.add(Restrictions.in("district", districts));
 		if(serviceProviderType != 0)
 			criteria.add(Restrictions.eq("serviceProviderType.id", serviceProviderType));
+		
+		criteria.addOrder(Order.asc("speciality"));
+		criteria.addOrder(Order.asc("enName"));
 		
 		List<ServiceProvider> doctors = criteria.list(); 
 		

@@ -25,7 +25,8 @@ public class Account implements java.io.Serializable {
 	private String contactPersonPhone;
 	private int contactInfoId;
 	private Byte active;
-	private Set users = new HashSet(0);
+	private int higherLevelApproval;
+	private Set employees = new HashSet(0);
 
 	public Account() {
 	}
@@ -35,13 +36,13 @@ public class Account implements java.io.Serializable {
 	}
 
 	public Account(String name, String contactPersonName, String contactPersonPhone, int contactInfoId, Byte active,
-			Set users) {
+			Set employees) {
 		this.name = name;
 		this.contactPersonName = contactPersonName;
 		this.contactPersonPhone = contactPersonPhone;
 		this.contactInfoId = contactInfoId;
 		this.active = active;
-		this.users = users;
+		this.employees = employees;
 	}
 
 	@Id
@@ -101,13 +102,22 @@ public class Account implements java.io.Serializable {
 		this.active = active;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
-	public Set<User> getUsers() {
-		return this.users;
+	@Column(name="HIGHER_LEVEL_APPROVAL")
+	public int getHigherLevelApproval() {
+		return higherLevelApproval;
 	}
 
-	public void setUsers(Set users) {
-		this.users = users;
+	public void setHigherLevelApproval(int higherLevelApproval) {
+		this.higherLevelApproval = higherLevelApproval;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
+	public Set<Employee> getEmployees() {
+		return this.employees;
+	}
+
+	public void setEmployees(Set employees) {
+		this.employees = employees;
 	}
 
 }

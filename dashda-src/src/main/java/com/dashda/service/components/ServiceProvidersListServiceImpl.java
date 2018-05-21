@@ -22,6 +22,7 @@ import com.dashda.data.entities.EmployeeServiceProvider;
 import com.dashda.data.entities.EmployeesCoveredDistrict;
 import com.dashda.data.entities.User;
 import com.dashda.data.repositories.DoctorDao;
+import com.dashda.data.repositories.EmployeeServiceProviderDao;
 import com.dashda.data.repositories.UserDao;
 import com.dashda.exception.ServiceProviderServiceExceptionManager;
 
@@ -42,6 +43,10 @@ public class ServiceProvidersListServiceImpl extends ServicesManager implements 
 	
 	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	EmployeeServiceProviderDao employeeServiceProviderDao;
+	
 
 	private List<District> districts;
 	private ServiceProvider serviceProvider;
@@ -71,6 +76,9 @@ public class ServiceProvidersListServiceImpl extends ServicesManager implements 
 		List<ServiceProvider> serviceProviders = 
 						doctorDao.doctorsList(districts, serviceProviderInputDTO.getServiceTypeId());
 		
+		List<EmployeeServiceProvider> employeeServiceProviders = employeeServiceProviderDao
+				.employeeServiceProviderByEmployee(user.getEmployee(), serviceProviderInputDTO.getServiceTypeId());
+		
 		if(serviceProviders.isEmpty())
 			throw new ServiceProviderServiceExceptionManager(ERROR_CODE_1010);
 		
@@ -89,12 +97,12 @@ public class ServiceProvidersListServiceImpl extends ServicesManager implements 
 			assignServiceProviderDTO.setSpeciality(serviceProvider.getSpeciality().getName());
 			assignServiceProviderDTO.setGovernorateName(serviceProvider.getDistrict().getGovernorate().getEnName());
 			
-			for (Iterator employeeDoctorIt = serviceProvider.getEmployeeServiceProviders().iterator(); employeeDoctorIt.hasNext();) {
-				EmployeeServiceProvider employeeDoctor = (EmployeeServiceProvider) employeeDoctorIt.next();
-				if(employeeDoctor.getEmployee().getId() == user.getEmployee().getId())
-					assignServiceProviderDTO.setAssignedId(employeeDoctor.getId()+"");
-			}
 
+			for (Iterator employeeDoctorIt = employeeServiceProviders.iterator(); employeeDoctorIt.hasNext();) {
+			EmployeeServiceProvider employeeServiceProvider = (EmployeeServiceProvider) employeeDoctorIt.next();
+			if(employeeServiceProvider.getServiceProvider().getId() == serviceProvider.getId())
+				assignServiceProviderDTO.setAssignedId(employeeServiceProvider.getId()+"");
+			}
 			
 			
 			serviceProviderDTOs.add(assignServiceProviderDTO);

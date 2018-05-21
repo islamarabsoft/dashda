@@ -3,8 +3,6 @@
  */
 package com.dashda.service.components;
 
-import java.net.Authenticator.RequestorType;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,12 +15,14 @@ import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.InputRequestApprovalDTO;
 import com.dashda.controllers.dto.PendingApprovalRequestInputDTO;
 import com.dashda.data.entities.Employee;
+import com.dashda.data.entities.EmployeeHierarchy;
 import com.dashda.data.entities.OffVisit;
 import com.dashda.data.entities.OffVisitStatus;
 import com.dashda.data.entities.Schedule;
 import com.dashda.data.entities.ScheduleStatus;
 import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
+import com.dashda.data.repositories.EmployeeHierarchyDao;
 import com.dashda.data.repositories.OffVisitDao;
 import com.dashda.data.repositories.ScheduleDao;
 import com.dashda.data.repositories.UserDao;
@@ -31,7 +31,6 @@ import com.dashda.enums.OffVisitStatusEnum;
 import com.dashda.enums.RequestTypeEnum;
 import com.dashda.enums.ScheduleStatusEnum;
 import com.dashda.exception.ApprovalServiceException;
-import com.dashda.exception.ScheduleExceptionManager;
 
 /**
  * @author mhanafy
@@ -52,31 +51,54 @@ public class RequestServiceImpl extends ServicesManager implements RequestServic
 	@Autowired
 	VisitDao visitDao;
 	
+	@Autowired
+	EmployeeHierarchyDao employeeHierarchyDao;
+	
 	@Override
 	public AppResponse getListOfPendingApprovalrequests(String username) throws ApprovalServiceException {
 		PendingApprovalRequestInputDTO pendingApprovalRequestDTO;
 		List pendingApprovalRequestDTOs = new ArrayList<PendingApprovalRequestInputDTO>();
 		
 		User user = userDao.findUserByUsername(username);
-		Employee employee = user.getEmployee(); 
-		if (employee == null) 
+		Employee manager = user.getEmployee(); 
+		if (manager == null) 
 			throw new ApprovalServiceException(ERROR_CODE_1001);
+		
+		//TODO check dial HIGHER_LEVEL_APPROVAL
+		int higherLevelApproval = manager.getAccount().getHigherLevelApproval();
 
-		//For Schedule List		
-		List<Schedule> schedules = scheduleDao.findListofScheduleItemsNeedAttention(employee.getId());		
+		
+		//TODO Get List of Subordinate
+		List<EmployeeHierarchy> hierarchy = employeeHierarchyDao.getSubordinates(manager, higherLevelApproval);
+		if(hierarchy.isEmpty())
+			throw new ApprovalServiceException(ERROR_CODE_1026);
+		
+		List<Employee> employees = new ArrayList();
+		
+		for (Iterator iterator = hierarchy.iterator(); iterator.hasNext();) {			
+			EmployeeHierarchy employeeHierarchy = (EmployeeHierarchy) iterator.next();
+			employees.add(employeeHierarchy.getEmployee());
+			System.out.println(employeeHierarchy.getEmployee().getId()+", ");
+		}
+		
+		
+		//TODO Get List of Items for
+		List<Schedule> schedules = scheduleDao.findListOfSubordinateSchedules(employees);
 
+		
 		for (Iterator iterator = schedules.iterator(); iterator.hasNext();) {
 			Schedule schedule = (Schedule) iterator.next();
 			
 			pendingApprovalRequestDTO = new PendingApprovalRequestInputDTO();
-			pendingApprovalRequestDTO.setEmployeeId(employee.getId()+"");
-			pendingApprovalRequestDTO.setEmployeeName(employee.getContact().getFirstName());
+			pendingApprovalRequestDTO.setEmployeeId(schedule.getEmployeeByEmployeeId().getId()+"");
+			pendingApprovalRequestDTO.setEmployeeName(schedule.getEmployeeByEmployeeId().getContact().getFirstName());
 			
 			pendingApprovalRequestDTO.setRequestId(schedule.getId());
 			pendingApprovalRequestDTO.setRequestTypeId(RequestTypeEnum.SCHEDULE.getValue()+"");
 			pendingApprovalRequestDTO.setRequestDate(schedule.getDatetime()+"");
 			
 			pendingApprovalRequestDTO.setServiceProviderId(schedule.getServiceProvider().getId());
+			pendingApprovalRequestDTO.setServiceProviderName(schedule.getServiceProvider().getEnName());
 			pendingApprovalRequestDTO
 				.setServiceProviderTypeId(schedule.getServiceProvider().getServiceProviderType().getId());
 			pendingApprovalRequestDTOs.add(pendingApprovalRequestDTO);
@@ -84,14 +106,16 @@ public class RequestServiceImpl extends ServicesManager implements RequestServic
 		}
 		
 		//Off Visits List
-		List<OffVisit> offVisits = offVisitDao.findPendingApproval(employee.getId());
+		//List<OffVisit> offVisits = offVisitDao.findPendingApproval(manager.getId());
+		
+		List<OffVisit> offVisits = offVisitDao.findListOfSubordinateOffVisit(employees);
 		
 		for (Iterator iterator = offVisits.iterator(); iterator.hasNext();) {
 			OffVisit offVisit = (OffVisit) iterator.next();
 			
 			pendingApprovalRequestDTO = new PendingApprovalRequestInputDTO();
-			pendingApprovalRequestDTO.setEmployeeId(employee.getId()+"");
-			pendingApprovalRequestDTO.setEmployeeName(employee.getContact().getFirstName());
+			pendingApprovalRequestDTO.setEmployeeId(offVisit.getEmployee().getId()+"");
+			pendingApprovalRequestDTO.setEmployeeName(offVisit.getEmployee().getContact().getFirstName());
 			
 			pendingApprovalRequestDTO.setRequestId(offVisit.getId());
 			pendingApprovalRequestDTO.setRequestTypeId(RequestTypeEnum.OFF_VISIT.getValue()+"");

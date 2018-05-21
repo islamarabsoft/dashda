@@ -9,6 +9,8 @@ public class PendingApprovalRequestInputDTO implements AbstractDTO {
 	private String requestTypeId;
 	
 	private int serviceProviderId;
+	private String serviceProviderName;
+	
 	private int serviceProviderTypeId;
 	
 	private String reason;
@@ -60,6 +62,14 @@ public class PendingApprovalRequestInputDTO implements AbstractDTO {
 
 	public void setServiceProviderId(int serviceProviderId) {
 		this.serviceProviderId = serviceProviderId;
+	}
+
+	public String getServiceProviderName() {
+		return serviceProviderName;
+	}
+
+	public void setServiceProviderName(String serviceProviderName) {
+		this.serviceProviderName = serviceProviderName;
 	}
 
 	public int getServiceProviderTypeId() {

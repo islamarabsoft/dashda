@@ -32,4 +32,6 @@ public interface ScheduleDao {
 
 	List<Schedule> findScheduleItemNotApproved(ServiceProvider serviceProvider, Employee employee);
 
+	public List<Schedule> findListOfSubordinateSchedules(List<Employee> subordinates);
+
 }

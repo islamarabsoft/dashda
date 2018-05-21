@@ -23,4 +23,6 @@ public interface OffVisitDao {
 
 	public void approvOffVisitRequest(OffVisit offVisit);
 
+	public List<OffVisit> findListOfSubordinateOffVisit(List<Employee> subordinates);
+
 }

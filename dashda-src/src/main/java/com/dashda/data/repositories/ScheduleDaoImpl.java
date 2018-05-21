@@ -87,4 +87,13 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 		return criteria.list();
 	}
 
+	@Override
+	public List<Schedule> findListOfSubordinateSchedules(List<Employee> subordinates) {
+		Criteria criteria = getSession().createCriteria(Schedule.class);
+		criteria.add(Restrictions.in("employeeByEmployeeId", subordinates));
+		criteria.add(Restrictions.eq("scheduleStatus.id", 1));
+		
+		return criteria.list();
+	}
+
 }

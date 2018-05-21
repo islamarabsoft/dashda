@@ -30,8 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		@Override
 	    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 			auth.jdbcAuthentication().dataSource(dataSource)
-			.usersByUsernameQuery("SELECT USERNAME, PASSWORD, (U.ACTIVE AND A.ACTIVE) FROM USER U " +
-					" INNER JOIN ACCOUNT A ON A.ID = U.ACCOUNT_ID AND USERNAME = ?")
+			.usersByUsernameQuery("SELECT USERNAME, PASSWORD, " + 
+					"CASE WHEN A.ACTIVE IS NOT NULL THEN (U.ACTIVE AND A.ACTIVE) ELSE U.ACTIVE END AS ACTIVE " + 
+					"FROM USER U " + 
+					"LEFT JOIN EMPLOYEE E ON E.ID = U.EMPLOYEE_ID " + 
+					"LEFT JOIN ACCOUNT A ON A.ID = E.ACCOUNT_ID WHERE U.USERNAME = ?")
 			.authoritiesByUsernameQuery("SELECT USERNAME, PERMISSION FROM USER U " + 
 					"INNER JOIN USER_ROLE UR ON UR.ID = U.USER_ROLE_ID AND U.USERNAME = ? " + 
 					"INNER JOIN USER_ROLE_PERMISSION AS URP ON UR.ID = URP.USER_ROLE_ID " +

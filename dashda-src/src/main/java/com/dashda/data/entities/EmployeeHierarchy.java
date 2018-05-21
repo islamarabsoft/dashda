@@ -22,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="EMPLOYEE_HIERARCHY")
-public class EmoloyeeHierarchy implements Serializable, BaseEntity {
+public class EmployeeHierarchy implements Serializable, BaseEntity {
 
 	private int id;
 	private Employee employee;
@@ -30,14 +30,14 @@ public class EmoloyeeHierarchy implements Serializable, BaseEntity {
 	private int structureLevel;
 	
 	
-	public EmoloyeeHierarchy() {
+	public EmployeeHierarchy() {
 	}
 	
-	public EmoloyeeHierarchy(Employee employee) {
+	public EmployeeHierarchy(Employee employee) {
 		this.employee = employee;
 	}
 	
-	public EmoloyeeHierarchy(Employee employee, Employee manager) {
+	public EmployeeHierarchy(Employee employee, Employee manager) {
 		this.employee = employee;
 		this.manager = manager;
 	}

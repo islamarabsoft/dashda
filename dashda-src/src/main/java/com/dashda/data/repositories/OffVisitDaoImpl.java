@@ -87,4 +87,16 @@ public class OffVisitDaoImpl extends AbstractDao implements OffVisitDao {
 	public void approvOffVisitRequest(OffVisit offVisit) {
 		update(offVisit);
 	}
+
+
+	@Override
+	public List<OffVisit> findListOfSubordinateOffVisit(List<Employee> subordinates) {
+		Criteria criteria = getSession().createCriteria(OffVisit.class);
+		criteria.add(Restrictions.eq("offVisitStatus.id", OffVisitStatusEnum.PENDING_APPROVAL.getValue()));
+		criteria.add(Restrictions.in("employee", subordinates));
+		
+		criteria.addOrder(Order.desc("id"));
+		
+		return criteria.list();
+	}
 }

@@ -23,7 +23,6 @@ import javax.persistence.UniqueConstraint;
 public class User implements java.io.Serializable {
 
 	private Integer id;
-	private Account account;
 	private Contact contact;
 	private Employee employee;
 	private UserRole userRole;
@@ -36,9 +35,8 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
-	public User(Account account, Contact contact, UserRole userRole, String username, String password, byte active,
+	public User(Contact contact, UserRole userRole, String username, String password, byte active,
 			Date createdAt) {
-		this.account = account;
 		this.contact = contact;
 		this.userRole = userRole;
 		this.username = username;
@@ -47,9 +45,8 @@ public class User implements java.io.Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public User(Account account, Contact contact, Employee employee, UserRole userRole, String username,
+	public User(Contact contact, Employee employee, UserRole userRole, String username,
 			String password, byte active, Date createdAt) {
-		this.account = account;
 		this.contact = contact;
 		this.employee = employee;
 		this.userRole = userRole;
@@ -69,16 +66,6 @@ public class User implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ACCOUNT_ID", nullable = false)
-	public Account getAccount() {
-		return this.account;
-	}
-
-	public void setAccount(Account account) {
-		this.account = account;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

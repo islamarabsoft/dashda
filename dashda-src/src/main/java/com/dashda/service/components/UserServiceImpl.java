@@ -142,14 +142,17 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 		mapper.map(userDTO, user);
 		
 		user.setPassword(generatePasswordEncoder.encode(userDTO.getPassword()));
-		user.setAccount(account);
 		
 		contactDao.createContact(contact);
-		employee.setContact(contact);
+		
 		
 		// persist on DB
-		if(employee != null)
+		if(employee != null) {
+			employee.setContact(contact);
+			employee.setAccount(account);
 			employeeDao.createEmployee(employee);
+		}
+			
 		
 		
 		if(employee != null)
