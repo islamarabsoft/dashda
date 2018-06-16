@@ -20,21 +20,22 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name= "SPECIALTY")
-public class Speciality implements Serializable, com.dashda.data.entities.BaseEntity{
+public class Specialty implements Serializable, com.dashda.data.entities.BaseEntity{
 
 	private Integer id;
 	private String name;
 	private Set serviceProviders = new HashSet(0);
+	private Set productSpecialties = new HashSet(0);
 	/**
 	 * 
 	 */
-	public Speciality() {
+	public Specialty() {
 		super();
 	}
 	/**
 	 * @param id
 	 */
-	public Speciality(Integer id) {
+	public Specialty(Integer id) {
 		super();
 		this.id = id;
 	}
@@ -44,7 +45,7 @@ public class Speciality implements Serializable, com.dashda.data.entities.BaseEn
 	 * @param name
 	 * @param serviceProviders
 	 */
-	public Speciality(Integer id, String name, Set serviceProviders) {
+	public Specialty(Integer id, String name, Set serviceProviders) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -70,7 +71,7 @@ public class Speciality implements Serializable, com.dashda.data.entities.BaseEn
 		this.name = name;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "speciality")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "specialty")
 	public Set<ServiceProvider> getServiceProviders() {
 		return serviceProviders;
 	}
@@ -78,4 +79,6 @@ public class Speciality implements Serializable, com.dashda.data.entities.BaseEn
 	public void setServiceProviders(Set serviceProviders) {
 		this.serviceProviders = serviceProviders;
 	}
+
+	
 }

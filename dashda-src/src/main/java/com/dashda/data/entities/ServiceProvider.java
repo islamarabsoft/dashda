@@ -28,7 +28,7 @@ public class ServiceProvider implements java.io.Serializable, com.dashda.data.en
 	private String arContactPersonName;
 	private String enContactPersonName;
 	private ServiceProviderType serviceProviderType;
-	private Speciality speciality;
+	private Specialty specialty;
 	private Governorate governorate;
 	private District district;
 	private ServiceProviderGrade ServiceProviderGrade;
@@ -68,7 +68,7 @@ public class ServiceProvider implements java.io.Serializable, com.dashda.data.en
 	 * @param employeesDoctors
 	 */
 	public ServiceProvider(int id, String arName, String enName, String arContactPersonName, String enContactPersonName,
-			ServiceProviderType serviceProviderType, Speciality speciality, Governorate governorate, District district,
+			ServiceProviderType serviceProviderType, Specialty speciality, Governorate governorate, District district,
 			ServiceProviderGrade ServiceProviderGrade, String arAddress, String enAddress, int active, Set schedules, Set visits,
 			Set employeeServiceProviders) {
 		super();
@@ -78,7 +78,7 @@ public class ServiceProvider implements java.io.Serializable, com.dashda.data.en
 		this.arContactPersonName = arContactPersonName;
 		this.enContactPersonName = enContactPersonName;
 		this.serviceProviderType = serviceProviderType;
-		this.speciality = speciality;
+		this.specialty = speciality;
 		this.governorate = governorate;
 		this.district = district;
 		this.ServiceProviderGrade = ServiceProviderGrade;
@@ -150,12 +150,12 @@ public class ServiceProvider implements java.io.Serializable, com.dashda.data.en
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SPECIALTY_ID")
-	public Speciality getSpeciality() {
-		return this.speciality;
+	public Specialty getSpecialty() {
+		return this.specialty;
 	}
 
-	public void setSpeciality(Speciality speciality) {
-		this.speciality = speciality;
+	public void setSpecialty(Specialty specialty) {
+		this.specialty = specialty;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

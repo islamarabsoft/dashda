@@ -11,7 +11,7 @@ public class AssignServiceProviderDTO implements AbstractDTO{
 
 	private Integer id;
 	private String serviceProviderName;
-	private String speciality;
+	private String specialty;
 	private String governorateName;
 	private String assignedId;
 	private String districtName;
@@ -30,11 +30,11 @@ public class AssignServiceProviderDTO implements AbstractDTO{
 	public void setServiceProviderName(String serviceProviderName) {
 		this.serviceProviderName = serviceProviderName;
 	}
-	public String getSpeciality() {
-		return speciality;
+	public String getSpecialty() {
+		return specialty;
 	}
-	public void setSpeciality(String speciality) {
-		this.speciality = speciality;
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
 	}
 	public String getGovernorateName() {
 		return governorateName;

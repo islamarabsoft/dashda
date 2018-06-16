@@ -1,9 +1,7 @@
 /**
  * 
  */
-package com.dashda.data.repositories;
-
-import com.dashda.controllers.dto.AbstractDTO;
+package com.dashda.controllers.dto;
 
 /**
  * @author mhanafy

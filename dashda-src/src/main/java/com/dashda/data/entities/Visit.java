@@ -25,6 +25,7 @@ public class Visit implements java.io.Serializable,com.dashda.data.entities.Base
 	private Employee employeeBySubordinateId;
 	private Date datetime;
 	private String comment;
+	private int doubleVisit;
 	private VisitStatus visitStatus;
 
 	public Visit() {
@@ -93,6 +94,15 @@ public class Visit implements java.io.Serializable,com.dashda.data.entities.Base
 
 	public void setDatetime(Date datetime) {
 		this.datetime = datetime;
+	}
+
+	@Column(name = "DOUBLE_VISIT", length = 1, insertable = false)
+	public int getDoubleVisit() {
+		return doubleVisit;
+	}
+
+	public void setDoubleVisit(int doubleVisit) {
+		this.doubleVisit = doubleVisit;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

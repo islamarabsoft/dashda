@@ -19,10 +19,17 @@ import com.dashda.controllers.dto.VisitAddCommentInputDTO;
 import com.dashda.controllers.dto.VisitCompleteInputDTO;
 import com.dashda.controllers.dto.VisitDTO;
 import com.dashda.controllers.dto.VisitListInputDTO;
+import com.dashda.data.entities.DoubleVisit;
 import com.dashda.data.entities.Employee;
+import com.dashda.data.entities.Product;
+import com.dashda.data.entities.ProductVisit;
 import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.entities.VisitStatus;
+import com.dashda.data.repositories.DoubleVisitDao;
+import com.dashda.data.repositories.EmployeeDao;
+import com.dashda.data.repositories.ProductDao;
+import com.dashda.data.repositories.ProductVisitDao;
 import com.dashda.data.repositories.UserDao;
 import com.dashda.data.repositories.VisitDao;
 import com.dashda.enums.VisitStatusEnum;
@@ -37,11 +44,28 @@ import com.dashda.utilities.DateUtilities;
 @Service
 public class VisitServiceImpl extends ServicesManager implements VisitService {
 
+	private static final int SINGLE_VISIT = 0;
+
+	private static final int DOUBLE_VISIT = 1;
+
 	@Autowired
 	UserDao userDao;
 	
 	@Autowired
 	VisitDao visitDao;
+	
+	@Autowired
+	DoubleVisitDao doubleVisitDao;
+	
+	@Autowired
+	ProductDao productDao;
+	
+	@Autowired
+	ProductVisitDao productVisitDao;
+	
+	@Autowired
+	EmployeeDao employeeDao;
+	
 
 	private List<Visit> visits;
 	
@@ -116,8 +140,65 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 	public AppResponse completeVisit(String username, VisitCompleteInputDTO visitCompleteInput) throws VisitServiceException {
 		
 		user = userDao.findUserByUsername(username);
+		employee = user.getEmployee();
 		
-		this.updateVisitStatus(user, visitCompleteInput.getId(), visitCompleteInput.getComment(), VisitStatusEnum.COMPLETE.getValue());
+		if(employee == null)
+			throw new VisitServiceException(ERROR_CODE_1001);
+		
+		visit = visitDao.findUserVisitByIdAndNotComplete(visitCompleteInput.getId(), employee.getId());
+		if(visit == null)
+			throw new VisitServiceException(ERROR_CODE_1004);
+		//check if approval in future 
+		if(DateUtilities.compareTwoDates(new Date(), visit.getDatetime()) == 1)
+			throw new VisitServiceException(ERROR_CODE_1019);
+		
+		visit.setComment(visitCompleteInput.getComment());
+		visit.setVisitStatus(new VisitStatus(VisitStatusEnum.COMPLETE.getValue()));
+		
+		if(visitCompleteInput.getDoubleVisit() == SINGLE_VISIT)
+			visit.setDoubleVisit(SINGLE_VISIT);
+		else {
+			visit.setDoubleVisit(DOUBLE_VISIT);
+			//Create double visit entity 
+						
+			for (Iterator managerIdsIt = visitCompleteInput.getManagerIds().iterator(); managerIdsIt.hasNext();) {
+				int managerId = (int) managerIdsIt.next();
+				DoubleVisit doubleVisit = new DoubleVisit();
+				
+				Employee manager = employeeDao.findEmployeeByID(managerId);
+				if (manager == null) {
+					throw new VisitServiceException(ERROR_CODE_1009);
+				}
+				
+				doubleVisit.setManager(manager);
+				doubleVisit.setEmployee(employee);
+				doubleVisit.setVisit(visit);
+				
+				doubleVisitDao.addDoubleVisit(doubleVisit);
+			}
+		}
+		
+		//Add product visits
+		for (Iterator productIt = visitCompleteInput.getProductIds().iterator(); productIt.hasNext();) {
+			int productId = (int) productIt.next();
+			ProductVisit productVisit = new ProductVisit();
+			
+			Product product = productDao.findProductById(productId);
+			
+			if (product == null) 
+				throw new VisitServiceException(ERROR_CODE_1020);
+			
+			productVisit.setProduct(product);
+			productVisit.setVisit(visit);
+			
+			productVisitDao.addProductVisit(productVisit);
+			
+		}
+		
+		visitDao.updateVisit(visit);
+		
+		
+		//this.updateVisitStatus(user, visitCompleteInput.getId(), visitCompleteInput.getComment(), VisitStatusEnum.COMPLETE.getValue());
 		
 		return emptyResponse("Visits status was updated successfully");
 	}

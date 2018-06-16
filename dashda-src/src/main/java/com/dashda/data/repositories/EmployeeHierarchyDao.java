@@ -16,4 +16,6 @@ public interface EmployeeHierarchyDao {
 
 	public List<EmployeeHierarchy> getSubordinates(Employee manager, int higherLevelApproval);
 
+	public List<EmployeeHierarchy> getManagers(Employee employee);
+
 }

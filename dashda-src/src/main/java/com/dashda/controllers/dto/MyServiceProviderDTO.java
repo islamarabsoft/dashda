@@ -41,10 +41,10 @@ public class MyServiceProviderDTO implements AbstractDTO{
 	public void setServiceProviderName(String serviceProviderName) {
 		this.serviceProviderName = serviceProviderName;
 	}
-	public String getSpeciality() {
+	public String getSpecialty() {
 		return speciality;
 	}
-	public void setSpeciality(String speciality) {
+	public void setSpecialty(String speciality) {
 		this.speciality = speciality;
 	}
 	public String getScheduleId() {

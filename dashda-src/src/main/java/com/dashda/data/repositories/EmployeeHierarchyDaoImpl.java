@@ -34,4 +34,13 @@ public class EmployeeHierarchyDaoImpl extends AbstractDao implements EmployeeHie
 		return criteria.list();
 	}
 
+
+	@Override
+	public List<EmployeeHierarchy> getManagers(Employee employee) {
+		Criteria criteria = getSession().createCriteria(EmployeeHierarchy.class);
+		criteria.add(Restrictions.eq("employee", employee));
+		
+		return criteria.list();
+	}
+
 }
