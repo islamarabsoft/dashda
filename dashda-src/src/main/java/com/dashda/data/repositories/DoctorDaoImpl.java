@@ -29,7 +29,7 @@ public class DoctorDaoImpl extends AbstractDao implements DoctorDao {
 		if(serviceProviderType != 0)
 			criteria.add(Restrictions.eq("serviceProviderType.id", serviceProviderType));
 		
-		criteria.addOrder(Order.asc("speciality"));
+		criteria.addOrder(Order.asc("specialty"));
 		criteria.addOrder(Order.asc("enName"));
 		
 		List<ServiceProvider> doctors = criteria.list(); 

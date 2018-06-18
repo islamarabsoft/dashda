@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.VisitAddCommentInputDTO;
+import com.dashda.controllers.dto.VisitAdhocVisitInputDTO;
+import com.dashda.controllers.dto.VisitAdhocVisitOutputDTO;
 import com.dashda.controllers.dto.VisitCompleteInputDTO;
 import com.dashda.controllers.dto.VisitDTO;
 import com.dashda.controllers.dto.VisitListInputDTO;
@@ -23,9 +25,11 @@ import com.dashda.data.entities.DoubleVisit;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Product;
 import com.dashda.data.entities.ProductVisit;
+import com.dashda.data.entities.ServiceProvider;
 import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.entities.VisitStatus;
+import com.dashda.data.repositories.DoctorDao;
 import com.dashda.data.repositories.DoubleVisitDao;
 import com.dashda.data.repositories.EmployeeDao;
 import com.dashda.data.repositories.ProductDao;
@@ -33,6 +37,7 @@ import com.dashda.data.repositories.ProductVisitDao;
 import com.dashda.data.repositories.UserDao;
 import com.dashda.data.repositories.VisitDao;
 import com.dashda.enums.VisitStatusEnum;
+import com.dashda.exception.ScheduleExceptionManager;
 import com.dashda.exception.VisitServiceException;
 import com.dashda.utilities.DateUtilities;
 
@@ -65,6 +70,9 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 	
 	@Autowired
 	EmployeeDao employeeDao;
+	
+	@Autowired
+	DoctorDao serviceProviderDao;
 	
 
 	private List<Visit> visits;
@@ -183,7 +191,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 			int productId = (int) productIt.next();
 			ProductVisit productVisit = new ProductVisit();
 			
-			Product product = productDao.findProductById(productId);
+			Product product = productDao.findProductByIdAndAccount(productId, employee.getAccount());
 			
 			if (product == null) 
 				throw new VisitServiceException(ERROR_CODE_1020);
@@ -250,6 +258,94 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		visitDao.discardAllVisitsBeforeDate(executionDate);
 		log.info("Engin Should Discard All Not Completed Visits Successfully");
 		
+	}
+
+	@Override
+	public AppResponse adhocVisit(String username, VisitAdhocVisitInputDTO visitAdhocVisitInput) throws VisitServiceException, ParseException {
+		User user = userDao.findUserByUsername(username);
+		
+		Employee employee = user.getEmployee();
+		if (employee == null) {
+			throw new VisitServiceException(ERROR_CODE_1001);
+		}
+		
+		//Get doctor entity
+		ServiceProvider serviceProvider = serviceProviderDao.findDoctorById(visitAdhocVisitInput.getDoctorId());
+		if (serviceProvider == null) {
+			throw new VisitServiceException(ERROR_CODE_1020);
+		}
+		
+		Date datetime = DateUtilities.convertToDate(visitAdhocVisitInput.getDate(), DateUtilities.DATE_FORMATE_PATTERN);
+		//Validate visit date
+		if(DateUtilities.compareTwoDates(new Date() 
+				, datetime) == 1)
+			throw new VisitServiceException(ERROR_CODE_1019);
+		
+		Visit visit = new Visit();
+		visit.setDatetime(datetime);
+		visit.setEmployeeByEmployeeId(employee);
+		visit.setServiceProvider(serviceProvider);
+		
+		//====================================review
+		visit.setComment(visitAdhocVisitInput.getComment());
+		visit.setVisitStatus(new VisitStatus(VisitStatusEnum.COMPLETE.getValue()));
+		
+		if(visitAdhocVisitInput.getDoubleVisit() == SINGLE_VISIT)
+			visit.setDoubleVisit(SINGLE_VISIT);
+		else 
+			visit.setDoubleVisit(DOUBLE_VISIT);
+		
+		visitDao.addVisit(visit);
+		
+		
+		
+		if(visitAdhocVisitInput.getDoubleVisit() == DOUBLE_VISIT) {
+			//Create double visit entity 
+						
+			for (Iterator managerIdsIt = visitAdhocVisitInput.getManagerIds().iterator(); managerIdsIt.hasNext();) {
+				int managerId = (int) managerIdsIt.next();
+				DoubleVisit doubleVisit = new DoubleVisit();
+				
+				Employee manager = employeeDao.findEmployeeByID(managerId);
+				if (manager == null) {
+					throw new VisitServiceException(ERROR_CODE_1009);
+				}
+				
+				doubleVisit.setManager(manager);
+				doubleVisit.setEmployee(employee);
+				doubleVisit.setVisit(visit);
+				
+				doubleVisitDao.addDoubleVisit(doubleVisit);
+			}
+		}
+		
+		//Add product visits
+		for (Iterator productIt = visitAdhocVisitInput.getProductIds().iterator(); productIt.hasNext();) {
+			int productId = (int) productIt.next();
+			ProductVisit productVisit = new ProductVisit();
+			
+			Product product = productDao.findProductByIdAndAccount(productId, employee.getAccount());
+			
+			if (product == null) 
+				throw new VisitServiceException(ERROR_CODE_1020);
+			
+			productVisit.setProduct(product);
+			productVisit.setVisit(visit);
+			
+			productVisitDao.addProductVisit(productVisit);
+			
+		}
+		
+		
+		//this.updateVisitStatus(user, visitCompleteInput.getId(), visitCompleteInput.getComment(), VisitStatusEnum.COMPLETE.getValue());
+
+		//====================
+		VisitAdhocVisitOutputDTO visitAdhocVisitOutputDTO 
+			= new VisitAdhocVisitOutputDTO(visit.getId()
+					, DateUtilities.dateFormate(visit.getDatetime())
+					, visit.getServiceProvider().getId()); 
+		
+		return createResponse(visitAdhocVisitOutputDTO, "Adhoc Visit created successfully");
 	}
 	
 	

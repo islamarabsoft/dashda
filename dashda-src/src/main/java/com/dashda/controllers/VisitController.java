@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.controllers.dto.VisitAddCommentInputDTO;
+import com.dashda.controllers.dto.VisitAdhocVisitInputDTO;
 import com.dashda.controllers.dto.VisitCompleteInputDTO;
 import com.dashda.controllers.dto.VisitListInputDTO;
 import com.dashda.exception.VisitServiceException;
@@ -52,6 +53,15 @@ public class VisitController extends AbstractController {
 		
 		return returnResponseEntityOk(visitService.completeVisit(user.getUsername(), visitCompleteInput));
 	}
+
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/adhoc-visit")
+	public ResponseEntity AdhocVisits(@AuthenticationPrincipal User user, 
+			@Valid @RequestBody VisitAdhocVisitInputDTO visitAdhocVisitInput) throws VisitServiceException, ParseException {
+		
+		return returnResponseEntityOk(visitService.adhocVisit(user.getUsername(), visitAdhocVisitInput));
+	}
+	
 	
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/visit-comment")

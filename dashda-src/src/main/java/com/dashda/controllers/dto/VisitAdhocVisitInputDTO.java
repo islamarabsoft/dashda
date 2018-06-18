@@ -12,10 +12,12 @@ import javax.validation.constraints.NotEmpty;
  * @author mhanafy
  *
  */
-public class VisitCompleteInputDTO {
+public class VisitAdhocVisitInputDTO implements AbstractDTO {
 
 	@Digits(fraction=0, integer=8)
-	private int id;
+	private int doctorId;
+	@NotEmpty
+	private String date;
 	private List<Integer> productIds;
 	private int doubleVisit;
 	private List<Integer> managerIds;
@@ -23,11 +25,17 @@ public class VisitCompleteInputDTO {
 	private String comment;
 	
 	
-	public int getId() {
-		return id;
+	public int getDoctorId() {
+		return doctorId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setDoctorId(int doctorId) {
+		this.doctorId = doctorId;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
 	}
 	public List<Integer> getProductIds() {
 		return productIds;
@@ -53,9 +61,5 @@ public class VisitCompleteInputDTO {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
-	
-	
-	
-	
+
 }

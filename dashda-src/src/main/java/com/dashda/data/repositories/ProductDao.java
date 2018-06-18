@@ -18,5 +18,14 @@ public interface ProductDao {
 
 	List<ProductSpecialty> findProductBySpecialty(Specialty specialty, Account account);
 
-	Product findProductById(int productId);
+	List<ProductSpecialty> findProductBySpecialty(Product product, Account account);
+	
+	Product findProductByIdAndAccount(int productId, Account account);
+
+	public void saveProduct(Product product);
+
+	void deleteProduct(Product product);
+
+	List<Product> finAllProductsByAccount(Account account);
+	
 }

@@ -5,8 +5,11 @@ package com.dashda.service.components;
 
 import java.text.ParseException;
 
+import javax.validation.Valid;
+
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.VisitAddCommentInputDTO;
+import com.dashda.controllers.dto.VisitAdhocVisitInputDTO;
 import com.dashda.controllers.dto.VisitCompleteInputDTO;
 import com.dashda.controllers.dto.VisitListInputDTO;
 import com.dashda.exception.VisitServiceException;
@@ -24,6 +27,8 @@ public interface VisitService {
 	public AppResponse addComment(String username, VisitAddCommentInputDTO visitAddCommentInputDTO)throws VisitServiceException;
 	
 	public void discardAllVisitsItemsBeforeHoursDuration(int hours);
+
+	public AppResponse adhocVisit(String username, VisitAdhocVisitInputDTO visitAdhocVisitInput) throws VisitServiceException, ParseException;
 	
 	
 	

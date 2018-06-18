@@ -68,7 +68,7 @@ public class ServiceProvider implements java.io.Serializable, com.dashda.data.en
 	 * @param employeesDoctors
 	 */
 	public ServiceProvider(int id, String arName, String enName, String arContactPersonName, String enContactPersonName,
-			ServiceProviderType serviceProviderType, Specialty speciality, Governorate governorate, District district,
+			ServiceProviderType serviceProviderType, Specialty specialty, Governorate governorate, District district,
 			ServiceProviderGrade ServiceProviderGrade, String arAddress, String enAddress, int active, Set schedules, Set visits,
 			Set employeeServiceProviders) {
 		super();
@@ -78,7 +78,7 @@ public class ServiceProvider implements java.io.Serializable, com.dashda.data.en
 		this.arContactPersonName = arContactPersonName;
 		this.enContactPersonName = enContactPersonName;
 		this.serviceProviderType = serviceProviderType;
-		this.specialty = speciality;
+		this.specialty = specialty;
 		this.governorate = governorate;
 		this.district = district;
 		this.ServiceProviderGrade = ServiceProviderGrade;

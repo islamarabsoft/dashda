@@ -40,9 +40,46 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 	}
 
 	@Override
-	public Product findProductById(int productId) {
-		return (Product)findOne(productId);
+	public List<ProductSpecialty> findProductBySpecialty(Product product, Account account) {
+		Criteria criteria = getSession().createCriteria(ProductSpecialty.class);
+		
+		criteria.createAlias("product", "p");
+		criteria.createAlias("p.account", "a");
+		
+		criteria.add(Restrictions.eq("product", product));
+		criteria.add(Restrictions.eq("a.id", account.getId()));
+		
+		return criteria.list();
 	}
+
+	
+	@Override
+	public Product findProductByIdAndAccount(int productId, Account account) {
+		Criteria criteria = getSession().createCriteria(Product.class);
+		criteria.add(Restrictions.eq("id", productId));
+		criteria.add(Restrictions.eq("account", account));
+		
+		return (Product)criteria.uniqueResult();
+	}
+
+	@Override
+	public void saveProduct(Product product) {
+		this.save(product);
+	}
+
+	@Override
+	public void deleteProduct(Product product) {
+		this.delete(product);
+	}
+
+	@Override
+	public List<Product> finAllProductsByAccount(Account account) {
+		Criteria criteria = getSession().createCriteria(Product.class);
+		criteria.add(Restrictions.eq("account", account));
+		
+		return criteria.list();
+	}
+
 
 	
 	
