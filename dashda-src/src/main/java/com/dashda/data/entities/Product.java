@@ -28,6 +28,15 @@ public class Product implements BaseEntity, Serializable {
 	private String name;
 	private Account account;
 	
+	
+	public Product() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Product(int id) {
+		super();
+		this.id = id;
+	}
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 

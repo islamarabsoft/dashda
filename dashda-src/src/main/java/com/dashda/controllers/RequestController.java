@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.controllers.dto.InputRequestApprovalDTO;
+import com.dashda.controllers.dto.InputRequestRejectDTO;
 import com.dashda.exception.ApprovalServiceException;
 import com.dashda.exception.ScheduleExceptionManager;
 import com.dashda.service.components.RequestService;

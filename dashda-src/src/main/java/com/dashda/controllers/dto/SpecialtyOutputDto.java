@@ -13,6 +13,17 @@ public class SpecialtyOutputDto implements AbstractDTO {
 	private String name;
 	
 	
+	
+	
+	public SpecialtyOutputDto(int id, String name) {
+		super();
+		Id = id;
+		this.name = name;
+	}
+	public SpecialtyOutputDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public int getId() {
 		return Id;
 	}

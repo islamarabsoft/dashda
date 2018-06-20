@@ -17,6 +17,13 @@ public class ProductOutputDTO implements AbstractDTO {
 	@NotEmpty
 	private String name;
 	
+	
+	
+	public ProductOutputDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public ProductOutputDTO(int id, String name) {
 		this.id = id;
 		this.name = name;

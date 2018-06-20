@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dashda.controllers.dto.AssignProductSpecialtyInputDTO;
 import com.dashda.controllers.dto.ProductBySpecialtyInputDTO;
 import com.dashda.controllers.dto.ProductCreateInputDTO;
 import com.dashda.controllers.dto.ProductDeleteInputDTO;
@@ -82,5 +83,21 @@ public class ProductController extends AbstractController {
 		return returnResponseEntityOk(productService.listOfProducts(user.getUsername()));
 	}
 	
+	@RequestMapping(method = RequestMethod.POST, value = "/assign-product-specialty")
+	@Secured("ROLE_PRODUCT_CONTRIBUTOR")
+	public ResponseEntity assignProductSpecialty(@AuthenticationPrincipal User user
+			, @Valid @RequestBody AssignProductSpecialtyInputDTO assignProductSpecialtyDTO)
+					throws ProductServiceException {
 	
+		return returnResponseEntityOk(productService.assignProductSpecialty(user.getUsername(), assignProductSpecialtyDTO));
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/specialties")
+	@Secured("ROLE_PRODUCT_CONTRIBUTOR")
+	public ResponseEntity getAllSpecialties(@AuthenticationPrincipal User user)
+					throws ProductServiceException {
+	
+		return returnResponseEntityOk(productService.getAllSpecialties());
+	}
 }

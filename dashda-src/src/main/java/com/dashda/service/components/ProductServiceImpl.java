@@ -7,22 +7,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.PortInUseException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.dashda.data.entities.User;
-import com.dashda.controllers.dto.AbstractDTO;
 import com.dashda.controllers.dto.AppResponse;
+import com.dashda.controllers.dto.AssignProductSpecialtyInputDTO;
 import com.dashda.controllers.dto.ProductBySpecialtyInputDTO;
 import com.dashda.controllers.dto.ProductCreateInputDTO;
 import com.dashda.controllers.dto.ProductDeleteInputDTO;
 import com.dashda.controllers.dto.ProductOutputDTO;
 import com.dashda.controllers.dto.ProductUpdateInputDTO;
 import com.dashda.controllers.dto.SpecialtyOutputDto;
+import com.dashda.data.entities.Account;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Product;
 import com.dashda.data.entities.ProductSpecialty;
@@ -66,20 +63,17 @@ public class ProductServiceImpl extends ServicesManager implements ProductServic
 		List<ProductSpecialty> productSpecialties = productDao
 				.findProductBySpecialty(specialty, employee.getAccount());
 		
-		List specialties = new ArrayList<SpecialtyOutputDto>();
+		List products = new ArrayList<ProductOutputDTO>();
 		
 		for (Iterator iterator = productSpecialties.iterator(); iterator.hasNext();) {
 			ProductSpecialty productSpecialty = (ProductSpecialty) iterator.next();
 			
-			SpecialtyOutputDto specialtyOutputDto = new SpecialtyOutputDto();
+			ProductOutputDTO productOutputDTO = new ProductOutputDTO(productSpecialty.getProduct().getId(), productSpecialty.getProduct().getName());
 			
-			specialtyOutputDto.setId(productSpecialty.getProduct().getId());
-			specialtyOutputDto.setName(productSpecialty.getProduct().getName());
-			
-			specialties.add(specialtyOutputDto);
+			products.add(productOutputDTO);
 		}
 		
-		return okListResponse(specialties, "List Size is : " + specialties.size());
+		return okListResponse(products, "List Size is : " + products.size());
 	}
 
 	@Override
@@ -173,6 +167,53 @@ public class ProductServiceImpl extends ServicesManager implements ProductServic
 		}
 
 		return okListResponse(productOutputDTOs, "List Size is : " + productOutputDTOs.size());
+	}
+
+	@Override
+	public AppResponse assignProductSpecialty(String username, AssignProductSpecialtyInputDTO assignProductSpecialtyDTO)
+			throws ProductServiceException {
+		
+		User user = userDao.findUserByUsername(username);
+		Employee employee = user.getEmployee();
+		if (employee == null) 
+			throw new ProductServiceException(ERROR_CODE_1001);
+		Account account = employee.getAccount();
+		
+		AssignProductSpecialtyOutputDTO assignProductSpecialtyOutputDTO = new AssignProductSpecialtyOutputDTO();
+		
+		Specialty specialty = specialtyDao.findSpecialty(assignProductSpecialtyDTO.getSpecialtyId());
+		if (specialty == null) 
+			throw new ProductServiceException(ERROR_CODE_1020);
+		
+		productDao.deleteProductSpecialty(specialty);
+		List<Integer> assignIds = new ArrayList<Integer>();
+		for (Iterator productIt = assignProductSpecialtyDTO.getProductIds().iterator()
+				; productIt.hasNext();) {
+			Integer productId = (Integer)productIt.next();
+			Product product = productDao.findProductByIdAndAccount(productId, account);
+			ProductSpecialty productSpecialty = new ProductSpecialty(product, specialty);
+			
+			productDao.saveProductSpecialty(productSpecialty);
+			assignIds.add(productSpecialty.getId());
+		}
+		
+		assignProductSpecialtyOutputDTO.setAssignIds(assignIds);
+		return okResponse(assignProductSpecialtyOutputDTO, "Request Handled Successfully");
+	}
+
+	@Override
+	public AppResponse getAllSpecialties() throws ProductServiceException {
+		List<Specialty> specialties = specialtyDao.findAll();
+		List specialtyOutputDtos = new ArrayList<>();
+		
+		for (Iterator specialtyIT = specialties.iterator(); specialtyIT.hasNext();) {
+			
+			Specialty specialty = (Specialty) specialtyIT.next();
+			SpecialtyOutputDto specialtyOutputDto = new SpecialtyOutputDto(specialty.getId(), specialty.getName());
+			specialtyOutputDtos.add(specialtyOutputDto);
+		}
+		
+		return okListResponse(specialtyOutputDtos);
 	}
 
 	

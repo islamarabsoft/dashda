@@ -6,6 +6,7 @@ package com.dashda.data.repositories;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -78,6 +79,20 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 		criteria.add(Restrictions.eq("account", account));
 		
 		return criteria.list();
+	}
+
+	@Override
+	public void deleteProductSpecialty(Specialty specialty) {
+		Query query = getSession().createQuery("delete ProductSpecialty where specialty.id = :specialtyId");
+		query.setParameter("specialtyId", specialty.getId());
+		query.executeUpdate();
+		
+	}
+
+	@Override
+	public void saveProductSpecialty(ProductSpecialty productSpecialty) {
+		save(productSpecialty);
+		
 	}
 
 

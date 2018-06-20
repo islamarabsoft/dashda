@@ -27,5 +27,9 @@ public interface ProductDao {
 	void deleteProduct(Product product);
 
 	List<Product> finAllProductsByAccount(Account account);
+
+	void deleteProductSpecialty(Specialty specialty);
+
+	void saveProductSpecialty(ProductSpecialty productSpecialty);
 	
 }

@@ -1,11 +1,9 @@
 /**
  * 
  */
-package com.dashda.controllers;
+package com.dashda.controllers.dto;
 
 import javax.validation.constraints.Digits;
-
-import com.dashda.controllers.dto.AbstractDTO;
 
 /**
  * @author mhanafy

@@ -111,6 +111,17 @@ public abstract class ServicesManager {
 		
 	}
 	
+	protected AppResponse okListResponse(List<AbstractDTO> abstractDTOs) {
+		
+		ListResponse postResponse = new ListResponse();
+		postResponse.setStatus(200);
+		postResponse.setMessage("List Size is : " + abstractDTOs.size());
+		postResponse.setData(abstractDTOs);
+		
+		return postResponse;
+		
+	}
+	
 	private AppResponse handleResponse(int statusCode, List<AbstractDTO> data, String message) {
 		ListResponse postResponse = new ListResponse();
 		postResponse.setStatus(statusCode);

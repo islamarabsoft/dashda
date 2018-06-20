@@ -22,6 +22,7 @@ import com.dashda.controllers.dto.VisitAdhocVisitOutputDTO;
 import com.dashda.controllers.dto.VisitCompleteInputDTO;
 import com.dashda.controllers.dto.VisitDTO;
 import com.dashda.controllers.dto.VisitListInputDTO;
+import com.dashda.data.entities.Account;
 import com.dashda.data.entities.DoubleVisit;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Product;
@@ -154,8 +155,10 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		
 		if(employee == null)
 			throw new VisitServiceException(ERROR_CODE_1001);
+		Account account = employee.getAccount();
 		
-		if(visitCompleteInput.getManagerIds().isEmpty())
+		if(visitCompleteInput.getDoubleVisit() == DOUBLE_VISIT 
+				&& visitCompleteInput.getManagerIds().isEmpty())
 			throw new VisitServiceException(ERROR_CODE_1028);
 		
 		if(visitCompleteInput.getProductIds().isEmpty())
@@ -173,10 +176,14 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		
 		if(visitCompleteInput.getDoubleVisit() == SINGLE_VISIT)
 			visit.setDoubleVisit(SINGLE_VISIT);
-		else {
+		else 
 			visit.setDoubleVisit(DOUBLE_VISIT);
-			//Create double visit entity 
 			
+		visitDao.updateVisit(visit);
+			
+		
+			//Create double visit entity 
+		if(visitCompleteInput.getDoubleVisit() == DOUBLE_VISIT){
 			for (Iterator managerIdsIt = visitCompleteInput.getManagerIds().iterator(); managerIdsIt.hasNext();) {
 				int managerId = (int) managerIdsIt.next();
 				DoubleVisit doubleVisit = new DoubleVisit();
@@ -194,13 +201,12 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 			}
 		}
 		
-		
 		//Add product visits
 		for (Iterator productIt = visitCompleteInput.getProductIds().iterator(); productIt.hasNext();) {
 			int productId = (int) productIt.next();
 			ProductVisit productVisit = new ProductVisit();
 			
-			Product product = productDao.findProductByIdAndAccount(productId, employee.getAccount());
+			Product product = productDao.findProductByIdAndAccount(productId, account);
 			
 			if (product == null) 
 				throw new VisitServiceException(ERROR_CODE_1020);
@@ -210,9 +216,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 			
 			productVisitDao.addProductVisit(productVisit);
 			
-		}
-		
-		visitDao.updateVisit(visit);
+		}	
 		
 		
 		//this.updateVisitStatus(user, visitCompleteInput.getId(), visitCompleteInput.getComment(), VisitStatusEnum.COMPLETE.getValue());

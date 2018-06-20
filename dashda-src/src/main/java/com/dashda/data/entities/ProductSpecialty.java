@@ -29,6 +29,19 @@ public class ProductSpecialty implements Serializable, BaseEntity {
 	private Specialty specialty;
 	
 	
+	public ProductSpecialty() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public ProductSpecialty(Product product, Specialty specialty) {
+		super();
+		this.product = product;
+		this.specialty = specialty;
+	}
+
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 

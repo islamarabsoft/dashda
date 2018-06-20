@@ -97,9 +97,7 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 
 	@Override
 	public void updateVisit(Visit visit) {
-		getSession().update(visit);
-		getSession().flush();
-		getSession().clear();
+		save(visit);
 		
 	}
 
