@@ -6,6 +6,7 @@ public class VisitDTO implements AbstractDTO{
 	private int serviceProviderId;
 	private String serviceProviderName;
 	private String serviceProviderTypeId;
+	private int specialtyId;
 	private String visitDate;
 	private int employeeId;
 	private String employeeName;
@@ -100,6 +101,14 @@ public class VisitDTO implements AbstractDTO{
 
 	public void setServiceProviderTypeId(String serviceProviderTypeId) {
 		this.serviceProviderTypeId = serviceProviderTypeId;
+	}
+
+	public int getSpecialtyId() {
+		return specialtyId;
+	}
+
+	public void setSpecialtyId(int specialtyId) {
+		this.specialtyId = specialtyId;
 	}
 
 	public String getStatus() {

@@ -20,13 +20,14 @@ import com.dashda.controllers.dto.AbstractDTO;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ListResponse;
 import com.dashda.controllers.dto.OkResponse;
+import com.dashda.exception.AppExceptionHandler;
 
 
 /**
  * @author mhanafy
  *
  */
-@Transactional
+@Transactional(rollbackFor = AppExceptionHandler.class)
 public abstract class ServicesManager {
 	
 	
@@ -57,6 +58,8 @@ public abstract class ServicesManager {
 	protected static final String ERROR_CODE_1025 = "ERROR_CODE_1025";
 	protected static final String ERROR_CODE_1026 = "ERROR_CODE_1026";
 	protected static final String ERROR_CODE_1027 = "ERROR_CODE_1027";
+	protected static final String ERROR_CODE_1028 = "ERROR_CODE_1028";
+	protected static final String ERROR_CODE_1029 = "ERROR_CODE_1029";
 	
 	/**
 	 * THIS ATTRIBUTE NOT USED

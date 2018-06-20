@@ -13,6 +13,7 @@ import java.util.List;
 import org.hibernate.loader.custom.Return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.VisitAddCommentInputDTO;
@@ -128,6 +129,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 			visitDTO.setVisitId(visit.getId());
 			visitDTO.setServiceProviderId(visit.getServiceProvider().getId());
 			visitDTO.setServiceProviderTypeId(visit.getServiceProvider().getServiceProviderType().getId()+"");
+			visitDTO.setSpecialtyId(visit.getServiceProvider().getSpecialty().getId());
 			visitDTO.setEmployeeId(visit.getEmployeeByEmployeeId().getId());
 			visitDTO.setServiceProviderName(doctorName);
 			visitDTO.setEmployeeName(visit.getEmployeeByEmployeeId().getContact().getFirstName() 
@@ -153,6 +155,12 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		if(employee == null)
 			throw new VisitServiceException(ERROR_CODE_1001);
 		
+		if(visitCompleteInput.getManagerIds().isEmpty())
+			throw new VisitServiceException(ERROR_CODE_1028);
+		
+		if(visitCompleteInput.getProductIds().isEmpty())
+			throw new VisitServiceException(ERROR_CODE_1029);
+		
 		visit = visitDao.findUserVisitByIdAndNotComplete(visitCompleteInput.getId(), employee.getId());
 		if(visit == null)
 			throw new VisitServiceException(ERROR_CODE_1004);
@@ -168,7 +176,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		else {
 			visit.setDoubleVisit(DOUBLE_VISIT);
 			//Create double visit entity 
-						
+			
 			for (Iterator managerIdsIt = visitCompleteInput.getManagerIds().iterator(); managerIdsIt.hasNext();) {
 				int managerId = (int) managerIdsIt.next();
 				DoubleVisit doubleVisit = new DoubleVisit();
@@ -185,6 +193,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 				doubleVisitDao.addDoubleVisit(doubleVisit);
 			}
 		}
+		
 		
 		//Add product visits
 		for (Iterator productIt = visitCompleteInput.getProductIds().iterator(); productIt.hasNext();) {
