@@ -43,6 +43,7 @@ public class EmployeeServiceProviderDaoImpl extends AbstractDao implements Emplo
 		if(serviceProviderTypeId != 0)
 			criteria.add(Restrictions.eq("ty.id", serviceProviderTypeId));
 	
+		criteria.setMaxResults(100);
 		return criteria.list();
 	}
 

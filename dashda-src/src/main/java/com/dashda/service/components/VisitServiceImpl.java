@@ -281,6 +281,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 		if (employee == null) {
 			throw new VisitServiceException(ERROR_CODE_1001);
 		}
+		Account account = employee.getAccount();
 		
 		//Get doctor entity
 		ServiceProvider serviceProvider = serviceProviderDao.findDoctorById(visitAdhocVisitInput.getDoctorId());
@@ -337,7 +338,7 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 			int productId = (int) productIt.next();
 			ProductVisit productVisit = new ProductVisit();
 			
-			Product product = productDao.findProductByIdAndAccount(productId, employee.getAccount());
+			Product product = productDao.findProductByIdAndAccount(productId, account);
 			
 			if (product == null) 
 				throw new VisitServiceException(ERROR_CODE_1020);

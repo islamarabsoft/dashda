@@ -90,6 +90,7 @@ public class MyServiceProvidersListServiceImpl extends ServicesManager implement
 			myServiceProviderDTO.setId(serviceProvider.getId());
 			myServiceProviderDTO.setServiceProviderName(serviceProvider.getEnName());
 			myServiceProviderDTO.setSpecialty(serviceProvider.getSpecialty().getName());
+			myServiceProviderDTO.setSpecialtyId(serviceProvider.getSpecialty().getId());
 			myServiceProviderDTO.setServiceProviderTypeId(serviceProvider.getServiceProviderType().getId()+"");
 			myServiceProviderDTO.setGovernorateName(serviceProvider.getDistrict().getGovernorate().getEnName());
 			
