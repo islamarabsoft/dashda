@@ -100,4 +100,13 @@ public class ProductController extends AbstractController {
 	
 		return returnResponseEntityOk(productService.getAllSpecialties());
 	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/product-lines")
+	@Secured("ROLE_PRODUCT_CONTRIBUTOR")
+	public ResponseEntity getAccountProductLines(@AuthenticationPrincipal User user)
+					throws ProductServiceException {
+	
+		return returnResponseEntityOk(productService.getAccountProductLines(user.getUsername()));
+	}
 }

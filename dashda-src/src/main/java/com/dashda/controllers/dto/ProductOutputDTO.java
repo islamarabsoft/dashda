@@ -16,6 +16,7 @@ public class ProductOutputDTO implements AbstractDTO {
 	private int id;
 	@NotEmpty
 	private String name;
+	private int lineId;
 	
 	
 	
@@ -24,9 +25,10 @@ public class ProductOutputDTO implements AbstractDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProductOutputDTO(int id, String name) {
+	public ProductOutputDTO(int id, String name, int lineId) {
 		this.id = id;
 		this.name = name;
+		this.lineId = lineId;
 	}
 
 	public int getId() {
@@ -43,6 +45,14 @@ public class ProductOutputDTO implements AbstractDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getLineId() {
+		return lineId;
+	}
+
+	public void setLineId(int lineId) {
+		this.lineId = lineId;
 	}
 	
 

@@ -7,31 +7,44 @@ package com.dashda.controllers.dto;
  * @author mhanafy
  *
  */
-public class ProductUpdateInputDTO {
+public class ProducLineOutputDTO implements AbstractDTO {
 
 	private int id;
 	private String name;
-	private int lineId;
 	
 	
+	public ProducLineOutputDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public ProducLineOutputDTO(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+
 	public int getId() {
 		return id;
 	}
+
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
+
 	public String getName() {
 		return name;
 	}
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getLineId() {
-		return lineId;
-	}
-	public void setLineId(int lineId) {
-		this.lineId = lineId;
-	}
+	
 	
 	
 }

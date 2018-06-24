@@ -30,6 +30,7 @@ public class Employee implements java.io.Serializable {
 	private String employeeJobTitle;
 	private String employeeNumber;
 	private Account account;
+	private ProductLine productLine;
 	private Set users = new HashSet(0);
 	private Set employeesCoveredDistricts = new HashSet(0);
 	private Set employeesServiceProviders = new HashSet(0);
@@ -132,6 +133,16 @@ public class Employee implements java.io.Serializable {
 		this.account = account;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PRODUCT_LINE_ID")
+	public ProductLine getProductLine() {
+		return productLine;
+	}
+	public void setProductLine(ProductLine productLine) {
+		this.productLine = productLine;
+	}
+	
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	public Set<User> getUsers() {
 		return this.users;

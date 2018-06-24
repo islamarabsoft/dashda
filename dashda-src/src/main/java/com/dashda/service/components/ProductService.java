@@ -46,4 +46,6 @@ public interface ProductService {
 
 	public AppResponse getAllSpecialties() throws ProductServiceException;
 
+	public AppResponse getAccountProductLines(String username) throws ProductServiceException;
+
 }

@@ -3,14 +3,14 @@
  */
 package com.dashda.data.entities;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,27 +21,18 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="PRODUCT")
-public class Product implements BaseEntity, Serializable {
+@Table(name = "PRODUCT_LINE")
+public class ProductLine implements BaseEntity, Serializable {
 
 	private int id;
 	private String name;
 	private Account account;
-	private ProductLine productLine;
 	
 	
-	public Product() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Product(int id) {
-		super();
-		this.id = id;
-	}
 	@Id
+	
 	@GeneratedValue(strategy = IDENTITY)
-
-	@Column(name = "ID", unique = true, nullable = false, updatable = false)
+	@Column(name = "ID", unique = true, nullable = false, updatable = false, insertable = false)
 	public int getId() {
 		return id;
 	}
@@ -49,14 +40,14 @@ public class Product implements BaseEntity, Serializable {
 		this.id = id;
 	}
 	
-	@Column(name = "NAME", length = 45)
+	@Column(name = "NAME", length = 50)
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-		
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ACCOUNT_ID")
 	public Account getAccount() {
@@ -65,18 +56,6 @@ public class Product implements BaseEntity, Serializable {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PRODUCT_LINE_ID")
-	public ProductLine getProductLine() {
-		return productLine;
-	}
-	public void setProductLine(ProductLine productLine) {
-		this.productLine = productLine;
-	}
-	
-	
 	
 	
 }
