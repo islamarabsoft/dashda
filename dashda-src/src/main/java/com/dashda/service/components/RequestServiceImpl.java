@@ -22,6 +22,7 @@ import com.dashda.data.entities.Schedule;
 import com.dashda.data.entities.ScheduleStatus;
 import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
+import com.dashda.data.entities.VisitStatus;
 import com.dashda.data.repositories.EmployeeHierarchyDao;
 import com.dashda.data.repositories.OffVisitDao;
 import com.dashda.data.repositories.ScheduleDao;
@@ -98,7 +99,8 @@ public class RequestServiceImpl extends ServicesManager implements RequestServic
 			pendingApprovalRequestDTO.setRequestDate(schedule.getDatetime()+"");
 			
 			pendingApprovalRequestDTO.setServiceProviderId(schedule.getServiceProvider().getId());
-			pendingApprovalRequestDTO.setServiceProviderName(schedule.getServiceProvider().getEnName());
+			pendingApprovalRequestDTO.setServiceProviderName(schedule.getServiceProvider().getFirstName() 
+					+ " " + schedule.getServiceProvider().getLastName());
 			pendingApprovalRequestDTO
 				.setServiceProviderTypeId(schedule.getServiceProvider().getServiceProviderType().getId());
 			pendingApprovalRequestDTOs.add(pendingApprovalRequestDTO);
@@ -174,6 +176,7 @@ public class RequestServiceImpl extends ServicesManager implements RequestServic
 			visit.setDatetime(schedule.getDatetime());
 			visit.setEmployeeByEmployeeId(schedule.getEmployeeByEmployeeId());
 			//visit.setEmployeeBySubordinateId(schedule.getEmployeeBySubordinateId());
+			visit.setVisitStatus(new VisitStatus(1));
 			
 			visitDao.addVisit(visit);
 			if(inputRequestApprovalDTO.getDoubleVisit() == 1) {

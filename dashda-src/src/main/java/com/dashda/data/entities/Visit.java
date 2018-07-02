@@ -109,7 +109,7 @@ public class Visit implements java.io.Serializable,com.dashda.data.entities.Base
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "VISIT_STATUS_ID", insertable = false)
+	@JoinColumn(name = "VISIT_STATUS_ID")
 	public VisitStatus getVisitStatus() {
 		return visitStatus;
 	}

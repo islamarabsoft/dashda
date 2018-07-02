@@ -16,6 +16,7 @@ public interface EmployeeServiceProviderDao {
 
 
 	public List<EmployeeServiceProvider> employeeServiceProviderByEmployee(Employee employee, int serviceProviderTypeId);
+	public List<EmployeeServiceProvider> employeeServiceProviderByEmployee(Employee employee);
 
 	public void clearMyServiceProvidersList(List<EmployeeServiceProvider> employeeServiceProviders);
 

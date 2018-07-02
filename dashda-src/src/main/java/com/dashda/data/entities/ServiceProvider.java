@@ -25,6 +25,8 @@ public class ServiceProvider implements java.io.Serializable, com.dashda.data.en
 	private Integer id;
 	private String arName;
 	private String enName;
+	private String firstName;
+	private String lastName;
 	private String arContactPersonName;
 	private String enContactPersonName;
 	private ServiceProviderType serviceProviderType;
@@ -118,6 +120,24 @@ public class ServiceProvider implements java.io.Serializable, com.dashda.data.en
 
 	public void setEnName(String enName) {
 		this.enName = enName;
+	}
+
+	@Column(name = "FIRST_NAME", length = 150)
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	@Column(name = "LAST_NAME", length = 150)
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	@Column(name = "AR_CONTACT_PERSON_NAME", length = 100)

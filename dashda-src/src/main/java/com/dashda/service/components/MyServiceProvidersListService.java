@@ -25,4 +25,6 @@ public interface MyServiceProvidersListService {
 
 	public AppResponse unassignServiceProviderToMyList(String username, int assignedId) throws MyServiceProvidersListServiceExceptionManager;
 
+	public AppResponse serviceProviderNameList(String username) throws MyServiceProvidersListServiceExceptionManager;
+
 }

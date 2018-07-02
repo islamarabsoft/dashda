@@ -26,6 +26,7 @@ public class Employee implements java.io.Serializable {
 
 	private int id;
 	private Contact contact;
+	private String name;
 	private Employee manager;
 	private String employeeJobTitle;
 	private String employeeNumber;
@@ -93,6 +94,14 @@ public class Employee implements java.io.Serializable {
 	 */
 	public void setContact(Contact contact) {
 		this.contact = contact;
+	}
+	@Column(name = "NAME", length = 100)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

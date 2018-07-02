@@ -68,6 +68,11 @@ public class MyServiceProviderListController extends AbstractController {
 					unassignServiceProviderToMyList(user.getUsername(), unAssignServiceProviderInputDTO.getAssignedId()));
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/serviceProviderName")
+	public ResponseEntity serviceProviderNameList(@AuthenticationPrincipal User user) throws MyServiceProvidersListServiceExceptionManager, ParseException{
+		
+		return returnResponseEntityOk(myServiceProvidersListService.serviceProviderNameList(user.getUsername()));
+	}
 	
 	
 	

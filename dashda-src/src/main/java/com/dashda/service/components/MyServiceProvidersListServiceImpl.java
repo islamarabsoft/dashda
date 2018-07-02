@@ -88,7 +88,8 @@ public class MyServiceProvidersListServiceImpl extends ServicesManager implement
 			
 			myServiceProviderDTO.setDistrictName(serviceProvider.getDistrict().getEnName());
 			myServiceProviderDTO.setId(serviceProvider.getId());
-			myServiceProviderDTO.setServiceProviderName(serviceProvider.getEnName());
+			myServiceProviderDTO.setServiceProviderName(serviceProvider.getFirstName() 
+					+ " " + serviceProvider.getLastName());
 			myServiceProviderDTO.setSpecialty(serviceProvider.getSpecialty().getName());
 			myServiceProviderDTO.setSpecialtyId(serviceProvider.getSpecialty().getId());
 			myServiceProviderDTO.setServiceProviderTypeId(serviceProvider.getServiceProviderType().getId()+"");
@@ -219,6 +220,32 @@ public class MyServiceProvidersListServiceImpl extends ServicesManager implement
 		employeeServiceProviderDao.removeEmployeeServiceProvider(employeeServiceProvider);
 		
 		return emptyResponse("Object Deleted Successfully {"+assignedId+"}");
+	}
+
+	@Override
+	public AppResponse serviceProviderNameList(String username) throws MyServiceProvidersListServiceExceptionManager {
+		
+		
+		user = userDao.findUserByUsername(username);
+		
+		
+		if(user.getEmployee() == null)
+			throw new MyServiceProvidersListServiceExceptionManager(ERROR_CODE_1001);
+	
+		employeeServiceProviders = employeeServiceProviderDao.employeeServiceProviderByEmployee(
+				user.getEmployee());
+		
+		myServiceProviderDTOs = new ArrayList();
+		
+		for(Iterator<EmployeeServiceProvider> serviceProvidersIt = employeeServiceProviders.iterator(); serviceProvidersIt.hasNext();) {
+			EmployeeServiceProvider provider = (EmployeeServiceProvider)serviceProvidersIt.next();
+			ServiceProviderLookupDTO serviceProviderNameDTO = new ServiceProviderLookupDTO(provider.getServiceProvider().getId()
+					, provider.getServiceProvider().getFirstName() +" "+provider.getServiceProvider().getLastName());
+			
+			myServiceProviderDTOs.add(serviceProviderNameDTO);
+		}
+		
+		return okListResponse(myServiceProviderDTOs);
 	}
 
 }

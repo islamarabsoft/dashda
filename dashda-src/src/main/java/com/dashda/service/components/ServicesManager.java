@@ -20,6 +20,9 @@ import com.dashda.controllers.dto.AbstractDTO;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ListResponse;
 import com.dashda.controllers.dto.OkResponse;
+import com.dashda.data.entities.Employee;
+import com.dashda.data.entities.User;
+import com.dashda.data.repositories.UserDao;
 import com.dashda.exception.AppExceptionHandler;
 
 
@@ -66,6 +69,9 @@ public abstract class ServicesManager {
 	 */
 	@Autowired
 	PropertySourcesPlaceholderConfigurer properties;
+	
+	@Autowired
+	UserDao userDao;
 
 	protected final Logger log = LoggerFactory.getLogger(ServicesManager.class);
 	
@@ -129,5 +135,20 @@ public abstract class ServicesManager {
 		postResponse.setData(data);
 		
 		return postResponse;
+	}
+	
+	protected Employee getEmployee(String username) throws AppExceptionHandler {
+		User user = userDao.findUserByUsername(username);
+		Employee employee = user.getEmployee();
+		if (employee == null) {
+			throw new AppExceptionHandler(ERROR_CODE_1001);
+		}
+		return employee;
+	}
+	
+	
+	protected User getUser(String username) {
+		User user = userDao.findUserByUsername(username);
+		return user;
 	}
 }

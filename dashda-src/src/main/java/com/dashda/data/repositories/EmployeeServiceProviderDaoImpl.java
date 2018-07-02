@@ -110,4 +110,14 @@ public class EmployeeServiceProviderDaoImpl extends AbstractDao implements Emplo
 		
 	}
 
+	@Override
+	public List<EmployeeServiceProvider> employeeServiceProviderByEmployee(Employee employee) {
+		Criteria criteria = getSession().createCriteria(EmployeeServiceProvider.class);
+		
+		criteria.add(Restrictions.in("employee", employee));
+	
+		criteria.setMaxResults(100);
+		return criteria.list();
+	}
+
 }

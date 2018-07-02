@@ -123,7 +123,9 @@ public class VisitServiceImpl extends ServicesManager implements VisitService {
 			}
 			
 			
-			doctorName = visit.getServiceProvider().getEnName();
+			doctorName = visit.getServiceProvider().getFirstName() 
+					+ " " + visit.getServiceProvider().getLastName();
+			
 			
 			visitDTO = new VisitDTO();
 			

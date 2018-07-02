@@ -5,19 +5,24 @@ package com.dashda.data.repositories;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 /**
  * @author mhanafy
  *
  */
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dashda.data.entities.EmployeeServiceProvider;
 import com.dashda.data.entities.BaseEntity;
+import com.dashda.data.entities.Employee;
  
 
 public abstract class AbstractDao < T extends Serializable >{
@@ -126,4 +131,48 @@ public abstract class AbstractDao < T extends Serializable >{
      }
      
      
+     
+ 	public List<Object> findList(String hql, Map<String, Object> params) {
+		Query query = getSession().createQuery(hql);
+		params.forEach((k, v) -> query.setParameter(k, v));
+		List<Object> results = query.list();
+		
+		return results;
+	}
+ 	
+ 	
+ 	public Map findRowNative(String sql, Map<String, Object> params) {
+ 		
+ 		SQLQuery sqlQuery = getSession().createSQLQuery(sql);
+ 		params.forEach((k, v) -> sqlQuery.setParameter(k, v));
+ 		
+		sqlQuery.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		Map result = (Map)sqlQuery.uniqueResult();
+		
+		return result;
+ 	}
+ 	
+ 	
+ 	public List<Map> findListNative(String sql, Map<String, Object> params) {
+ 		
+ 		SQLQuery sqlQuery = getSession().createSQLQuery(sql);
+ 		params.forEach((k, v) -> sqlQuery.setParameter(k, v));
+ 		
+		sqlQuery.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		List<Map> result = (List<Map>) sqlQuery.list();
+		
+		return result;
+ 	}
+ 	
+ 	public List<Map> findListNative(String sql, Map<String, Object> params, Map<String, Object[]> arrayParams) {
+ 		
+ 		SQLQuery sqlQuery = getSession().createSQLQuery(sql);
+ 		params.forEach((k, v) -> sqlQuery.setParameter(k, v));
+ 		arrayParams.forEach((k, v) -> sqlQuery.setParameterList(k, v));
+ 		
+		sqlQuery.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		List<Map> result = (List<Map>) sqlQuery.list();
+		
+		return result;
+ 	}
 }
