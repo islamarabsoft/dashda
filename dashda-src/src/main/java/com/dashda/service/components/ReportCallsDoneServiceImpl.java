@@ -3,6 +3,8 @@
  */
 package com.dashda.service.components;
 
+import java.text.DecimalFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +37,20 @@ public class ReportCallsDoneServiceImpl extends ServicesManager implements Repor
 			throw new ReportCallsDoneServiceException(e.getMessage());
 		}
 		ReportCallsDone reportCallsDone = reportCoverageDao.callsDone(employee.getId());
-
+		String percentage = "0";
+		float floatPercentage = 0.0f;
+		if(reportCallsDone.getTarget() != 0) {
+			float total = (float)reportCallsDone.getTarget();
+			float actual = (float)reportCallsDone.getActual();
+			floatPercentage = (actual/total)*100.f;
+		}
+			
+		DecimalFormat f = new DecimalFormat("##.00");
+		
+		percentage = f.format(floatPercentage);
+		
 		ReportCallsDoneOutputDTO reportCallsDoneOutputDTO = new ReportCallsDoneOutputDTO(reportCallsDone.getTarget(), 
-				reportCallsDone.getActual(), (reportCallsDone.getActual()/reportCallsDone.getTarget())*100);
+				reportCallsDone.getActual(), percentage);
 
 		return okResponse(reportCallsDoneOutputDTO, "Report Generated Successfully");
 	}

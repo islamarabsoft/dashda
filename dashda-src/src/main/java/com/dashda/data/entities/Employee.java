@@ -35,6 +35,7 @@ public class Employee implements java.io.Serializable {
 	private Set users = new HashSet(0);
 	private Set employeesCoveredDistricts = new HashSet(0);
 	private Set employeesServiceProviders = new HashSet(0);
+	private Set employeesHierarchies = new HashSet(0);
 	private Set visitsForEmployeeId = new HashSet(0);
 	private Set schedulesForEmployeeId = new HashSet(0);
 	private Set managers = new HashSet(0);
@@ -168,6 +169,15 @@ public class Employee implements java.io.Serializable {
 
 	public void setEmployeesCoveredDistricts(Set employeesCoveredDistricts) {
 		this.employeesCoveredDistricts = employeesCoveredDistricts;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	public Set<EmployeeHierarchy> getEmployeesHierarchies() {
+		return employeesHierarchies;
+	}
+
+	public void setEmployeesHierarchies(Set employeesHierarchies) {
+		this.employeesHierarchies = employeesHierarchies;
 	}
 
 	/**

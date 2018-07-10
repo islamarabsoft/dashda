@@ -1,7 +1,10 @@
 package com.dashda.data.entities;
 // Generated Apr 4, 2018 2:50:44 PM by Hibernate Tools 5.2.8.Final
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +33,8 @@ public class Visit implements java.io.Serializable,com.dashda.data.entities.Base
 	private String comment;
 	private int doubleVisit;
 	private VisitStatus visitStatus;
+	private List<DoubleVisit> doubleVisits = new ArrayList<DoubleVisit>();
+	private List<ProductVisit> productVisits = new ArrayList<ProductVisit>();
 
 	public Visit() {
 	}
@@ -99,7 +105,7 @@ public class Visit implements java.io.Serializable,com.dashda.data.entities.Base
 		this.datetime = datetime;
 	}
 
-	@Column(name = "DOUBLE_VISIT", length = 1, insertable = false)
+	@Column(name = "DOUBLE_VISIT", length = 1)
 	public int getDoubleVisit() {
 		return doubleVisit;
 	}
@@ -127,7 +133,25 @@ public class Visit implements java.io.Serializable,com.dashda.data.entities.Base
 		this.comment = comment;
 	}
 
-	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "visit")
+	public List<DoubleVisit> getDoubleVisits() {
+		return doubleVisits;
+	}
+
+	public void setDoubleVisits(List<DoubleVisit> doubleVisits) {
+		this.doubleVisits = doubleVisits;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "visit")
+	public List<ProductVisit> getProductVisits() {
+		return productVisits;
+	}
+
+	public void setProductVisits(List<ProductVisit> productVisits) {
+		this.productVisits = productVisits;
+	}
+
+
 
 
 }

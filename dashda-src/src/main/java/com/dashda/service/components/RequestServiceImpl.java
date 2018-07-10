@@ -175,7 +175,7 @@ public class RequestServiceImpl extends ServicesManager implements RequestServic
 			visit.setServiceProvider(schedule.getServiceProvider());
 			visit.setDatetime(schedule.getDatetime());
 			visit.setEmployeeByEmployeeId(schedule.getEmployeeByEmployeeId());
-			//visit.setEmployeeBySubordinateId(schedule.getEmployeeBySubordinateId());
+			visit.setDoubleVisit(inputRequestApprovalDTO.getDoubleVisit());
 			visit.setVisitStatus(new VisitStatus(1));
 			
 			visitDao.addVisit(visit);
@@ -185,6 +185,8 @@ public class RequestServiceImpl extends ServicesManager implements RequestServic
 				dubleVisit.setDatetime(schedule.getDatetime());
 				dubleVisit.setEmployeeByEmployeeId(employee);
 				dubleVisit.setEmployeeBySubordinateId(schedule.getEmployeeByEmployeeId());
+				dubleVisit.setDoubleVisit(1);
+				dubleVisit.setVisitStatus(new VisitStatus(1));
 				visitDao.addVisit(dubleVisit);
 			}
 		

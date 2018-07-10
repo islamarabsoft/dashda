@@ -4,6 +4,8 @@
  */
 package com.dashda.service.components;
 
+import java.text.DecimalFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +40,21 @@ public class ReportCoverageServiceImpl extends ServicesManager implements Report
 		}
 		
 		ReportCoverageEntity reportCoverageEntity = reportCoverageDao.coverage(employee.getId());
+		
+		String percentage = "0";
+		float floatPercentage = 0.0f;
+		if(reportCoverageEntity.getListCount() != 0) {
+			float total = (float)reportCoverageEntity.getListCount();
+			float actual = (float)reportCoverageEntity.getVisitsCount();
+			floatPercentage = (actual/total)*100.f;
+		}
+			
+		DecimalFormat f = new DecimalFormat("##.00");
+		
+		percentage = f.format(floatPercentage);
+		
 		ReportCoverageOutputDTO reportCoverageOutputDTO = new ReportCoverageOutputDTO(reportCoverageEntity.getListCount(), reportCoverageEntity.getVisitsCount(), 
-				(reportCoverageEntity.getVisitsCount()/reportCoverageEntity.getListCount())*100);
+				percentage);
 		return okResponse(reportCoverageOutputDTO, "Report Generated Successfully");
 	}
 

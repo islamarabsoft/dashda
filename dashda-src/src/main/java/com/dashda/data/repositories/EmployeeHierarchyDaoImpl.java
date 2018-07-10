@@ -6,6 +6,7 @@ package com.dashda.data.repositories;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +40,7 @@ public class EmployeeHierarchyDaoImpl extends AbstractDao implements EmployeeHie
 	public List<EmployeeHierarchy> getManagers(Employee employee) {
 		Criteria criteria = getSession().createCriteria(EmployeeHierarchy.class);
 		criteria.add(Restrictions.eq("employee", employee));
-		
+		criteria.addOrder(Order.desc("structureLevel"));
 		return criteria.list();
 	}
 

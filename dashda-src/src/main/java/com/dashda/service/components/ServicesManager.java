@@ -21,6 +21,7 @@ import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ListResponse;
 import com.dashda.controllers.dto.OkResponse;
 import com.dashda.data.entities.Employee;
+import com.dashda.data.entities.ServiceProvider;
 import com.dashda.data.entities.User;
 import com.dashda.data.repositories.UserDao;
 import com.dashda.exception.AppExceptionHandler;
@@ -150,5 +151,16 @@ public abstract class ServicesManager {
 	protected User getUser(String username) {
 		User user = userDao.findUserByUsername(username);
 		return user;
+	}
+	
+	protected String getServiceProviderName(ServiceProvider provider) {
+		
+		return provider.getFirstName() + " "
+				+ provider.getLastName();
+	}
+	
+	protected String getServiceProviderType(ServiceProvider provider) {
+		
+		return provider.getServiceProviderType().getName();
 	}
 }

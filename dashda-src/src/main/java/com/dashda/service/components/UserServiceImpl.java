@@ -25,6 +25,7 @@ import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Governorate;
 import com.dashda.data.entities.Permission;
 import com.dashda.data.entities.User;
+import com.dashda.data.entities.UserRole;
 import com.dashda.data.entities.UserRolePermission;
 import com.dashda.data.repositories.ContactDao;
 import com.dashda.data.repositories.EmployeeDao;
@@ -133,13 +134,19 @@ public class UserServiceImpl extends ServicesManager implements UserService {
 				}
 			}
 			
-			mapper.map(userDTO, employee);
+			//mapper.map(userDTO, employee);
 			
+			employee.setName(userDTO.getUsername());
+			employee.setEmployeeJobTitle(((EmployeeUserDTO) userDTO).getEmployeeJobTitle());
 			employee.setManager(manager);
 		}
 		
 		
-		mapper.map(userDTO, user);
+		//mapper.map(userDTO, user);
+		user.setUsername(userDTO.getUsername());
+		UserRole userRole = new UserRole();
+		userRole.setId(Integer.parseInt(userDTO.getUserRoleId()));
+		user.setUserRole(userRole);
 		
 		user.setPassword(generatePasswordEncoder.encode(userDTO.getPassword()));
 		

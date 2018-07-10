@@ -15,13 +15,24 @@ import java.util.Map;
 import java.util.function.ObjDoubleConsumer;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.DoubleVisit;
+import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.ReportCoachingEmployeeSummary;
 import com.dashda.data.entities.ReportCoachingSummary;
+import com.dashda.data.entities.ReportUnVisit;
+import com.dashda.data.entities.ReportVisitsPerEmployee;
 import com.dashda.data.entities.ServiceProvider;
 import com.dashda.data.entities.Specialty;
 import com.dashda.data.entities.Visit;
@@ -90,16 +101,16 @@ public class ReportDaoImpl extends AbstractDao implements ReportDao, NamedQuerie
 	}
 
 	@Override
-	public List<DoubleVisit> generateDetails(int employeeId, Date dateTime) {
-		Criteria criteria = getSession().createCriteria(DoubleVisit.class);
-		criteria.createAlias("employee", "e");
-		criteria.createAlias("visit", "v");
-		criteria.createAlias("v.serviceProvider", "sp");
+	public List<Visit> generateDetails(int employeeId, Date dateTime) {
+		Criteria criteria = getSession().createCriteria(Visit.class);
+		criteria.createAlias("employeeByEmployeeId", "e");
+		criteria.createAlias("doubleVisits", "dv");
+		criteria.createAlias("serviceProvider", "sp");
 		criteria.createAlias("sp.specialty", "s");
 		criteria.createAlias("sp.district", "d");
 		
-		criteria.add(Restrictions.eq("employee.id", employeeId));
-		criteria.add(Restrictions.eq("v.datetime", dateTime));
+		criteria.add(Restrictions.eq("employeeByEmployeeId.id", employeeId));
+		criteria.add(Restrictions.eq("datetime", dateTime));
 		
 		return criteria.list();
 	}
@@ -110,6 +121,70 @@ public class ReportDaoImpl extends AbstractDao implements ReportDao, NamedQuerie
 		query.setParameter("employeeId", employeeId);
 		List<ServiceProvider> results = query.list();
 		return results;
+	}
+
+	@Override
+	public List<ReportUnVisit> generateUnVisits(int employeeId) {
+		Map< String, Integer> params = new HashMap<String, Integer>();
+		params.put("employeeId", employeeId);
+		
+		List unVisits = findListNative(SQL_UNVISIT, params);
+		List<ReportUnVisit> reportUnVisits = new ArrayList<>();
+		for (Iterator iterator = unVisits.iterator(); iterator.hasNext();) {
+			Map object = (Map) iterator.next();
+			
+			ReportUnVisit reportUnVisit = new ReportUnVisit((String)object.get("FIRST_NAME"), (String)object.get("LAST_NAME")
+					,(String)object.get("SPECILATY"), (String)object.get("BRICK"), (BigInteger)object.get("E_COUNT")+"");
+			
+			reportUnVisits.add(reportUnVisit);
+		}
+		
+		return reportUnVisits;
+	}
+
+	@Override
+	public List<Visit> getVisitsList(int employeeId, Date dateFrom, Date dateTo) {
+		Criteria criteria = getSession().createCriteria(Visit.class);
+		criteria.createAlias("employeeByEmployeeId", "e");
+		
+		criteria.add(Restrictions.eq("e.id", employeeId));
+		criteria.add(Restrictions.between("datetime", dateFrom, dateTo));
+		
+		return criteria.list();
+	}
+
+	@Override
+	public Visit getvisitDetail(int visitId) {
+		this.setDAOClass(Visit.class);
+		
+		return (Visit)findOne(visitId);
+	}
+
+	@Override
+	public List<ReportVisitsPerEmployee> generateVisitsPerEmployee(int id) {
+		
+		Criteria criteria = getSession().createCriteria(Employee.class);
+		criteria.createAlias("visitsForEmployeeId", "visit", criteria.LEFT_JOIN);
+		criteria.createAlias("employeesHierarchies", "hierarchies");
+		criteria.createAlias("hierarchies.manager", "manager");
+		criteria.createAlias("users", "user");
+		
+		
+		ProjectionList projectionList = Projections.projectionList()
+		.add(Projections.groupProperty("name"), "name")
+		.add(Projections.groupProperty("id"), "id")
+		.add(Projections.alias(Projections.count("visit.id"), "count"));
+		
+		criteria.setProjection(projectionList);
+		criteria.add(Restrictions.eq("manager.id", id));
+		criteria.add(Restrictions.eq("user.active", new Byte("1")));
+		criteria.add(Restrictions.eq("user.userRole.id", 2));
+		
+		criteria.addOrder(Order.asc("name"));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReportVisitsPerEmployee.class));
+	
+		return criteria.list();
 	}
 
 }

@@ -11,14 +11,14 @@ public class ReportCallsDoneOutputDTO implements AbstractDTO {
 
 	private int tagetVisits;
 	private int ActualVisits;
-	private int percentage;
+	private String percentage;
 	
 	
 	public ReportCallsDoneOutputDTO() {
 		super();
 	}
 	
-	public ReportCallsDoneOutputDTO(int tagetVisits, int actualVisits, int percentage) {
+	public ReportCallsDoneOutputDTO(int tagetVisits, int actualVisits, String percentage) {
 		super();
 		this.tagetVisits = tagetVisits;
 		this.ActualVisits = actualVisits;
@@ -36,10 +36,10 @@ public class ReportCallsDoneOutputDTO implements AbstractDTO {
 	public void setActualVisits(int actualVisits) {
 		ActualVisits = actualVisits;
 	}
-	public int getPercentage() {
+	public String getPercentage() {
 		return percentage;
 	}
-	public void setPercentage(int percentage) {
+	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
 	

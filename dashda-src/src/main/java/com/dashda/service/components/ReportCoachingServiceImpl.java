@@ -20,6 +20,7 @@ import com.dashda.controllers.dto.ReportCoachingSummaryInputDTO;
 import com.dashda.data.entities.DoubleVisit;
 import com.dashda.data.entities.ReportCoachingEmployeeSummary;
 import com.dashda.data.entities.ReportCoachingSummary;
+import com.dashda.data.entities.Visit;
 import com.dashda.data.repositories.ReportDao;
 import com.dashda.exception.ReportCoachingServiceExcepion;
 import com.dashda.utilities.DateUtilities;
@@ -86,15 +87,15 @@ public class ReportCoachingServiceImpl extends ServicesManager implements Report
 //				, "Obstetrics and Gynecology", "ALEX CENTER 1", "2018-05-01");
 		
 		
-		List<DoubleVisit> doubleVisits = reportDao.generateDetails(reportCoachingDetailInputDTO.getEmployeeId(), 
+		List<Visit> visits = reportDao.generateDetails(reportCoachingDetailInputDTO.getEmployeeId(), 
 				DateUtilities.convertToDate(reportCoachingDetailInputDTO.getDateTime()
 						, DateUtilities.DATE_FORMATE_PATTERN));
 		
-		for (Iterator iterator = doubleVisits.iterator(); iterator.hasNext();) {
-			DoubleVisit doubleVisit = (DoubleVisit) iterator.next();
-			ReportCoachingDetailOutputDTO reportCoachingDetailOutputDTO = new ReportCoachingDetailOutputDTO(doubleVisit.getEmployee().getName()
-					, doubleVisit.getVisit().getServiceProvider().getEnName(), doubleVisit.getVisit().getServiceProvider().getSpecialty().getName()
-					, doubleVisit.getVisit().getServiceProvider().getDistrict().getEnName(), DateUtilities.dateFormate(doubleVisit.getVisit().getDatetime()));
+		for (Iterator iterator = visits.iterator(); iterator.hasNext();) {
+			Visit visit = (Visit) iterator.next();
+			ReportCoachingDetailOutputDTO reportCoachingDetailOutputDTO = new ReportCoachingDetailOutputDTO(visit.getEmployeeByEmployeeId().getName()
+					, visit.getServiceProvider().getEnName(), visit.getServiceProvider().getSpecialty().getName()
+					, visit.getServiceProvider().getDistrict().getEnName(), DateUtilities.dateFormate(visit.getDatetime()));
 			
 			reportCoachingDetailOutputDTOs.add(reportCoachingDetailOutputDTO);
 		}

@@ -11,10 +11,10 @@ public class ReportCoverageOutputDTO implements AbstractDTO {
 	
 	private int taget;
 	private int Actual;
-	private int percentage;
+	private String percentage;
 	
 	
-	public ReportCoverageOutputDTO(int taget, int actual, int percentage) {
+	public ReportCoverageOutputDTO(int taget, int actual, String percentage) {
 		super();
 		this.taget = taget;
 		this.Actual = actual;
@@ -39,10 +39,10 @@ public class ReportCoverageOutputDTO implements AbstractDTO {
 	public void setActual(int actual) {
 		Actual = actual;
 	}
-	public int getPercentage() {
+	public String getPercentage() {
 		return percentage;
 	}
-	public void setPercentage(int percentage) {
+	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
 	
