@@ -73,7 +73,7 @@ public class ReportVisitController extends AbstractController {
 	@RequestMapping(method = RequestMethod.POST, value = "/visits-per-employee")
 	@Secured("ROLE_REPORT_LOOKUP")
 	public ResponseEntity visitsPerEmployee(@AuthenticationPrincipal User user
-			,@Valid @RequestBody VisitsPerEmployeeInputDTO visitsPerEmployeeInputDTO) throws ReportVisitServiceException {
+			,@Valid @RequestBody VisitsPerEmployeeInputDTO visitsPerEmployeeInputDTO) throws ReportVisitServiceException, ParseException {
 		
 		return returnResponseEntityOk(reportVisitService.visitsPerEmployee(user.getUsername(), visitsPerEmployeeInputDTO));
 	}

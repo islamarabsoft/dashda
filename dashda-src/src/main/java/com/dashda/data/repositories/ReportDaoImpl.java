@@ -161,7 +161,7 @@ public class ReportDaoImpl extends AbstractDao implements ReportDao, NamedQuerie
 	}
 
 	@Override
-	public List<ReportVisitsPerEmployee> generateVisitsPerEmployee(int id) {
+	public List<ReportVisitsPerEmployee> generateVisitsPerEmployeeByManager(int managerId, Date dateFrom, Date dateTo) {
 		
 		Criteria criteria = getSession().createCriteria(Employee.class);
 		criteria.createAlias("visitsForEmployeeId", "visit", criteria.LEFT_JOIN);
@@ -176,7 +176,35 @@ public class ReportDaoImpl extends AbstractDao implements ReportDao, NamedQuerie
 		.add(Projections.alias(Projections.count("visit.id"), "count"));
 		
 		criteria.setProjection(projectionList);
-		criteria.add(Restrictions.eq("manager.id", id));
+		criteria.add(Restrictions.between("visit.datetime", dateFrom, dateTo));
+		criteria.add(Restrictions.eq("manager.id", managerId));
+		criteria.add(Restrictions.eq("user.active", new Byte("1")));
+		criteria.add(Restrictions.eq("user.userRole.id", 2));
+		
+		criteria.addOrder(Order.asc("name"));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReportVisitsPerEmployee.class));
+	
+		return criteria.list();
+	}
+
+	@Override
+	public List<ReportVisitsPerEmployee> generateVisitsPerEmployeeByEmployee(int employeeId, Date dateFrom, Date dateTo) {
+		Criteria criteria = getSession().createCriteria(Employee.class);
+		criteria.createAlias("visitsForEmployeeId", "visit", criteria.LEFT_JOIN);
+		criteria.createAlias("employeesHierarchies", "hierarchies");
+		criteria.createAlias("hierarchies.employee", "employee");
+		criteria.createAlias("users", "user");
+		
+		
+		ProjectionList projectionList = Projections.projectionList()
+		.add(Projections.groupProperty("name"), "name")
+		.add(Projections.groupProperty("id"), "id")
+		.add(Projections.alias(Projections.countDistinct("visit.id"), "count"));
+		
+		criteria.setProjection(projectionList);
+		criteria.add(Restrictions.between("visit.datetime", dateFrom, dateTo));
+		criteria.add(Restrictions.eq("employee.id", employeeId));
 		criteria.add(Restrictions.eq("user.active", new Byte("1")));
 		criteria.add(Restrictions.eq("user.userRole.id", 2));
 		

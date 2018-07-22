@@ -35,6 +35,9 @@ public interface ReportDao {
 
 	Visit getvisitDetail(int visitId);
 
-	List<ReportVisitsPerEmployee> generateVisitsPerEmployee(int id);
+	List<ReportVisitsPerEmployee> generateVisitsPerEmployeeByManager(int id, Date dateFrom, Date dateTo);
+	
+	List<ReportVisitsPerEmployee> generateVisitsPerEmployeeByEmployee(int id, Date dateFrom, Date dateTo);
+	
 
 }

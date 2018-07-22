@@ -29,8 +29,10 @@ import com.dashda.data.entities.ProductVisit;
 import com.dashda.data.entities.ReportUnVisit;
 import com.dashda.data.entities.ReportVisitsPerEmployee;
 import com.dashda.data.entities.ServiceProvider;
+import com.dashda.data.entities.User;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.repositories.ReportDao;
+import com.dashda.enums.UserRoleEnum;
 import com.dashda.exception.AppExceptionHandler;
 import com.dashda.exception.ReportVisitServiceException;
 import com.dashda.utilities.DateUtilities;
@@ -195,19 +197,30 @@ public class ReportVisitServiceImpl extends ServicesManager implements ReportVis
 
 
 	@Override
-	public AppResponse visitsPerEmployee(String username, @Valid VisitsPerEmployeeInputDTO visitsPerEmployeeInputDTO) throws ReportVisitServiceException {
+	public AppResponse visitsPerEmployee(String username, @Valid VisitsPerEmployeeInputDTO visitsPerEmployeeInputDTO) throws ReportVisitServiceException, ParseException {
 		
-		Employee employee;
+		User user = getUser(username);
 		
-		try {
-			employee = getEmployee(username);
-		} catch (AppExceptionHandler e) {
-			throw new ReportVisitServiceException(e.getErrorCode());
-		}
+		Employee employee = null;
+		
+			try {
+				employee = getEmployee(username);
+			} catch (AppExceptionHandler e) {
+				throw new ReportVisitServiceException(e.getErrorCode());
+			}
 		
 		
+		List<ReportVisitsPerEmployee> visitsPerEmployees = null;
 		
-		List<ReportVisitsPerEmployee> visitsPerEmployees = reportDao.generateVisitsPerEmployee(employee.getId());
+		if(user.getUserRole().getId() != UserRoleEnum.MEDICAL_REP.getValue())
+		visitsPerEmployees = reportDao.generateVisitsPerEmployeeByManager(employee.getId(), 
+				DateUtilities.convertToDate(visitsPerEmployeeInputDTO.getDateFrom(), DateUtilities.DATE_FORMATE_PATTERN), 
+				DateUtilities.convertToDate(visitsPerEmployeeInputDTO.getDateTo(), DateUtilities.DATE_FORMATE_PATTERN));
+		else
+			visitsPerEmployees = reportDao.generateVisitsPerEmployeeByEmployee(employee.getId(), 
+					DateUtilities.convertToDate(visitsPerEmployeeInputDTO.getDateFrom(), DateUtilities.DATE_FORMATE_PATTERN), 
+					DateUtilities.convertToDate(visitsPerEmployeeInputDTO.getDateTo(), DateUtilities.DATE_FORMATE_PATTERN));
+		
 		List visitsPerEmployeeDTOs = new ArrayList<ReportVisitsPerEmployeeOutputDTO>();
 		
 		for (Iterator iterator = visitsPerEmployees.iterator(); iterator.hasNext();) {
