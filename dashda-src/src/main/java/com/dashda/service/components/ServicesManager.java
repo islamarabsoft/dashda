@@ -138,8 +138,8 @@ public abstract class ServicesManager {
 		return postResponse;
 	}
 	
-	protected Employee getEmployee(String username) throws AppExceptionHandler {
-		User user = userDao.findUserByUsername(username);
+	protected Employee getEmployee(String userName) throws AppExceptionHandler {
+		User user = userDao.findUserByUsername(userName);
 		Employee employee = user.getEmployee();
 		if (employee == null) {
 			throw new AppExceptionHandler(ERROR_CODE_1001);
@@ -148,8 +148,8 @@ public abstract class ServicesManager {
 	}
 	
 	
-	protected User getUser(String username) {
-		User user = userDao.findUserByUsername(username);
+	protected User getUser(String userName) {
+		User user = userDao.findUserByUsername(userName);
 		return user;
 	}
 	

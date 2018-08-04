@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 
+import com.dashda.annotation.LogExecutionTime;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ReportTargetVisitInputDTO;
 import com.dashda.controllers.dto.ReportUnVisitInputDTO;
@@ -30,7 +31,7 @@ public interface ReportVisitService {
 	AppResponse getVisitsList(String username, VisitsListInputDTO visitDetailsInputDTO) throws ReportVisitServiceException, ParseException;
 
 	AppResponse getVisitDetail(String username, @Valid VisitDetailInputDTO visitDetailInputDTO) throws ReportVisitServiceException, ParseException;
-
+	
 	AppResponse visitsPerEmployee(String username, @Valid VisitsPerEmployeeInputDTO visitsPerEmployeeInputDTO) throws ReportVisitServiceException, ParseException;
 
 }

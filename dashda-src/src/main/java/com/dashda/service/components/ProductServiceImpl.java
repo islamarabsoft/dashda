@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.dashda.data.entities.User;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.AssignProductSpecialtyInputDTO;
+import com.dashda.controllers.dto.AssignProductSpecialtyOutputDTO;
 import com.dashda.controllers.dto.ProducLineOutputDTO;
 import com.dashda.controllers.dto.ProductBySpecialtyInputDTO;
 import com.dashda.controllers.dto.ProductCreateInputDTO;

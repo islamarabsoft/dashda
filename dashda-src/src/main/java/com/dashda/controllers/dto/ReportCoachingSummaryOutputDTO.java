@@ -1,9 +1,7 @@
 /**
  * 
  */
-package com.dashda.service.components;
-
-import com.dashda.controllers.dto.AbstractDTO;
+package com.dashda.controllers.dto;
 
 /**
  * @author mohamed.hanfy

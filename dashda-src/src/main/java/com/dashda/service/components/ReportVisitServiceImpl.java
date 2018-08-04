@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dashda.controllers.dto.AbstractDTO;
+import com.dashda.annotation.LogExecutionTime;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ReportTargetVisitInputDTO;
 import com.dashda.controllers.dto.ReportTargetVisitOutputDTO;
@@ -154,6 +154,7 @@ public class ReportVisitServiceImpl extends ServicesManager implements ReportVis
 	}
 
 	@Override
+	@LogExecutionTime
 	public AppResponse getVisitDetail(String username, @Valid VisitDetailInputDTO visitDetailInputDTO) throws ReportVisitServiceException, ParseException{
 		
 		Visit visit = reportDao.getvisitDetail(visitDetailInputDTO.getVisitId());
@@ -195,8 +196,9 @@ public class ReportVisitServiceImpl extends ServicesManager implements ReportVis
 	}
 
 
-
+	
 	@Override
+	@LogExecutionTime
 	public AppResponse visitsPerEmployee(String username, @Valid VisitsPerEmployeeInputDTO visitsPerEmployeeInputDTO) throws ReportVisitServiceException, ParseException {
 		
 		User user = getUser(username);

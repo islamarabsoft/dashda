@@ -17,6 +17,7 @@ import com.dashda.controllers.dto.ReportCoachingDetailOutputDTO;
 import com.dashda.controllers.dto.ReportCoachingEmployeeSummaryInputDTO;
 import com.dashda.controllers.dto.ReportCoachingEmployeeSummaryOutputDTO;
 import com.dashda.controllers.dto.ReportCoachingSummaryInputDTO;
+import com.dashda.controllers.dto.ReportCoachingSummaryOutputDTO;
 import com.dashda.data.entities.DoubleVisit;
 import com.dashda.data.entities.ReportCoachingEmployeeSummary;
 import com.dashda.data.entities.ReportCoachingSummary;
