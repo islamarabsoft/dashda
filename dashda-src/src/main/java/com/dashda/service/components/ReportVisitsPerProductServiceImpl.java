@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.ReportVisitsPerProductDetailsInputDTO;
+import com.dashda.controllers.dto.ReportVisitsPerProductDetailsOutputDTO;
 import com.dashda.controllers.dto.ReportVisitsPerProductInputDTO;
 import com.dashda.controllers.dto.ReportVisitsPerProductOutputDTO;
 import com.dashda.data.entities.Employee;
@@ -86,7 +87,7 @@ public class ReportVisitsPerProductServiceImpl extends ServicesManager implement
 		for (Iterator iterator = visits.iterator(); iterator.hasNext();) {
 			Visit visit = (Visit) iterator.next();
 			
-			VisitsPerProductDetailsOutputDTO visitDetailOutputDTO = new VisitsPerProductDetailsOutputDTO(visit.getId(), visit.getEmployeeByEmployeeId().getName()
+			ReportVisitsPerProductDetailsOutputDTO visitDetailOutputDTO = new ReportVisitsPerProductDetailsOutputDTO(visit.getId(), visit.getEmployeeByEmployeeId().getName()
 				, visit.getEmployeeByEmployeeId().getManager().getName() 
 				, DateUtilities.dateFormate(visit.getDatetime()), visit.getServiceProvider().getFirstName() + " " + visit.getServiceProvider().getLastName()
 				, visit.getServiceProvider().getSpecialty().getName(), visit.getServiceProvider().getDistrict().getEnName());

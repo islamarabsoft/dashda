@@ -19,6 +19,7 @@ import com.dashda.controllers.dto.ReportTargetVisitInputDTO;
 import com.dashda.controllers.dto.ReportTargetVisitOutputDTO;
 import com.dashda.controllers.dto.ReportUnVisitInputDTO;
 import com.dashda.controllers.dto.ReportUnVisitOutputDTO;
+import com.dashda.controllers.dto.ReportVisitsListDetailOutputDTO;
 import com.dashda.controllers.dto.ReportVisitsPerEmployeeOutputDTO;
 import com.dashda.controllers.dto.VisitDetailInputDTO;
 import com.dashda.controllers.dto.VisitsListInputDTO;
@@ -143,7 +144,7 @@ public class ReportVisitServiceImpl extends ServicesManager implements ReportVis
 		for (Iterator iterator = visits.iterator(); iterator.hasNext();) {
 			Visit visit = (Visit) iterator.next();
 			
-			VisitsListDetailOutputDTO visitDetailOutputDTO = new VisitsListDetailOutputDTO(visit.getId(), visit.getEmployeeByEmployeeId().getManager().getName() 
+			ReportVisitsListDetailOutputDTO visitDetailOutputDTO = new ReportVisitsListDetailOutputDTO(visit.getId(), visit.getEmployeeByEmployeeId().getManager().getName() 
 				, DateUtilities.dateFormate(visit.getDatetime()), visit.getServiceProvider().getFirstName() + " " + visit.getServiceProvider().getLastName()
 				, visit.getServiceProvider().getSpecialty().getName(), visit.getServiceProvider().getDistrict().getEnName());
 			

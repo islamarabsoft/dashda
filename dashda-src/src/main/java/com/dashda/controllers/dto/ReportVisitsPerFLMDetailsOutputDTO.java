@@ -1,17 +1,16 @@
 /**
  * 
  */
-package com.dashda.service.components;
-
-import com.dashda.controllers.dto.AbstractDTO;
+package com.dashda.controllers.dto;
 
 /**
  * @author mohamed.hanfy
  *
  */
-public class VisitsListDetailOutputDTO implements AbstractDTO {
+public class ReportVisitsPerFLMDetailsOutputDTO implements AbstractDTO {
 
 	private int visitId;
+	private String employeeName;
 	private String firstLineManager;
 	private String dateTime;
 	private String accountName;
@@ -19,14 +18,15 @@ public class VisitsListDetailOutputDTO implements AbstractDTO {
 	private String brick;
 	
 	
-	public VisitsListDetailOutputDTO() {
+	public ReportVisitsPerFLMDetailsOutputDTO() {
 		super();
 	}
 	
-	public VisitsListDetailOutputDTO(int visitId, String firstLineManager, String dateTime, String accountName, String specialty,
+	public ReportVisitsPerFLMDetailsOutputDTO(int visitId, String employeeName, String firstLineManager, String dateTime, String accountName, String specialty,
 			String brick) {
 		super();
 		this.visitId = visitId;
+		this.employeeName = employeeName;
 		this.firstLineManager = firstLineManager;
 		this.dateTime = dateTime;
 		this.accountName = accountName;
@@ -41,6 +41,14 @@ public class VisitsListDetailOutputDTO implements AbstractDTO {
 
 	public void setVisitId(int visitId) {
 		this.visitId = visitId;
+	}
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
 	}
 
 	public String getFirstLineManager() {

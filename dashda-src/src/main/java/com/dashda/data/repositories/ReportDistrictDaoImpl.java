@@ -15,7 +15,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.Employee;
-import com.dashda.data.entities.ProductVisit;
+import com.dashda.data.entities.ReportVisitsPerDistrict;
 import com.dashda.data.entities.ReportVisitsPerProduct;
 import com.dashda.data.entities.Visit;
 
@@ -24,35 +24,39 @@ import com.dashda.data.entities.Visit;
  *
  */
 @Repository
-public class ReportProductDaoImpl extends AbstractDao implements ReportProductDao {
+public class ReportDistrictDaoImpl extends AbstractDao implements ReportDistrictDao {
 
-	
 	@Override
-	public List getVisitsPerProduct(Employee manager, Date dateFrom, Date dateTo) {
-		Criteria criteria = getSession().createCriteria(ProductVisit.class);
-		criteria.createAlias("product", "product");
-		criteria.createAlias("visit", "visit");
-		criteria.createAlias("visit.employeeByEmployeeId", "employee");
-		criteria.createAlias("employee.employeesHierarchies", "employeeHierarchy");
+	public List<ReportVisitsPerProduct> getVisitsPerDistrict(Employee manager, Date dateFrom,
+			Date dateTo) {
+		Criteria criteria = getSession().createCriteria(Visit.class);
+		criteria.createAlias("employeeByEmployeeId", "employee");
+		criteria.createAlias("employee.employeesHierarchies", "hierarchies");
+		criteria.createAlias("serviceProvider", "serviceProvider");
+		criteria.createAlias("serviceProvider.district", "district");
+	
+		
 		
 		ProjectionList projectionList = Projections.projectionList()
-				.add(Projections.groupProperty("product.name"), "name")
-				.add(Projections.groupProperty("product.id"), "id")
-				.add(Projections.alias(Projections.countDistinct("id"), "count"));
+		.add(Projections.groupProperty("district.enName"), "name")
+		.add(Projections.groupProperty("district.id"), "id")
+		.add(Projections.alias(Projections.count("id"), "count"));
 		
 		criteria.setProjection(projectionList);
-		criteria.add(Restrictions.between("visit.datetime", dateFrom, dateTo));
-		criteria.add(Restrictions.eq("employeeHierarchy.manager", manager));
+		criteria.add(Restrictions.between("datetime", dateFrom, dateTo));
+		criteria.add(Restrictions.eq("hierarchies.manager", manager));
+
 		
-		criteria.addOrder(Order.asc("name"));
+		criteria.addOrder(Order.asc("district.enName"));
 		
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReportVisitsPerProduct.class));
-		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReportVisitsPerDistrict.class));
+	
 		return criteria.list();
 	}
-
+	
+	
 	@Override
-	public List<Visit> getVisitsPerProductDetails(Employee manager, int productId) {
+	public List<Visit> getVisitsPerDistrictDetails(Employee manager, int districtId, Date dateFrom, Date dateTo) {
 		Criteria criteria = getSession().createCriteria(Visit.class);
 		criteria.createAlias("serviceProvider", "serviceProvider");
 		criteria.createAlias("serviceProvider.district", "district");
@@ -60,13 +64,14 @@ public class ReportProductDaoImpl extends AbstractDao implements ReportProductDa
 		criteria.createAlias("employeeByEmployeeId", "employee");
 		criteria.createAlias("employee.manager", "manager");
 		criteria.createAlias("employee.employeesHierarchies", "employeeHierarchy");
-//		criteria.createAlias("productVisits", "productVisits");
-//		criteria.createAlias("productVisits.product", "product");
+		
 		
 		criteria.add(Restrictions.eq("employeeHierarchy.manager", manager));
-		criteria.add(Restrictions.eq("product.id", productId));
+		criteria.add(Restrictions.eq("district.id", districtId));
+		criteria.add(Restrictions.between("datetime", dateFrom, dateTo));
 		
 		return criteria.list();
 	}
+
 
 }

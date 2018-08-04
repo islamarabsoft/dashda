@@ -1,15 +1,13 @@
 /**
  * 
  */
-package com.dashda.service.components;
-
-import com.dashda.controllers.dto.AbstractDTO;
+package com.dashda.controllers.dto;
 
 /**
  * @author mohamed.hanfy
  *
  */
-public class VisitsPerProductDetailsOutputDTO implements AbstractDTO {
+public class ReportVisitsPerProductDetailsOutputDTO implements AbstractDTO {
 
 	private int visitId;
 	private String employeeName;
@@ -20,11 +18,11 @@ public class VisitsPerProductDetailsOutputDTO implements AbstractDTO {
 	private String brick;
 	
 	
-	public VisitsPerProductDetailsOutputDTO() {
+	public ReportVisitsPerProductDetailsOutputDTO() {
 		super();
 	}
 	
-	public VisitsPerProductDetailsOutputDTO(int visitId, String employeeName, String firstLineManager, String dateTime, String accountName, String specialty,
+	public ReportVisitsPerProductDetailsOutputDTO(int visitId, String employeeName, String firstLineManager, String dateTime, String accountName, String specialty,
 			String brick) {
 		super();
 		this.visitId = visitId;
