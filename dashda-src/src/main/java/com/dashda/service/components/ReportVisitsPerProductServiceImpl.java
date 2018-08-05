@@ -82,7 +82,11 @@ public class ReportVisitsPerProductServiceImpl extends ServicesManager implement
 		
 		List VisitsPerProductDetailsOutputDTOs = new ArrayList();
 		
-		List<Visit> visits = reportProductDao.getVisitsPerProductDetails(employee, reportVisitsPerProductDetailsInputDTO.getProductId());
+		List<Visit> visits = reportProductDao.getVisitsPerProductDetails(employee, reportVisitsPerProductDetailsInputDTO.getProductId(),
+				DateUtilities.convertToDate(reportVisitsPerProductDetailsInputDTO.getDateFrom(),
+						DateUtilities.DATE_FORMATE_PATTERN),
+				DateUtilities.convertToDate(reportVisitsPerProductDetailsInputDTO.getDateTo(),
+						DateUtilities.DATE_FORMATE_PATTERN));
 		
 		for (Iterator iterator = visits.iterator(); iterator.hasNext();) {
 			Visit visit = (Visit) iterator.next();

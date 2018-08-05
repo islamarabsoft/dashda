@@ -52,7 +52,7 @@ public class ReportProductDaoImpl extends AbstractDao implements ReportProductDa
 	}
 
 	@Override
-	public List<Visit> getVisitsPerProductDetails(Employee manager, int productId) {
+	public List<Visit> getVisitsPerProductDetails(Employee manager, int productId, Date dateFrom, Date dateTo) {
 		Criteria criteria = getSession().createCriteria(Visit.class);
 		criteria.createAlias("serviceProvider", "serviceProvider");
 		criteria.createAlias("serviceProvider.district", "district");
@@ -65,6 +65,7 @@ public class ReportProductDaoImpl extends AbstractDao implements ReportProductDa
 		
 		criteria.add(Restrictions.eq("employeeHierarchy.manager", manager));
 		criteria.add(Restrictions.eq("product.id", productId));
+		criteria.add(Restrictions.between("datetime", dateFrom, dateTo));
 		
 		return criteria.list();
 	}

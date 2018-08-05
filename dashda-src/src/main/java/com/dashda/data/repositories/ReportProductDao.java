@@ -17,5 +17,5 @@ public interface ReportProductDao {
 
 	List getVisitsPerProduct(Employee manager, Date dateFrom, Date dateTo);
 
-	List<Visit> getVisitsPerProductDetails(Employee manager, int productId);
+	List<Visit> getVisitsPerProductDetails(Employee manager, int productId, Date dateFrom, Date dateTo);
 }
