@@ -49,7 +49,7 @@ public class ReportVisitsPerDistrictServiceImpl extends ServicesManager implemen
 			throw new ReportVisitsPerDistrictServiceExcepion(e.getErrorCode());
 		}
 		
-		List<ReportVisitsPerProduct> reportVisitsPerDistricts = reportDistrictDao.getVisitsPerDistrict(employee,
+		List<ReportVisitsPerDistrict> reportVisitsPerDistricts = reportDistrictDao.getVisitsPerDistrict(employee,
 				DateUtilities.convertToDate(reportVisitsPerDistrictInputDTO.getDateFrom(),
 						DateUtilities.DATE_FORMATE_PATTERN),
 				DateUtilities.convertToDate(reportVisitsPerDistrictInputDTO.getDateTo(),

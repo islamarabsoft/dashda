@@ -60,8 +60,8 @@ public class ReportProductDaoImpl extends AbstractDao implements ReportProductDa
 		criteria.createAlias("employeeByEmployeeId", "employee");
 		criteria.createAlias("employee.manager", "manager");
 		criteria.createAlias("employee.employeesHierarchies", "employeeHierarchy");
-//		criteria.createAlias("productVisits", "productVisits");
-//		criteria.createAlias("productVisits.product", "product");
+		criteria.createAlias("productVisits", "productVisits");
+		criteria.createAlias("productVisits.product", "product");
 		
 		criteria.add(Restrictions.eq("employeeHierarchy.manager", manager));
 		criteria.add(Restrictions.eq("product.id", productId));
