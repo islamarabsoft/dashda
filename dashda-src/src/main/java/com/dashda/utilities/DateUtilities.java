@@ -111,4 +111,14 @@ public class DateUtilities {
 	    
 		return cal.getTime();
 	}
+	
+	
+	public static Date calendarYear(int years) {
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.YEAR, years); // to get previous year add -1
+		Date nextYear = cal.getTime();
+		
+		return nextYear;
+	}
 }

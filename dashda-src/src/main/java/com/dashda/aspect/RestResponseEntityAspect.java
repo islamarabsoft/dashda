@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.dashda.annotation.RestResponseEntity;
+import com.dashda.controllers.dto.AbstractDTO;
 import com.dashda.controllers.dto.ListResponse;
+import com.dashda.controllers.dto.OkResponse;
 
 /**
  * @author mohamed.hanfy
@@ -32,14 +34,45 @@ public class RestResponseEntityAspect {
 	@Around("restResponseEnityPC() && @annotation(restResponseEntity)")
 	public ResponseEntity restResponseEnity(ProceedingJoinPoint joinPoint, final RestResponseEntity restResponseEntity) throws Throwable {
 	
+		switch (restResponseEntity.returnType())
+	    {
+	      case CREATE:
+	    	  
+	    	  return create(joinPoint, restResponseEntity);
+	      case DELETE:
+	      case LIST:
+	    	  return returnList(joinPoint, restResponseEntity);
+	      case UPDATE:
+	    	  default: return null;
+	    }
+	    	  
+		
+	}
+	
+	
+	private ResponseEntity returnList(ProceedingJoinPoint joinPoint, final RestResponseEntity restResponseEntity) throws Throwable {
+		
 		List abstractDTOs = (List)joinPoint.proceed();
 
-		System.out.println();
 		ListResponse postResponse = new ListResponse();
-		postResponse.setStatus(restResponseEntity.status().value());
-		postResponse.setMessage("List Size is : " + abstractDTOs.size());
+		postResponse.setStatus(200);
+		int listSize = 0;
+		if(abstractDTOs != null)
+			listSize = abstractDTOs.size();
+		postResponse.setMessage("List Size is : " + listSize);
 		postResponse.setData(abstractDTOs);
 		
-		return new ResponseEntity (postResponse, restResponseEntity.status());
+		return new ResponseEntity (postResponse, HttpStatus.OK);
+	}
+	
+	
+	private ResponseEntity create(ProceedingJoinPoint joinPoint, final RestResponseEntity restResponseEntity) throws Throwable {
+		
+		OkResponse okResponse = new OkResponse();
+		okResponse.setStatus(201);
+		okResponse.setMessage(restResponseEntity.message());
+		okResponse.setData((AbstractDTO)joinPoint.proceed());
+		
+		return new ResponseEntity (okResponse, HttpStatus.CREATED);
 	}
 }

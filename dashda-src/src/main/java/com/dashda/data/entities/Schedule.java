@@ -28,6 +28,8 @@ public class Schedule implements java.io.Serializable, com.dashda.data.entities.
 	private Employee employeeByManagerId;
 	private ScheduleStatus scheduleStatus;
 	private Date datetime;
+	private Plan plan;
+	private Visit visit;
 
 	public Schedule() {
 	}
@@ -119,4 +121,25 @@ public class Schedule implements java.io.Serializable, com.dashda.data.entities.
 		this.datetime = datetime;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PLAN_ID")
+	public Plan getPlan() {
+		return plan;
+	}
+
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "VISIT_ID")
+	public Visit getVisit() {
+		return visit;
+	}
+
+	public void setVisit(Visit visit) {
+		this.visit = visit;
+	}
+
+	
 }

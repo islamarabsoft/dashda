@@ -8,7 +8,61 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
 
+
+<!--android , ios 11.3-->
   <link rel="manifest" href="manifest.json">
+
+<!--ios before 11.3 -->
+  <link rel="apple-touch-icon" href="assets/img/icon-ios.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="DashDa">
+  <link href="assets/img/ios/apple-touch-startup-image-1242x2148.png" media="(device-width: 414px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3)" size="1242x2148" rel="apple-touch-startup-image">
+  <link href="assets/img/ios/apple-touch-startup-image-1125x2436.png" media="(device-width: 375px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3)" size="1125x2436" rel="apple-touch-startup-image">
+  <link href="assets/img/ios/apple-touch-startup-image-1536x2008.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" size="1536x2008" rel="apple-touch-startup-image">
+  <link href="assets/img/ios/apple-touch-startup-image-2048x1496.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" size="2048x1496" rel="apple-touch-startup-image">
+  <link href="assets/img/ios/apple-touch-startup-image-750x1294.png" media="(device-width: 375px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" size="750x12946" rel="apple-touch-startup-image">
+  <link href="assets/img/ios/apple-touch-startup-image-2208x1182.png" media="(device-width: 414px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 3)" size="2208x1182" rel="apple-touch-startup-image">
+  <link href="assets/img/ios/apple-touch-startup-image-2436x1125.png" media="(device-width: 375px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 3)" size="2436x1125" rel="apple-touch-startup-image">
+  <link href="assets/img/ios/apple-touch-startup-image-768x1004.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 1)" size="768x1004" rel="apple-touch-startup-image">
+  <link href="assets/img/ios/apple-touch-startup-image-1024x748.png" media="(device-width: 768px) and (device-height: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 1)" size="1024x748" rel="apple-touch-startup-image">
+ <link href="assets/img/ios/apple-touch-startup-image-1334x710.png" media="(device-width: 375px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" size="1334x710" rel="apple-touch-startup-image">
+ <!---->
+
+  <meta name="msapplication-starturl" content="/">
+  <!--script for ios redirect from login page to home-->
+  <script>
+      (function() {
+          var startUrlEl = document.querySelector("meta[name=msapplication-starturl]");
+          if(!!startUrlEl === true && navigator.standalone === true) {
+              var lastUrl = localStorage["navigate"];
+              history.pushState({launched: (!!lastUrl == false && history.length === 1)}, undefined, lastUrl || startUrlEl.content);
+              localStorage.removeItem("navigate");
+
+              // Intercept all anchor clicks and keep fullscreen if in origin
+              document.addEventListener("click", function(e) {
+                  var target = e.target;
+                  if(target.tagName === 'A') {
+
+                      var href = target.getAttribute("href");
+                      var linkedUrl = new URL(target.href);
+                      if(linkedUrl.origin === location.origin) {
+                          e.preventDefault();
+                          location.href = href;
+                      }
+                      else {
+                          // When we are navigating away store the state so we can resume.
+                          localStorage["navigate"] = location.href;
+                      }
+                  }
+              });
+          }
+      })();
+
+
+  </script>
+
+
+
   <link rel="icon" type="image/x-icon" href="favicon.png">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
@@ -75,8 +129,9 @@
     background: url("http://themes.themeregion.com/napapp/wp-content/themes/napapp/assets/images/preloader.gif") center no-repeat #fff
   }
 </style>
-<link rel="stylesheet" href="styles.95e5dc4615021a9d4fd5.css"></head>
+<link rel="stylesheet" href="styles.3f347ff9c7030d33978e.css"></head>
 <body>
+
   <app-root>
     <div class="na-preloader"></div>
     <!--<div class="app-loading">-->
@@ -89,4 +144,4 @@
   </app-root>
 
 
-<script type="text/javascript" src="runtime.6afe30102d8fe7337431.js"></script><script type="text/javascript" src="polyfills.a055efd08edeb127a289.js"></script><script type="text/javascript" src="main.f68fcc556ead65700e6c.js"></script></body></html>
+<script type="text/javascript" src="runtime.6afe30102d8fe7337431.js"></script><script type="text/javascript" src="polyfills.a055efd08edeb127a289.js"></script><script type="text/javascript" src="main.745d5c3fd461880ee9af.js"></script></body></html>

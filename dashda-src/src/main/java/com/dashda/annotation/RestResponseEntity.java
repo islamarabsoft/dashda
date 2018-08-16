@@ -11,6 +11,8 @@ import java.lang.annotation.Target;
 
 import org.springframework.http.HttpStatus;
 
+import com.dashda.enums.ReturnType;
+
 @Retention(RUNTIME)
 @Target(METHOD)
 /**
@@ -20,4 +22,6 @@ import org.springframework.http.HttpStatus;
 public @interface RestResponseEntity {
 
 	HttpStatus status() default HttpStatus.OK;
+	ReturnType returnType() default ReturnType.LIST;
+	String message() default "Action Done Successfully";
 }
