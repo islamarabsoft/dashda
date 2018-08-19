@@ -66,16 +66,16 @@ public class DateUtilities {
 	
 	/**
 	 * 
-	 * @param startDate
-	 * @param endDate
+	 * @param date1
+	 * @param date2
 	 * @return
-	 * 1 Start date is before end date <br>
-	 * -1 Start date is after end date <br>
-	 * 0 Start date and end date are equal <br>
+	 * 1 date1 is before date2 <br>
+	 * -1 date1 is after date2 <br>
+	 * 0 date1 and date2 are equal <br>
 	 */
-	public static int compareTwoDates(Date startDate, Date endDate) {
-		Date sDate = getZeroTimeDate(startDate);
-		Date eDate = getZeroTimeDate(endDate);
+	public static int compareTwoDates(Date date1, Date date2) {
+		Date sDate = getZeroTimeDate(date1);
+		Date eDate = getZeroTimeDate(date2);
 		if (sDate.before(eDate)) {
 			return 1;
 		}

@@ -8,6 +8,8 @@ import java.text.ParseException;
 import javax.validation.Valid;
 
 import com.dashda.controllers.dto.CreatePlanInputDTO;
+import com.dashda.controllers.dto.PlanScheduleItemInputDTO;
+import com.dashda.controllers.dto.PlanScheduleItemsListInputDTO;
 import com.dashda.data.entities.Employee;
 import com.dashda.exception.PlanServiceException;
 
@@ -20,5 +22,9 @@ public interface PlanService {
 	Object createPlan(String username, @Valid CreatePlanInputDTO createPlanInputDTO) throws ParseException, PlanServiceException;
 
 	Object planList(String username)throws PlanServiceException, ParseException;
+
+	Object addScheduleItems(String username, @Valid PlanScheduleItemInputDTO planScheduleItemInputDTO)throws ParseException, PlanServiceException;
+
+	Object planItemsList(String username, @Valid PlanScheduleItemsListInputDTO planScheduleItemsListInputDTO)throws ParseException, PlanServiceException;
 
 }

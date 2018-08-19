@@ -3,13 +3,15 @@
  */
 package com.dashda.controllers.dto;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * @author mhanafy
  *
  */
 public class AppResponse {
 	
-	private int status;
+	private HttpStatus status;
 	private String message;
 	
 	
@@ -25,19 +27,19 @@ public class AppResponse {
 	 * @param status
 	 * @param message
 	 */
-	public AppResponse(int status, String message) {
+	public AppResponse(HttpStatus status, String message) {
 		super();
 		this.status = status;
 		this.message = message;
 	}
 
 
-	public int getStatus() {
+	public HttpStatus getStatus() {
 		return status;
 	}
 
 
-	public void setStatus(int status) {
+	public void setStatus(HttpStatus status) {
 		this.status = status;
 	}
 

@@ -49,4 +49,10 @@ public class PlanDaoImpl extends AbstractDao implements PlanDao {
 		return criteria.list();
 	}
 
+	@Override
+	public Plan getById(int planId) {
+		this.setDAOClass(Plan.class);
+		return (Plan)findOne(planId);
+	}
+
 }

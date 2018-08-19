@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +66,9 @@ public abstract class ServicesManager {
 	protected static final String ERROR_CODE_1028 = "ERROR_CODE_1028";
 	protected static final String ERROR_CODE_1029 = "ERROR_CODE_1029";
 	protected static final String ERROR_CODE_1030 = "ERROR_CODE_1030";
+	protected static final String ERROR_CODE_1031 = "ERROR_CODE_1031";
+	protected static final String ERROR_CODE_1032 = "ERROR_CODE_1032";
+	protected static final String ERROR_CODE_1033 = "ERROR_CODE_1033";
 	
 	/**
 	 * THIS ATTRIBUTE NOT USED
@@ -83,7 +87,7 @@ public abstract class ServicesManager {
 	protected AppResponse emptyResponse(String message) {
 		AppResponse appResponse = new AppResponse();
 		
-		appResponse.setStatus(202);
+		appResponse.setStatus(HttpStatus.ACCEPTED);
 		appResponse.setMessage(message);
 		
 		return appResponse;
@@ -91,7 +95,7 @@ public abstract class ServicesManager {
 	
 	protected AppResponse createResponse(AbstractDTO abstractDTO, String message) {
 		OkResponse okResponse = new OkResponse();
-		okResponse.setStatus(201);
+		okResponse.setStatus(HttpStatus.CREATED);
 		okResponse.setMessage(message);
 		okResponse.setData(abstractDTO);
 		
@@ -101,7 +105,7 @@ public abstract class ServicesManager {
 	protected AppResponse okResponse(AbstractDTO abstractDTO, String message) {
 		
 		OkResponse okResponse = new OkResponse();
-		okResponse.setStatus(200);
+		okResponse.setStatus(HttpStatus.OK);
 		okResponse.setMessage(message);
 		okResponse.setData(abstractDTO);
 		
@@ -111,7 +115,7 @@ public abstract class ServicesManager {
 	protected AppResponse okListResponse(List<AbstractDTO> abstractDTOs, String message) {
 		
 		ListResponse postResponse = new ListResponse();
-		postResponse.setStatus(200);
+		postResponse.setStatus(HttpStatus.OK);
 		postResponse.setMessage(message);
 		postResponse.setData(abstractDTOs);
 		
@@ -122,7 +126,7 @@ public abstract class ServicesManager {
 	protected AppResponse okListResponse(List<AbstractDTO> abstractDTOs) {
 		
 		ListResponse postResponse = new ListResponse();
-		postResponse.setStatus(200);
+		postResponse.setStatus(HttpStatus.OK);
 		postResponse.setMessage("List Size is : " + abstractDTOs.size());
 		postResponse.setData(abstractDTOs);
 		
@@ -130,7 +134,7 @@ public abstract class ServicesManager {
 		
 	}
 	
-	private AppResponse handleResponse(int statusCode, List<AbstractDTO> data, String message) {
+	private AppResponse handleResponse(HttpStatus statusCode, List<AbstractDTO> data, String message) {
 		ListResponse postResponse = new ListResponse();
 		postResponse.setStatus(statusCode);
 		postResponse.setMessage(message);

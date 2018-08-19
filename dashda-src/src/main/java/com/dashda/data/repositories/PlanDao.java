@@ -21,4 +21,6 @@ public interface PlanDao {
 
 	List<Plan> plansList(Employee employee, Date date);
 
+	Plan getById(int planId);
+
 }

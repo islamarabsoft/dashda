@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.dashda.annotation.RestResponseEntity;
 import com.dashda.controllers.dto.AbstractDTO;
+import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ListResponse;
 import com.dashda.controllers.dto.OkResponse;
 
@@ -27,6 +28,8 @@ import com.dashda.controllers.dto.OkResponse;
 @Component
 public class RestResponseEntityAspect {
 
+	HttpStatus httpStatus = HttpStatus.OK;
+	
 	@Pointcut(value = "execution (@com.dashda.annotation.RestResponseEntity  * *.*(..))") 
     public void restResponseEnityPC() {  
 	} 
@@ -37,42 +40,66 @@ public class RestResponseEntityAspect {
 		switch (restResponseEntity.returnType())
 	    {
 	      case CREATE:
-	    	  
 	    	  return create(joinPoint, restResponseEntity);
 	      case DELETE:
+	    	  return delete(joinPoint, restResponseEntity);
 	      case LIST:
 	    	  return returnList(joinPoint, restResponseEntity);
 	      case UPDATE:
+	    	  return update(joinPoint, restResponseEntity);
 	    	  default: return null;
 	    }
-	    	  
 		
 	}
 	
 	
+	private ResponseEntity update(ProceedingJoinPoint joinPoint, RestResponseEntity restResponseEntity) throws Throwable {
+		OkResponse okResponse = new OkResponse();
+		
+		okResponse.setStatus(httpStatus);
+		okResponse.setMessage(restResponseEntity.message());
+		okResponse.setData((AbstractDTO)joinPoint.proceed());
+		
+		return new ResponseEntity (okResponse, httpStatus);
+	}
+
+	private ResponseEntity delete(ProceedingJoinPoint joinPoint, RestResponseEntity restResponseEntity) {
+		
+		httpStatus = HttpStatus.ACCEPTED;
+		AppResponse appResponse = new AppResponse();
+		
+		appResponse.setStatus(httpStatus);
+		appResponse.setMessage(restResponseEntity.message());
+		
+		return new ResponseEntity (appResponse, httpStatus);
+	}
+
 	private ResponseEntity returnList(ProceedingJoinPoint joinPoint, final RestResponseEntity restResponseEntity) throws Throwable {
 		
+		httpStatus = HttpStatus.OK;
 		List abstractDTOs = (List)joinPoint.proceed();
-
+		
 		ListResponse postResponse = new ListResponse();
-		postResponse.setStatus(200);
+		postResponse.setStatus(httpStatus);
 		int listSize = 0;
 		if(abstractDTOs != null)
 			listSize = abstractDTOs.size();
 		postResponse.setMessage("List Size is : " + listSize);
 		postResponse.setData(abstractDTOs);
 		
-		return new ResponseEntity (postResponse, HttpStatus.OK);
+		return new ResponseEntity (postResponse, httpStatus);
 	}
 	
 	
 	private ResponseEntity create(ProceedingJoinPoint joinPoint, final RestResponseEntity restResponseEntity) throws Throwable {
 		
+		httpStatus = HttpStatus.CREATED;
+		
 		OkResponse okResponse = new OkResponse();
-		okResponse.setStatus(201);
+		okResponse.setStatus(httpStatus);
 		okResponse.setMessage(restResponseEntity.message());
 		okResponse.setData((AbstractDTO)joinPoint.proceed());
 		
-		return new ResponseEntity (okResponse, HttpStatus.CREATED);
+		return new ResponseEntity (okResponse, httpStatus);
 	}
 }
