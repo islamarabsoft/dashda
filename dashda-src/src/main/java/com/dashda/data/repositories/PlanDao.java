@@ -17,10 +17,10 @@ public interface PlanDao {
 
 	Plan getPlanByDate(Employee employee, Date startDate, Date endDate);
 
-	void createPlan(Plan plan);
+	void savePlan(Plan plan);
 
 	List<Plan> plansList(Employee employee, Date date);
 
-	Plan getById(int planId);
+	Plan findById(int planId);
 
 }

@@ -14,19 +14,21 @@ public class PlanOutputDTO implements AbstractDTO{
 	private String endDate;
 	private String subject;
 	private String status;
+	private int statusId;
 	private String comment;
 	
 	
 	public PlanOutputDTO() {
 		super();
 	}
-	public PlanOutputDTO(int planId, String startDate, String endDate, String subject, String status, String comment) {
+	public PlanOutputDTO(int planId, String startDate, String endDate, String subject, String status, int statusId, String comment) {
 		super();
 		this.planId = planId;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.subject = subject;
 		this.status = status;
+		this.statusId = statusId;
 		this.comment = comment;
 	}
 	public int getPlanId() {
@@ -58,6 +60,12 @@ public class PlanOutputDTO implements AbstractDTO{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public int getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
 	}
 	public String getComment() {
 		return comment;

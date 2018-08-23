@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.annotation.RestResponseEntity;
+import com.dashda.controllers.dto.DeletePlanItemInputDTO;
 import com.dashda.controllers.dto.PlanScheduleItemInputDTO;
 import com.dashda.controllers.dto.PlanScheduleItemsListInputDTO;
 import com.dashda.enums.ReturnType;
@@ -29,7 +30,7 @@ import com.dashda.service.components.PlanService;
  *
  */
 @RestController
-public class PlanScheduleController {
+public class PlanScheduleController extends AbstractController{
 
 	@Autowired
 	PlanService planService;
@@ -52,5 +53,17 @@ public class PlanScheduleController {
 					throws PlanServiceException, ParseException {
 		
 		return planService.planItemsList(user.getUsername(), planScheduleItemsListInputDTO);
+	}
+	
+	
+	@RestResponseEntity(returnType=ReturnType.DELETE, message = "Plan Item Deleted Successfully")
+	@RequestMapping(method = RequestMethod.POST, value="/delete-plan-item")
+	@Secured("ROLE_SCHEDULE_CREATOR")
+	public Object deletePlanItem(@AuthenticationPrincipal User user
+			,@RequestBody @Valid DeletePlanItemInputDTO deletePlanItemInputDTO ) 
+					throws PlanServiceException, ParseException {
+		
+		planService.deletePlanItem(user.getUsername(), deletePlanItemInputDTO);
+		return "success";
 	}
 }

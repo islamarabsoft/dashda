@@ -33,7 +33,7 @@ public class PlanDaoImpl extends AbstractDao implements PlanDao {
 	}
 
 	@Override
-	public void createPlan(Plan plan) {
+	public void savePlan(Plan plan) {
 		create(plan);
 	}
 
@@ -50,7 +50,7 @@ public class PlanDaoImpl extends AbstractDao implements PlanDao {
 	}
 
 	@Override
-	public Plan getById(int planId) {
+	public Plan findById(int planId) {
 		this.setDAOClass(Plan.class);
 		return (Plan)findOne(planId);
 	}

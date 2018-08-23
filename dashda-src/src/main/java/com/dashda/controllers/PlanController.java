@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.annotation.RestResponseEntity;
 import com.dashda.controllers.dto.CreatePlanInputDTO;
+import com.dashda.controllers.dto.SubmitPlanForApprovalInputDTO;
 import com.dashda.enums.ReturnType;
 import com.dashda.exception.PlanServiceException;
 import com.dashda.service.components.PlanService;
@@ -49,5 +50,15 @@ public class PlanController extends AbstractController {
 			throws ParseException, PlanServiceException{
 		
 			return planService.planList(user.getUsername());
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/submit-plan-for-approval")
+	@Secured("ROLE_SCHEDULE_CREATOR")
+	@RestResponseEntity(returnType = ReturnType.UPDATE)
+	public Object submitPlanForApproval(@AuthenticationPrincipal User user, 
+			@Valid @RequestBody SubmitPlanForApprovalInputDTO submitPlanForApprovalInputDTO) 
+			throws ParseException, PlanServiceException{
+		
+			return planService.submitPlanForApproval(user.getUsername(), submitPlanForApprovalInputDTO);
 	}
 }

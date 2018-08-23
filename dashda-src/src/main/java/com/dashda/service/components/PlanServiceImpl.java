@@ -15,19 +15,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.CreatePlanInputDTO;
+import com.dashda.controllers.dto.DeletePlanItemInputDTO;
 import com.dashda.controllers.dto.PlanOutputDTO;
 import com.dashda.controllers.dto.PlanScheduleItemInputDTO;
 import com.dashda.controllers.dto.PlanScheduleItemOutputDTO;
 import com.dashda.controllers.dto.PlanScheduleItemsListInputDTO;
 import com.dashda.controllers.dto.PlanScheduleItemsListOutputDTO;
+import com.dashda.controllers.dto.SubmitPlanForApprovalInputDTO;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Plan;
+import com.dashda.data.entities.PlanStatus;
 import com.dashda.data.entities.Schedule;
 import com.dashda.data.entities.ScheduleStatus;
 import com.dashda.data.entities.ServiceProvider;
 import com.dashda.data.repositories.DoctorDao;
 import com.dashda.data.repositories.PlanDao;
 import com.dashda.data.repositories.ScheduleDao;
+import com.dashda.enums.PlanStatusEnum;
 import com.dashda.exception.AppExceptionHandler;
 import com.dashda.exception.PlanServiceException;
 import com.dashda.utilities.DateUtilities;
@@ -75,13 +79,13 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 		plan.setStartDate(startDate);
 		plan.setEndDate(endDate);
 		
-		planDao.createPlan(plan);
+		planDao.savePlan(plan);
 		
-		CreatePlanOutputDTO createPlanOutputDTO = new CreatePlanOutputDTO(plan.getId() 
-				, DateUtilities.dateFormate(plan.getStartDate())
-				, DateUtilities.dateFormate(plan.getEndDate()));
+		PlanOutputDTO planOutputDTO = new PlanOutputDTO(plan.getId(), 
+				DateUtilities.dateFormate(plan.getStartDate()), DateUtilities.dateFormate(plan.getEndDate()), 
+				plan.getSubject(), PlanStatusEnum.DRAFT.name(), PlanStatusEnum.DRAFT.getValue(), plan.getComment());
 		
-		return createPlanOutputDTO;
+		return planOutputDTO;
 	}
 
 	@Override
@@ -100,7 +104,8 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 			Plan plan = (Plan) iterator.next();
 			PlanOutputDTO planOutputDTO = new PlanOutputDTO(plan.getId(), 
 				DateUtilities.dateFormate(plan.getStartDate()), DateUtilities.dateFormate(plan.getEndDate()), 
-				plan.getSubject(), plan.getPlanStatus().getName(), plan.getComment());
+				plan.getSubject(), plan.getPlanStatus().getName(), 
+				plan.getPlanStatus().getId(), plan.getComment());
 			
 			planOutputDTOs.add(planOutputDTO);
 		}
@@ -125,7 +130,7 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 		int [] serviceProviderIds = planScheduleItemInputDTO.getServiceProviderIds();
 		Date scheduleDate = DateUtilities.convertToDate(planScheduleItemInputDTO.getDate(), DateUtilities.DATE_FORMATE_PATTERN);
 		
-		Plan plan = planDao.getById(planScheduleItemInputDTO.getPlanId());
+		Plan plan = planDao.findById(planScheduleItemInputDTO.getPlanId());
 		if (plan == null) {
 			throw new PlanServiceException(ERROR_CODE_1031);
 		}
@@ -179,7 +184,7 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 			throw new PlanServiceException(e.getErrorCode());
 		}
 		
-		Plan plan = planDao.getById(planScheduleItemsListInputDTO.getPlanId());
+		Plan plan = planDao.findById(planScheduleItemsListInputDTO.getPlanId());
 		if (plan == null) {
 			throw new PlanServiceException(ERROR_CODE_1031);
 		}
@@ -201,6 +206,65 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 		}
 		
 		return scheduleItemsListOutputDTOs;
+	}
+
+	@Override
+	public void deletePlanItem(String username, @Valid DeletePlanItemInputDTO deletePlanItemInputDTO) throws PlanServiceException {
+		
+		Employee employee;
+		
+		try {
+			
+		employee = getEmployee(username);
+		}catch (AppExceptionHandler e) {
+			throw new PlanServiceException(e.getErrorCode());
+		}
+		
+		Schedule schedule = scheduleDao.findScheduleByID(deletePlanItemInputDTO.getPlanItemId());
+		if(schedule == null)
+			throw new PlanServiceException(ERROR_CODE_1004);
+		
+		if(schedule.getEmployeeByEmployeeId().getId() != employee.getId())
+			throw new PlanServiceException(ERROR_CODE_1004);
+		
+		scheduleDao.deleteScheduleItem(schedule);
+		
+	}
+
+	@Override
+	public Object submitPlanForApproval(String username,
+			@Valid SubmitPlanForApprovalInputDTO submitPlanForApprovalInputDTO) throws PlanServiceException, ParseException {
+		Employee employee;
+		
+		try {
+			
+		employee = getEmployee(username);
+		}catch (AppExceptionHandler e) {
+			throw new PlanServiceException(e.getErrorCode());
+		}
+		
+		Plan plan = planDao.findById(submitPlanForApprovalInputDTO.getPlanId());
+		
+		if(plan.getEmployee().getId() != employee.getId())
+			throw new PlanServiceException(ERROR_CODE_1015);
+		
+		if (plan == null) 
+			throw new PlanServiceException(ERROR_CODE_1031);
+		
+		
+		if(plan.getPlanStatus().getId() != PlanStatusEnum.DRAFT.getValue())
+			throw new PlanServiceException(ERROR_CODE_1034);
+		
+		
+		plan.setPlanStatus(new PlanStatus(
+				PlanStatusEnum.SENT_FOR_APPROVAL.getValue()));
+		planDao.savePlan(plan);
+		
+		PlanOutputDTO planOutputDTO = new PlanOutputDTO(plan.getId(), 
+				DateUtilities.dateFormate(plan.getStartDate()), DateUtilities.dateFormate(plan.getEndDate()), 
+				plan.getSubject(), PlanStatusEnum.SENT_FOR_APPROVAL.name(), PlanStatusEnum.SENT_FOR_APPROVAL.getValue(), plan.getComment());
+		
+		return planOutputDTO;
 	}
 	
 }

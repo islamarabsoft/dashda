@@ -56,6 +56,7 @@ public class RestResponseEntityAspect {
 	private ResponseEntity update(ProceedingJoinPoint joinPoint, RestResponseEntity restResponseEntity) throws Throwable {
 		OkResponse okResponse = new OkResponse();
 		
+		httpStatus = HttpStatus.ACCEPTED;
 		okResponse.setStatus(httpStatus);
 		okResponse.setMessage(restResponseEntity.message());
 		okResponse.setData((AbstractDTO)joinPoint.proceed());
@@ -63,13 +64,14 @@ public class RestResponseEntityAspect {
 		return new ResponseEntity (okResponse, httpStatus);
 	}
 
-	private ResponseEntity delete(ProceedingJoinPoint joinPoint, RestResponseEntity restResponseEntity) {
+	private ResponseEntity delete(ProceedingJoinPoint joinPoint, RestResponseEntity restResponseEntity) throws Throwable {
 		
 		httpStatus = HttpStatus.ACCEPTED;
 		AppResponse appResponse = new AppResponse();
 		
 		appResponse.setStatus(httpStatus);
 		appResponse.setMessage(restResponseEntity.message());
+		joinPoint.proceed();
 		
 		return new ResponseEntity (appResponse, httpStatus);
 	}
