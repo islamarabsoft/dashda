@@ -7,11 +7,12 @@ import java.text.ParseException;
 
 import javax.validation.Valid;
 
-import com.dashda.controllers.dto.CreatePlanInputDTO;
-import com.dashda.controllers.dto.DeletePlanItemInputDTO;
-import com.dashda.controllers.dto.PlanScheduleItemInputDTO;
-import com.dashda.controllers.dto.PlanScheduleItemsListInputDTO;
-import com.dashda.controllers.dto.SubmitPlanForApprovalInputDTO;
+import com.dashda.controllers.dto.plan.CalendarActivityInputDTO;
+import com.dashda.controllers.dto.plan.CreatePlanInputDTO;
+import com.dashda.controllers.dto.plan.DeletePlanItemInputDTO;
+import com.dashda.controllers.dto.plan.PlanInputDTO;
+import com.dashda.controllers.dto.plan.PlanScheduleItemInputDTO;
+import com.dashda.controllers.dto.plan.PlanScheduleItemsListInputDTO;
 import com.dashda.data.entities.Employee;
 import com.dashda.exception.PlanServiceException;
 
@@ -31,6 +32,14 @@ public interface PlanService {
 
 	void deletePlanItem(String username, @Valid DeletePlanItemInputDTO deletePlanItemInputDTO) throws PlanServiceException;
 
-	Object submitPlanForApproval(String username, @Valid SubmitPlanForApprovalInputDTO submitPlanForApprovalInputDTO)throws PlanServiceException, ParseException;
+	Object submitPlanForApproval(String username, @Valid PlanInputDTO submitPlanForApprovalInputDTO)throws PlanServiceException, ParseException;
+
+	Object approvePlan(String username, @Valid PlanInputDTO planInputDTO)throws PlanServiceException, ParseException;
+
+	Object rejectPlan(String username, @Valid PlanInputDTO planInputDTO)throws PlanServiceException, ParseException;
+
+	Object waitingForApprovalPlanList(String username) throws PlanServiceException, ParseException;
+
+	Object calendarActivitiesList(String username, @Valid CalendarActivityInputDTO calenderActivityInputDTO)throws ParseException, PlanServiceException;
 
 }

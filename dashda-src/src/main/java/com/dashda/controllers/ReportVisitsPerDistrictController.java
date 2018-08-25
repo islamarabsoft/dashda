@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.annotation.RestResponseEntity;
-import com.dashda.controllers.dto.ReportVisitsPerDistrictDetailsInputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerDistrictInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerDistrictDetailsInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerDistrictInputDTO;
 import com.dashda.exception.ReportVisitsPerDistrictServiceExcepion;
 import com.dashda.service.components.ReportVisitsPerDistrictService;
 

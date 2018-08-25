@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.EmployeeDistrictDTO;
+import com.dashda.controllers.dto.employee.EmployeeDistrictDTO;
 import com.dashda.data.entities.District;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeesCoveredDistrict;
 import com.dashda.data.repositories.DistrictDao;
-import com.dashda.data.repositories.EmployeeDao;
-import com.dashda.data.repositories.EmployeeCoveredDistrictDao;
+import com.dashda.data.repositories.employee.EmployeeCoveredDistrictDao;
+import com.dashda.data.repositories.employee.EmployeeDao;
 import com.dashda.exception.EmployeDistrictServiceException;
 
 /**

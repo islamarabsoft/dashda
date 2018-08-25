@@ -11,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 
 import com.dashda.annotation.LogExecutionTime;
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.ReportTargetVisitInputDTO;
-import com.dashda.controllers.dto.ReportUnVisitInputDTO;
-import com.dashda.controllers.dto.VisitDetailInputDTO;
-import com.dashda.controllers.dto.VisitsListInputDTO;
-import com.dashda.controllers.dto.VisitsPerEmployeeInputDTO;
+import com.dashda.controllers.dto.report.ReportTargetVisitInputDTO;
+import com.dashda.controllers.dto.report.ReportUnVisitInputDTO;
+import com.dashda.controllers.dto.visit.VisitDetailInputDTO;
+import com.dashda.controllers.dto.visit.VisitsListInputDTO;
+import com.dashda.controllers.dto.visit.VisitsPerEmployeeInputDTO;
 import com.dashda.exception.ReportVisitServiceException;
 
 /**

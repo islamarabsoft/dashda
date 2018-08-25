@@ -9,11 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.AssignProductSpecialtyInputDTO;
-import com.dashda.controllers.dto.ProductBySpecialtyInputDTO;
-import com.dashda.controllers.dto.ProductCreateInputDTO;
-import com.dashda.controllers.dto.ProductDeleteInputDTO;
-import com.dashda.controllers.dto.ProductUpdateInputDTO;
+import com.dashda.controllers.dto.product.AssignProductSpecialtyInputDTO;
+import com.dashda.controllers.dto.product.ProductBySpecialtyInputDTO;
+import com.dashda.controllers.dto.product.ProductCreateInputDTO;
+import com.dashda.controllers.dto.product.ProductDeleteInputDTO;
+import com.dashda.controllers.dto.product.ProductUpdateInputDTO;
 
 /**
  * @author mhanafy

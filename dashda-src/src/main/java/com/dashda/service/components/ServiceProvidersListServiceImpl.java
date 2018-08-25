@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AbstractDTO;
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.AssignServiceProviderDTO;
-import com.dashda.controllers.dto.DoctorDTO;
-import com.dashda.controllers.dto.ServiceProviderInputDTO;
+import com.dashda.controllers.dto.serviceProvider.AssignServiceProviderDTO;
+import com.dashda.controllers.dto.serviceProvider.DoctorDTO;
+import com.dashda.controllers.dto.serviceProvider.ServiceProviderInputDTO;
 import com.dashda.data.entities.Contact;
 import com.dashda.data.entities.District;
 import com.dashda.data.entities.ServiceProvider;
 import com.dashda.data.entities.EmployeeServiceProvider;
 import com.dashda.data.entities.EmployeesCoveredDistrict;
 import com.dashda.data.entities.User;
-import com.dashda.data.repositories.DoctorDao;
-import com.dashda.data.repositories.EmployeeServiceProviderDao;
-import com.dashda.data.repositories.UserDao;
+import com.dashda.data.repositories.employee.EmployeeServiceProviderDao;
+import com.dashda.data.repositories.serviceProvider.DoctorDao;
+import com.dashda.data.repositories.user.UserDao;
 import com.dashda.exception.ServiceProviderServiceExceptionManager;
 
 

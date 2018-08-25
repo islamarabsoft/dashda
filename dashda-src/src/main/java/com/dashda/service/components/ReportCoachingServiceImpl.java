@@ -12,17 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.ReportCoachingDetailInputDTO;
-import com.dashda.controllers.dto.ReportCoachingDetailOutputDTO;
-import com.dashda.controllers.dto.ReportCoachingEmployeeSummaryInputDTO;
-import com.dashda.controllers.dto.ReportCoachingEmployeeSummaryOutputDTO;
-import com.dashda.controllers.dto.ReportCoachingSummaryInputDTO;
-import com.dashda.controllers.dto.ReportCoachingSummaryOutputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingDetailInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingDetailOutputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingEmployeeSummaryInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingEmployeeSummaryOutputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingSummaryInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingSummaryOutputDTO;
 import com.dashda.data.entities.DoubleVisit;
 import com.dashda.data.entities.ReportCoachingEmployeeSummary;
 import com.dashda.data.entities.ReportCoachingSummary;
 import com.dashda.data.entities.Visit;
-import com.dashda.data.repositories.ReportDao;
+import com.dashda.data.repositories.report.ReportDao;
 import com.dashda.exception.ReportCoachingServiceExcepion;
 import com.dashda.utilities.DateUtilities;
 

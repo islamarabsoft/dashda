@@ -7,8 +7,8 @@ import java.text.ParseException;
 import java.util.List;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.DoctorDTO;
-import com.dashda.controllers.dto.MyServiceProviderInputDTO;
+import com.dashda.controllers.dto.serviceProvider.DoctorDTO;
+import com.dashda.controllers.dto.serviceProvider.MyServiceProviderInputDTO;
 import com.dashda.exception.MyServiceProvidersListServiceExceptionManager;
 
 /**

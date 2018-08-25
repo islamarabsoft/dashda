@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dashda.controllers.dto.EmployeeDistrictDTO;
+import com.dashda.controllers.dto.employee.EmployeeDistrictDTO;
 import com.dashda.exception.EmployeDistrictServiceException;
 import com.dashda.exception.UserServiceExceptioManager;
 import com.dashda.service.components.EmployeeDistrictService;

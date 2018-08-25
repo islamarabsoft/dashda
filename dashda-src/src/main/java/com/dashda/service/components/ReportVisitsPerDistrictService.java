@@ -8,8 +8,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.dashda.controllers.dto.ReportVisitsPerDistrictDetailsInputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerDistrictInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerDistrictDetailsInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerDistrictInputDTO;
 import com.dashda.exception.ReportVisitsPerDistrictServiceExcepion;
 
 /**

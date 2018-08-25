@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.dashda.controllers.dto.EmployeeUserDTO;
 import com.dashda.controllers.dto.UserDTO;
+import com.dashda.controllers.dto.employee.EmployeeUserDTO;
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.controllers.dto.ClaimDTO;
 import com.dashda.data.entities.Account;
@@ -28,8 +28,8 @@ import com.dashda.data.entities.User;
 import com.dashda.data.entities.UserRole;
 import com.dashda.data.entities.UserRolePermission;
 import com.dashda.data.repositories.ContactDao;
-import com.dashda.data.repositories.EmployeeDao;
-import com.dashda.data.repositories.UserDao;
+import com.dashda.data.repositories.employee.EmployeeDao;
+import com.dashda.data.repositories.user.UserDao;
 import com.dashda.enums.PermissionTypeEnum;
 import com.dashda.exception.UserServiceExceptioManager;
 

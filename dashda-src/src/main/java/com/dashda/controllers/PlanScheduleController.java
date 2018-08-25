@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.annotation.RestResponseEntity;
-import com.dashda.controllers.dto.DeletePlanItemInputDTO;
-import com.dashda.controllers.dto.PlanScheduleItemInputDTO;
-import com.dashda.controllers.dto.PlanScheduleItemsListInputDTO;
+import com.dashda.controllers.dto.plan.DeletePlanItemInputDTO;
+import com.dashda.controllers.dto.plan.PlanScheduleItemInputDTO;
+import com.dashda.controllers.dto.plan.PlanScheduleItemsListInputDTO;
 import com.dashda.enums.ReturnType;
 import com.dashda.exception.PlanServiceException;
 import com.dashda.service.components.PlanService;

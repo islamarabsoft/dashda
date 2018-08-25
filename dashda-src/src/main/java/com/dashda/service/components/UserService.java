@@ -6,8 +6,8 @@ package com.dashda.service.components;
 import javax.validation.Valid;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.EmployeeUserDTO;
 import com.dashda.controllers.dto.UserDTO;
+import com.dashda.controllers.dto.employee.EmployeeUserDTO;
 import com.dashda.exception.UserServiceExceptioManager;
 
 /**

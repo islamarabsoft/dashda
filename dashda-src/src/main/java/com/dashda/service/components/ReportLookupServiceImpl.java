@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.EmployeeOutputDTO;
 import com.dashda.controllers.dto.SpecialtyOutputDto;
+import com.dashda.controllers.dto.employee.EmployeeOutputDTO;
 import com.dashda.data.entities.District;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeeHierarchy;
 import com.dashda.data.entities.ServiceProvider;
 import com.dashda.data.entities.Specialty;
-import com.dashda.data.repositories.ReportLookupDao;
+import com.dashda.data.repositories.report.ReportLookupDao;
 import com.dashda.exception.AppExceptionHandler;
 
 /**

@@ -7,6 +7,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
+
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 /**
@@ -32,8 +37,8 @@ public abstract class AbstractDao < T extends Serializable >{
 	
     @Autowired
     private SessionFactory sessionFactory;
- 
-    protected Session getSession() {
+
+	protected Session getSession() {
         return sessionFactory.getCurrentSession();
     }
  

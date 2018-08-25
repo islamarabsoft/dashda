@@ -13,14 +13,14 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dashda.controllers.dto.ReportVisitsPerProductDetailsInputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerProductDetailsOutputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerProductInputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerProductOutputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerProductDetailsInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerProductDetailsOutputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerProductInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerProductOutputDTO;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.ReportVisitsPerProduct;
 import com.dashda.data.entities.Visit;
-import com.dashda.data.repositories.ReportProductDao;
+import com.dashda.data.repositories.report.ReportProductDao;
 import com.dashda.exception.AppExceptionHandler;
 import com.dashda.utilities.DateUtilities;
 

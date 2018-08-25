@@ -8,8 +8,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.dashda.controllers.dto.ReportVisitsPerFLMDetailsInputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerFLMInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerFLMDetailsInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerFLMInputDTO;
 import com.dashda.exception.ReportVisitsPerFLMServiceExcepion;
 
 /**

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.controllers.dto.ListResponse;
-import com.dashda.controllers.dto.ServiceProviderInputDTO;
+import com.dashda.controllers.dto.serviceProvider.ServiceProviderInputDTO;
 import com.dashda.exception.ServiceProviderServiceExceptionManager;
 import com.dashda.service.components.ServiceProvidersListService;
 

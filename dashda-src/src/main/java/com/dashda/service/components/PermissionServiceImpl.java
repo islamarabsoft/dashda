@@ -11,8 +11,8 @@ import com.dashda.data.entities.PermissionType;
 import com.dashda.data.entities.UserRole;
 import com.dashda.data.entities.UserRolePermission;
 import com.dashda.data.repositories.PermissionDao;
-import com.dashda.data.repositories.UserRoleDao;
-import com.dashda.data.repositories.UserRolePermissionDao;
+import com.dashda.data.repositories.user.UserRoleDao;
+import com.dashda.data.repositories.user.UserRolePermissionDao;
 import com.dashda.enums.PermissionTypeEnum;
 import com.dashda.exception.PermissionServiceExceptioManager;
 

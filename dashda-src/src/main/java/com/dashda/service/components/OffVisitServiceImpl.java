@@ -26,7 +26,7 @@ import com.dashda.data.entities.OffVisitStatus;
 import com.dashda.data.entities.User;
 import com.dashda.data.repositories.OffVisitDao;
 import com.dashda.data.repositories.OffVisitReasonDao;
-import com.dashda.data.repositories.UserDao;
+import com.dashda.data.repositories.user.UserDao;
 import com.dashda.enums.OffVisitStatusEnum;
 import com.dashda.exception.OffVisitServiceException;
 import com.dashda.utilities.DateUtilities;

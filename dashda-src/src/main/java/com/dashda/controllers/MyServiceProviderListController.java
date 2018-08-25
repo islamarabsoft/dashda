@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dashda.controllers.dto.AssignServiceProviderDTO;
-import com.dashda.controllers.dto.AssignServiceProviderInputDTO;
-import com.dashda.controllers.dto.DoctorDTO;
-import com.dashda.controllers.dto.EmployeeDoctorDTO;
-import com.dashda.controllers.dto.MyServiceProviderInputDTO;
-import com.dashda.controllers.dto.UnAssignServiceProviderInputDTO;
+import com.dashda.controllers.dto.employee.EmployeeDoctorDTO;
+import com.dashda.controllers.dto.serviceProvider.AssignServiceProviderDTO;
+import com.dashda.controllers.dto.serviceProvider.AssignServiceProviderInputDTO;
+import com.dashda.controllers.dto.serviceProvider.DoctorDTO;
+import com.dashda.controllers.dto.serviceProvider.MyServiceProviderInputDTO;
+import com.dashda.controllers.dto.serviceProvider.UnAssignServiceProviderInputDTO;
 import com.dashda.exception.ApiError;
 import com.dashda.exception.MyServiceProvidersListServiceExceptionManager;
 import com.dashda.service.components.MyServiceProvidersListService;

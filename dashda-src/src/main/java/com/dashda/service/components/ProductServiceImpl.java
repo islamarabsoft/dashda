@@ -12,24 +12,24 @@ import org.springframework.stereotype.Service;
 
 import com.dashda.data.entities.User;
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.AssignProductSpecialtyInputDTO;
-import com.dashda.controllers.dto.AssignProductSpecialtyOutputDTO;
-import com.dashda.controllers.dto.ProducLineOutputDTO;
-import com.dashda.controllers.dto.ProductBySpecialtyInputDTO;
-import com.dashda.controllers.dto.ProductCreateInputDTO;
-import com.dashda.controllers.dto.ProductDeleteInputDTO;
-import com.dashda.controllers.dto.ProductOutputDTO;
-import com.dashda.controllers.dto.ProductUpdateInputDTO;
 import com.dashda.controllers.dto.SpecialtyOutputDto;
+import com.dashda.controllers.dto.product.AssignProductSpecialtyInputDTO;
+import com.dashda.controllers.dto.product.AssignProductSpecialtyOutputDTO;
+import com.dashda.controllers.dto.product.ProducLineOutputDTO;
+import com.dashda.controllers.dto.product.ProductBySpecialtyInputDTO;
+import com.dashda.controllers.dto.product.ProductCreateInputDTO;
+import com.dashda.controllers.dto.product.ProductDeleteInputDTO;
+import com.dashda.controllers.dto.product.ProductOutputDTO;
+import com.dashda.controllers.dto.product.ProductUpdateInputDTO;
 import com.dashda.data.entities.Account;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Product;
 import com.dashda.data.entities.ProductLine;
 import com.dashda.data.entities.ProductSpecialty;
 import com.dashda.data.entities.Specialty;
-import com.dashda.data.repositories.ProductDao;
 import com.dashda.data.repositories.SpecialtyDao;
-import com.dashda.data.repositories.UserDao;
+import com.dashda.data.repositories.product.ProductDao;
+import com.dashda.data.repositories.user.UserDao;
 
 /**
  * @author mhanafy

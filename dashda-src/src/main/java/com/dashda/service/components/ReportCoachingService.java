@@ -6,9 +6,9 @@ package com.dashda.service.components;
 import java.text.ParseException;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.ReportCoachingDetailInputDTO;
-import com.dashda.controllers.dto.ReportCoachingEmployeeSummaryInputDTO;
-import com.dashda.controllers.dto.ReportCoachingSummaryInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingDetailInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingEmployeeSummaryInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingSummaryInputDTO;
 import com.dashda.exception.ReportCoachingServiceExcepion;
 
 /**

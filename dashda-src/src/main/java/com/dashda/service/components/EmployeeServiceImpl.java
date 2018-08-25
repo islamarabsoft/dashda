@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.ManagerOutputDto;
+import com.dashda.controllers.dto.employee.ManagerOutputDto;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeeHierarchy;
 import com.dashda.data.entities.User;
-import com.dashda.data.repositories.EmployeeHierarchyDao;
-import com.dashda.data.repositories.UserDao;
+import com.dashda.data.repositories.employee.EmployeeHierarchyDao;
+import com.dashda.data.repositories.user.UserDao;
 
 /**
  * @author mhanafy

@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.ReportCallsDoneOutputDTO;
+import com.dashda.controllers.dto.report.ReportCallsDoneOutputDTO;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.ReportCallsDone;
-import com.dashda.data.repositories.ReportCoverageDao;
+import com.dashda.data.repositories.report.ReportCoverageDao;
 import com.dashda.exception.AppExceptionHandler;
 import com.dashda.exception.ReportCallsDoneServiceException;
 import com.dashda.exception.ReportCoverageServiceException;

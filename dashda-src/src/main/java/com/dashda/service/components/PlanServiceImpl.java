@@ -11,27 +11,40 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.hibernate.engine.jdbc.env.internal.DefaultSchemaNameResolver.SchemaNameResolverJava17Delegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dashda.controllers.dto.CreatePlanInputDTO;
-import com.dashda.controllers.dto.DeletePlanItemInputDTO;
-import com.dashda.controllers.dto.PlanOutputDTO;
-import com.dashda.controllers.dto.PlanScheduleItemInputDTO;
-import com.dashda.controllers.dto.PlanScheduleItemOutputDTO;
-import com.dashda.controllers.dto.PlanScheduleItemsListInputDTO;
-import com.dashda.controllers.dto.PlanScheduleItemsListOutputDTO;
-import com.dashda.controllers.dto.SubmitPlanForApprovalInputDTO;
+import com.dashda.controllers.dto.plan.CalendarActivityOutputDTO;
+import com.dashda.controllers.dto.plan.CalendarActivityInputDTO;
+import com.dashda.controllers.dto.plan.CreatePlanInputDTO;
+import com.dashda.controllers.dto.plan.DeletePlanItemInputDTO;
+import com.dashda.controllers.dto.plan.PlanInputDTO;
+import com.dashda.controllers.dto.plan.PlanOutputDTO;
+import com.dashda.controllers.dto.plan.PlanScheduleItemInputDTO;
+import com.dashda.controllers.dto.plan.PlanScheduleItemOutputDTO;
+import com.dashda.controllers.dto.plan.PlanScheduleItemsListInputDTO;
+import com.dashda.controllers.dto.plan.PlanScheduleItemsListOutputDTO;
+import com.dashda.controllers.dto.plan.WaitingForApprovalPlanOutputDTO;
+import com.dashda.data.entities.CalendarActivity;
 import com.dashda.data.entities.Employee;
+import com.dashda.data.entities.EmployeeHierarchy;
 import com.dashda.data.entities.Plan;
 import com.dashda.data.entities.PlanStatus;
 import com.dashda.data.entities.Schedule;
 import com.dashda.data.entities.ScheduleStatus;
 import com.dashda.data.entities.ServiceProvider;
-import com.dashda.data.repositories.DoctorDao;
-import com.dashda.data.repositories.PlanDao;
-import com.dashda.data.repositories.ScheduleDao;
+import com.dashda.data.entities.Visit;
+import com.dashda.data.entities.VisitStatus;
+import com.dashda.data.repositories.VisitDao;
+import com.dashda.data.repositories.employee.EmployeeHierarchyDao;
+import com.dashda.data.repositories.plan.PlanDao;
+import com.dashda.data.repositories.plan.ScheduleDao;
+import com.dashda.data.repositories.serviceProvider.DoctorDao;
+import com.dashda.enums.CalendarActivityStatusEnum;
 import com.dashda.enums.PlanStatusEnum;
+import com.dashda.enums.ScheduleStatusEnum;
+import com.dashda.enums.VisitStatusEnum;
 import com.dashda.exception.AppExceptionHandler;
 import com.dashda.exception.PlanServiceException;
 import com.dashda.utilities.DateUtilities;
@@ -52,6 +65,12 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 	
 	@Autowired
 	DoctorDao serviceProviderDao;
+	
+	@Autowired
+	VisitDao visitDao;
+	
+	@Autowired
+	EmployeeHierarchyDao employeeHierarchyDao;
 
 	@Override
 	public Object createPlan(String username, @Valid CreatePlanInputDTO createPlanInputDTO)
@@ -233,7 +252,8 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 
 	@Override
 	public Object submitPlanForApproval(String username,
-			@Valid SubmitPlanForApprovalInputDTO submitPlanForApprovalInputDTO) throws PlanServiceException, ParseException {
+			@Valid PlanInputDTO planInputDTO) throws PlanServiceException, ParseException {
+		
 		Employee employee;
 		
 		try {
@@ -243,28 +263,222 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 			throw new PlanServiceException(e.getErrorCode());
 		}
 		
-		Plan plan = planDao.findById(submitPlanForApprovalInputDTO.getPlanId());
-		
-		if(plan.getEmployee().getId() != employee.getId())
-			throw new PlanServiceException(ERROR_CODE_1015);
+		Plan plan = planDao.findById(planInputDTO.getPlanId());
 		
 		if (plan == null) 
 			throw new PlanServiceException(ERROR_CODE_1031);
 		
+		if(plan.getEmployee().getId() != employee.getId())
+			throw new PlanServiceException(ERROR_CODE_1015);
 		
-		if(plan.getPlanStatus().getId() != PlanStatusEnum.DRAFT.getValue())
+		if(plan.getPlanStatus().getId() != PlanStatusEnum.DRAFT.getValue()
+				&& plan.getPlanStatus().getId() != PlanStatusEnum.REJECTED.getValue())
 			throw new PlanServiceException(ERROR_CODE_1034);
 		
+		List<Schedule> schedules = scheduleDao.findListofscheduleItemsByPlan(plan.getEmployee(), plan);
+		
+		if(schedules.size() == 0)
+			throw new PlanServiceException(ERROR_CODE_1035);
 		
 		plan.setPlanStatus(new PlanStatus(
 				PlanStatusEnum.SENT_FOR_APPROVAL.getValue()));
+		plan.setComment(planInputDTO.getComment());
+		
+		planDao.savePlan(plan);
+		
+		PlanOutputDTO planOutputDTO = new PlanOutputDTO(plan.getId(), 
+				DateUtilities.dateFormate(plan.getStartDate()), 
+				DateUtilities.dateFormate(plan.getEndDate()), 
+				plan.getSubject(), PlanStatusEnum.SENT_FOR_APPROVAL.name(), 
+				PlanStatusEnum.SENT_FOR_APPROVAL.getValue(), plan.getComment());
+		
+		return planOutputDTO;
+	}
+
+	
+	@Override
+	public Object rejectPlan(String username, @Valid PlanInputDTO planInputDTO)
+			throws PlanServiceException, ParseException {
+		Employee employee;
+		
+		try {
+			
+		employee = getEmployee(username);
+		}catch (AppExceptionHandler e) {
+			throw new PlanServiceException(e.getErrorCode());
+		}
+		
+		Plan plan = planDao.findById(planInputDTO.getPlanId());
+		
+		if (plan == null) 
+			throw new PlanServiceException(ERROR_CODE_1031);
+		
+		EmployeeHierarchy employeeHierarchy = employeeHierarchyDao.employeeHierarchy(plan.getEmployee(), employee);
+		if(employeeHierarchy == null)
+			throw new PlanServiceException(ERROR_CODE_1015);
+		
+		if(plan.getPlanStatus().getId() != 
+				PlanStatusEnum.SENT_FOR_APPROVAL.getValue())
+			throw new PlanServiceException(ERROR_CODE_1034);
+		
+		plan.setPlanStatus(new PlanStatus(
+				PlanStatusEnum.REJECTED.getValue()));
+		plan.setComment(planInputDTO.getComment());
+		
 		planDao.savePlan(plan);
 		
 		PlanOutputDTO planOutputDTO = new PlanOutputDTO(plan.getId(), 
 				DateUtilities.dateFormate(plan.getStartDate()), DateUtilities.dateFormate(plan.getEndDate()), 
-				plan.getSubject(), PlanStatusEnum.SENT_FOR_APPROVAL.name(), PlanStatusEnum.SENT_FOR_APPROVAL.getValue(), plan.getComment());
+				plan.getSubject(), PlanStatusEnum.REJECTED.name(), PlanStatusEnum.REJECTED.getValue(), plan.getComment());
 		
 		return planOutputDTO;
 	}
+	
+	
+	@Override
+	public Object approvePlan(String username, @Valid PlanInputDTO planInputDTO)
+			throws PlanServiceException, ParseException {
+		
+		Employee employee;
+		
+		try {
+			
+		employee = getEmployee(username);
+		}catch (AppExceptionHandler e) {
+			throw new PlanServiceException(e.getErrorCode());
+		}
+		
+		Plan plan = planDao.findById(planInputDTO.getPlanId());
+		
+		if (plan == null) 
+			throw new PlanServiceException(ERROR_CODE_1031);
+		
+		EmployeeHierarchy employeeHierarchy = employeeHierarchyDao.employeeHierarchy(plan.getEmployee(), employee);
+		if(employeeHierarchy == null)
+			throw new PlanServiceException(ERROR_CODE_1015);
+		
+		if(plan.getPlanStatus().getId() != 
+				PlanStatusEnum.SENT_FOR_APPROVAL.getValue())
+			throw new PlanServiceException(ERROR_CODE_1034);
+		
+		// get schedules items
+		List<Schedule> schedules = scheduleDao.findListofscheduleItemsByPlan(plan.getEmployee(), plan);
+		
+		if(schedules.size() == 0)
+			throw new PlanServiceException(ERROR_CODE_1035);
+		
+		for (Iterator iterator = schedules.iterator(); iterator.hasNext();) {
+			Schedule schedule = (Schedule) iterator.next();
+			// create visits items 
+			Visit visit = new Visit();
+			visit.setDatetime(schedule.getDatetime());
+			visit.setEmployeeByEmployeeId(plan.getEmployee());
+			visit.setServiceProvider(schedule.getServiceProvider());
+			visit.setVisitStatus(new VisitStatus(VisitStatusEnum.PLANNED.getValue()));
+			
+			visitDao.addVisit(visit);
+			
+			// update schedules items by visits Id and status
+			schedule.setVisit(visit);
+			schedule.setScheduleStatus(new ScheduleStatus(ScheduleStatusEnum.APPROVED.getValue()));
+			
+			scheduleDao.update(schedule);
+			
+		}
+		 
+		
+		plan.setPlanStatus(new PlanStatus(
+				PlanStatusEnum.APPROVED.getValue()));
+		plan.setComment(planInputDTO.getComment());
+		
+		planDao.updatePlan(plan);
+		
+		PlanOutputDTO planOutputDTO = new PlanOutputDTO(plan.getId(), 
+				DateUtilities.dateFormate(plan.getStartDate()), 
+				DateUtilities.dateFormate(plan.getEndDate()), 
+				plan.getSubject(), PlanStatusEnum.APPROVED.name(), 
+				PlanStatusEnum.APPROVED.getValue(), plan.getComment());
+		
+		return planOutputDTO;
+	}
+
+	@Override
+	public Object waitingForApprovalPlanList(String username) throws PlanServiceException, ParseException {
+		Employee employee;
+
+		try {
+			employee = getEmployee(username);
+		} catch (AppExceptionHandler e) {
+			throw new PlanServiceException(e.getErrorCode());
+		}
+		
+		List<WaitingForApprovalPlanOutputDTO> planOutputDTOs = new ArrayList<>();
+		List<Plan> plans = planDao.waitingForApprovalPlansList(employee);
+		for (Iterator iterator = plans.iterator(); iterator.hasNext();) {
+			Plan plan = (Plan) iterator.next();
+			WaitingForApprovalPlanOutputDTO planOutputDTO = new WaitingForApprovalPlanOutputDTO(plan.getId(), 
+				plan.getEmployee().getName(), DateUtilities.dateFormate(plan.getStartDate()), DateUtilities.dateFormate(plan.getEndDate()), 
+				plan.getSubject(), plan.getPlanStatus().getName(), 
+				plan.getPlanStatus().getId(), plan.getComment());
+			
+			planOutputDTOs.add(planOutputDTO);
+		}
+		
+		return planOutputDTOs;
+	}
+
+	@Override
+	public Object calendarActivitiesList(String username, @Valid CalendarActivityInputDTO calendarActivityInputDTO)
+			throws ParseException, PlanServiceException {
+		List<CalendarActivityOutputDTO> activityOutputDTOs = new ArrayList<>();
+		
+		int employeeId = calendarActivityInputDTO.getEmployeeId();
+		Date dateFrom = DateUtilities.convertToDate(calendarActivityInputDTO.getDateFrom(), 
+				DateUtilities.DATE_FORMATE_PATTERN);
+		Date dateTo = DateUtilities.convertToDate(calendarActivityInputDTO.getDateTo(), 
+				DateUtilities.DATE_FORMATE_PATTERN);
+		
+		List<CalendarActivity> calendarActivities = planDao.getCalendarActiviiesList(employeeId, dateFrom, dateTo);
+		
+		for (Iterator iterator = calendarActivities.iterator(); iterator.hasNext();) {
+			CalendarActivity calendarActivity = (CalendarActivity) iterator.next();
+			
+			CalendarActivityOutputDTO calendarActivitiesOutputDTO = 
+					new CalendarActivityOutputDTO();
+					
+					mapper.map(calendarActivity, calendarActivitiesOutputDTO);
+					
+					if(calendarActivity.getVisitStatusId() != null) {
+						switch (calendarActivity.getVisitStatusId()) {
+						case 1:
+							calendarActivitiesOutputDTO.setStatus(CalendarActivityStatusEnum.PLANNED.name());
+							calendarActivitiesOutputDTO.setStatusId(CalendarActivityStatusEnum.PLANNED.getValue());
+							break;
+						case 2:
+							calendarActivitiesOutputDTO.setStatus(CalendarActivityStatusEnum.VISITED.name());
+							calendarActivitiesOutputDTO.setStatusId(CalendarActivityStatusEnum.VISITED.getValue());
+							break;
+						case 3:
+							calendarActivitiesOutputDTO.setStatus(CalendarActivityStatusEnum.DISCARD.name());
+							calendarActivitiesOutputDTO.setStatusId(CalendarActivityStatusEnum.DISCARD.getValue());
+							break;
+						default:
+							break;
+						}
+					}else if(calendarActivity.getSpecialty() != null){
+						calendarActivitiesOutputDTO.setStatus(CalendarActivityStatusEnum.DRAFT.name());
+						calendarActivitiesOutputDTO.setStatusId(CalendarActivityStatusEnum.DRAFT.getValue());
+					}else {
+						calendarActivitiesOutputDTO.setStatus(CalendarActivityStatusEnum.OFF_VISIT.name());
+						calendarActivitiesOutputDTO.setStatusId(CalendarActivityStatusEnum.OFF_VISIT.getValue());
+					}
+					
+					activityOutputDTOs.add(calendarActivitiesOutputDTO);
+			
+		}
+
+		return activityOutputDTOs;
+	}
+
 	
 }

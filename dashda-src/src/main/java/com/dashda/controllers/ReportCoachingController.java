@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dashda.controllers.dto.ReportCoachingDetailInputDTO;
-import com.dashda.controllers.dto.ReportCoachingEmployeeSummaryInputDTO;
-import com.dashda.controllers.dto.ReportCoachingSummaryInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingDetailInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingEmployeeSummaryInputDTO;
+import com.dashda.controllers.dto.report.ReportCoachingSummaryInputDTO;
 import com.dashda.exception.ReportCoachingServiceExcepion;
 import com.dashda.service.components.ReportCoachingService;
 

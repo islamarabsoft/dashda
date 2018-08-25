@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dashda.controllers.dto.AssignProductSpecialtyInputDTO;
-import com.dashda.controllers.dto.ProductBySpecialtyInputDTO;
-import com.dashda.controllers.dto.ProductCreateInputDTO;
-import com.dashda.controllers.dto.ProductDeleteInputDTO;
-import com.dashda.controllers.dto.ProductUpdateInputDTO;
+import com.dashda.controllers.dto.product.AssignProductSpecialtyInputDTO;
+import com.dashda.controllers.dto.product.ProductBySpecialtyInputDTO;
+import com.dashda.controllers.dto.product.ProductCreateInputDTO;
+import com.dashda.controllers.dto.product.ProductDeleteInputDTO;
+import com.dashda.controllers.dto.product.ProductUpdateInputDTO;
 import com.dashda.service.components.ProductService;
 import com.dashda.service.components.ProductServiceException;
 

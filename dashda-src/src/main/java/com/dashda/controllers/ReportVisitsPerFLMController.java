@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dashda.annotation.RestResponseEntity;
-import com.dashda.controllers.dto.ReportVisitsPerFLMDetailsInputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerFLMInputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerProductDetailsInputDTO;
-import com.dashda.controllers.dto.ReportVisitsPerProductInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerFLMDetailsInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerFLMInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerProductDetailsInputDTO;
+import com.dashda.controllers.dto.report.ReportVisitsPerProductInputDTO;
 import com.dashda.exception.ReportVisitsPerFLMServiceExcepion;
 import com.dashda.service.components.ReportVisitsPerFLMService;
 import com.dashda.service.components.ReportVisitsPerProductService;

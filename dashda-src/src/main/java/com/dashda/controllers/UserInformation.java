@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dashda.controllers.dto.EmployeeUserDTO;
 import com.dashda.controllers.dto.UserDTO;
+import com.dashda.controllers.dto.employee.EmployeeUserDTO;
 import com.dashda.exception.PermissionServiceExceptioManager;
 import com.dashda.exception.UserServiceExceptioManager;
 import com.dashda.service.components.PermissionService;

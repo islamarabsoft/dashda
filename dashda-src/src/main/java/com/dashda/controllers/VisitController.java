@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dashda.controllers.dto.VisitAddCommentInputDTO;
-import com.dashda.controllers.dto.VisitAdhocVisitInputDTO;
-import com.dashda.controllers.dto.VisitCompleteInputDTO;
-import com.dashda.controllers.dto.VisitListInputDTO;
+import com.dashda.controllers.dto.visit.VisitAddCommentInputDTO;
+import com.dashda.controllers.dto.visit.VisitAdhocVisitInputDTO;
+import com.dashda.controllers.dto.visit.VisitCompleteInputDTO;
+import com.dashda.controllers.dto.visit.VisitListInputDTO;
 import com.dashda.exception.VisitServiceException;
 import com.dashda.service.components.VisitService;
 

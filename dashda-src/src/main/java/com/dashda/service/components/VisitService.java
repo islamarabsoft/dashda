@@ -8,10 +8,10 @@ import java.text.ParseException;
 import javax.validation.Valid;
 
 import com.dashda.controllers.dto.AppResponse;
-import com.dashda.controllers.dto.VisitAddCommentInputDTO;
-import com.dashda.controllers.dto.VisitAdhocVisitInputDTO;
-import com.dashda.controllers.dto.VisitCompleteInputDTO;
-import com.dashda.controllers.dto.VisitListInputDTO;
+import com.dashda.controllers.dto.visit.VisitAddCommentInputDTO;
+import com.dashda.controllers.dto.visit.VisitAdhocVisitInputDTO;
+import com.dashda.controllers.dto.visit.VisitCompleteInputDTO;
+import com.dashda.controllers.dto.visit.VisitListInputDTO;
 import com.dashda.exception.VisitServiceException;
 
 /**

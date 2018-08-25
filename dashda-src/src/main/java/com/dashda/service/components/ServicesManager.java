@@ -24,7 +24,7 @@ import com.dashda.controllers.dto.OkResponse;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.ServiceProvider;
 import com.dashda.data.entities.User;
-import com.dashda.data.repositories.UserDao;
+import com.dashda.data.repositories.user.UserDao;
 import com.dashda.exception.AppExceptionHandler;
 
 
@@ -70,6 +70,7 @@ public abstract class ServicesManager {
 	protected static final String ERROR_CODE_1032 = "ERROR_CODE_1032";
 	protected static final String ERROR_CODE_1033 = "ERROR_CODE_1033";
 	protected static final String ERROR_CODE_1034 = "ERROR_CODE_1034";
+	protected static final String ERROR_CODE_1035 = "ERROR_CODE_1035";
 	
 	/**
 	 * THIS ATTRIBUTE NOT USED
