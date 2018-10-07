@@ -100,7 +100,7 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 	}
 
 	@Override
-	public List<Schedule> findListofscheduleItemsByPlan(Employee employee, Plan plan) {
+	public List<Schedule> findListofscheduleItemsByPlan(Plan plan) {
 		Criteria criteria = getSession().createCriteria(Schedule.class);
 		criteria.createAlias("serviceProvider", "serviceProvider");
 		criteria.createAlias("serviceProvider.district", "district");
@@ -108,7 +108,6 @@ public class ScheduleDaoImpl extends AbstractDao implements ScheduleDao {
 		criteria.createAlias("scheduleStatus", "scheduleStatus");
 		criteria.createAlias("visit", "visit", JoinType.LEFT_OUTER_JOIN);
 		
-		criteria.add(Restrictions.eq("employeeByEmployeeId", employee));
 		criteria.add(Restrictions.eq("plan", plan));
 		
 		return criteria.list();

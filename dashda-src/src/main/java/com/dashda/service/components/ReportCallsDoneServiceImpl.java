@@ -4,6 +4,7 @@
 package com.dashda.service.components;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import com.dashda.data.repositories.report.ReportCoverageDao;
 import com.dashda.exception.AppExceptionHandler;
 import com.dashda.exception.ReportCallsDoneServiceException;
 import com.dashda.exception.ReportCoverageServiceException;
+import com.dashda.utilities.DateUtilities;
 
 /**
  * @author mohamed.hanfy
@@ -37,6 +39,36 @@ public class ReportCallsDoneServiceImpl extends ServicesManager implements Repor
 			throw new ReportCallsDoneServiceException(e.getMessage());
 		}
 		ReportCallsDone reportCallsDone = reportCoverageDao.callsDone(employee.getId());
+		String percentage = "0";
+		float floatPercentage = 0.0f;
+		if(reportCallsDone.getTarget() != 0) {
+			float total = (float)reportCallsDone.getTarget();
+			float actual = (float)reportCallsDone.getActual();
+			floatPercentage = (actual/total)*100.f;
+		}
+			
+		DecimalFormat f = new DecimalFormat("##.00");
+		
+		percentage = f.format(floatPercentage);
+		
+		ReportCallsDoneOutputDTO reportCallsDoneOutputDTO = new ReportCallsDoneOutputDTO(reportCallsDone.getTarget(), 
+				reportCallsDone.getActual(), percentage);
+
+		return okResponse(reportCallsDoneOutputDTO, "Report Generated Successfully");
+	}
+	@Override
+	public AppResponse userCallsDone(String username, String dateFrom, String dateTo)
+			throws ReportCallsDoneServiceException, ParseException {
+		Employee employee = null;
+		
+		try {
+			employee = getEmployee(username);
+		} catch (AppExceptionHandler e) {
+			throw new ReportCallsDoneServiceException(e.getMessage());
+		}
+		ReportCallsDone reportCallsDone = reportCoverageDao.callsDone(employee.getId(),
+				DateUtilities.convertToDate(dateFrom, DateUtilities.DATE_FORMATE_PATTERN), 
+				DateUtilities.convertToDate(dateTo, DateUtilities.DATE_FORMATE_PATTERN));
 		String percentage = "0";
 		float floatPercentage = 0.0f;
 		if(reportCallsDone.getTarget() != 0) {

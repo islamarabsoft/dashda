@@ -21,6 +21,7 @@ import com.dashda.data.entities.ReportVisitsPerFLM;
 import com.dashda.data.entities.ReportVisitsPerProduct;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.repositories.AbstractDao;
+import com.dashda.enums.VisitStatusEnum;
 
 /**
  * @author mohamed.hanfy
@@ -38,6 +39,7 @@ public class ReportFLMDaoImpl extends AbstractDao implements ReportFLMDao {
 		criteria.createAlias("employeesHierarchies", "hierarchies");
 		criteria.createAlias("manager", "manager");
 		criteria.createAlias("manager.users", "user");
+		criteria.createAlias("visit.visitStatus", "visitStatus");
 		
 		
 		ProjectionList projectionList = Projections.projectionList()
@@ -50,6 +52,7 @@ public class ReportFLMDaoImpl extends AbstractDao implements ReportFLMDao {
 		criteria.add(Restrictions.eq("hierarchies.manager", manager));
 		criteria.add(Restrictions.eq("user.active", new Byte("1")));
 		criteria.add(Restrictions.eq("user.userRole.id", 3));
+		criteria.add(Restrictions.eq("visitStatus.id", VisitStatusEnum.COMPLETE.getValue()));
 		
 		criteria.addOrder(Order.asc("manager.name"));
 		
@@ -67,11 +70,13 @@ public class ReportFLMDaoImpl extends AbstractDao implements ReportFLMDao {
 		criteria.createAlias("employeeByEmployeeId", "employee");
 		criteria.createAlias("employee.manager", "manager");
 		criteria.createAlias("employee.employeesHierarchies", "employeeHierarchy");
+		criteria.createAlias("visitStatus", "visitStatus");
 		
 		
 		criteria.add(Restrictions.eq("employeeHierarchy.manager", manager));
 		criteria.add(Restrictions.eq("manager.id", flm));
 		criteria.add(Restrictions.between("datetime", dateFrom, dateTo));
+		criteria.add(Restrictions.eq("visitStatus.id", VisitStatusEnum.COMPLETE.getValue()));
 		
 		return criteria.list();
 	}

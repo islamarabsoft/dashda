@@ -3,6 +3,8 @@
  */
 package com.dashda.service.components;
 
+import java.text.ParseException;
+
 import com.dashda.controllers.dto.AppResponse;
 import com.dashda.exception.ReportCallsDoneServiceException;
 
@@ -13,4 +15,5 @@ import com.dashda.exception.ReportCallsDoneServiceException;
 public interface ReportCallsDoneService {
 
 	AppResponse userCallsDone(String username) throws ReportCallsDoneServiceException;
+	AppResponse userCallsDone(String username, String dateFrom, String dateTo) throws ReportCallsDoneServiceException, ParseException;
 }

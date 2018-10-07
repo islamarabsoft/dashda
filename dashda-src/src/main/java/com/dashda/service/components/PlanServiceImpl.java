@@ -193,23 +193,14 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 	@Override
 	public List<PlanScheduleItemsListOutputDTO> planItemsList(String username, @Valid PlanScheduleItemsListInputDTO planScheduleItemsListInputDTO)
 			throws ParseException, PlanServiceException {
-		
-		Employee employee;
-		
-		try {
-			
-		employee = getEmployee(username);
-		}catch (AppExceptionHandler e) {
-			throw new PlanServiceException(e.getErrorCode());
-		}
-		
+
 		Plan plan = planDao.findById(planScheduleItemsListInputDTO.getPlanId());
 		if (plan == null) {
 			throw new PlanServiceException(ERROR_CODE_1031);
 		}
 		List<PlanScheduleItemsListOutputDTO> scheduleItemsListOutputDTOs = new ArrayList<>();
 		
-		List<Schedule> schedules = scheduleDao.findListofscheduleItemsByPlan(employee, plan);
+		List<Schedule> schedules = scheduleDao.findListofscheduleItemsByPlan(plan);
 		
 		for (Iterator iterator = schedules.iterator(); iterator.hasNext();) {
 			Schedule schedule = (Schedule) iterator.next();
@@ -275,7 +266,7 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 				&& plan.getPlanStatus().getId() != PlanStatusEnum.REJECTED.getValue())
 			throw new PlanServiceException(ERROR_CODE_1034);
 		
-		List<Schedule> schedules = scheduleDao.findListofscheduleItemsByPlan(plan.getEmployee(), plan);
+		List<Schedule> schedules = scheduleDao.findListofscheduleItemsByPlan(plan);
 		
 		if(schedules.size() == 0)
 			throw new PlanServiceException(ERROR_CODE_1035);
@@ -362,7 +353,7 @@ public class PlanServiceImpl extends ServicesManager implements PlanService {
 			throw new PlanServiceException(ERROR_CODE_1034);
 		
 		// get schedules items
-		List<Schedule> schedules = scheduleDao.findListofscheduleItemsByPlan(plan.getEmployee(), plan);
+		List<Schedule> schedules = scheduleDao.findListofscheduleItemsByPlan(plan);
 		
 		if(schedules.size() == 0)
 			throw new PlanServiceException(ERROR_CODE_1035);

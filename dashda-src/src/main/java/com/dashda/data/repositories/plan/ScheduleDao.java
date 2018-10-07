@@ -35,6 +35,6 @@ public interface ScheduleDao {
 
 	public List<Schedule> findListOfSubordinateSchedules(List<Employee> subordinates);
 
-	List<Schedule> findListofscheduleItemsByPlan(Employee employee, Plan plan);
+	List<Schedule> findListofscheduleItemsByPlan(Plan plan);
 
 }

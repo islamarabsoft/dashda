@@ -20,6 +20,7 @@ import com.dashda.data.entities.ReportVisitsPerProduct;
 import com.dashda.data.entities.ReportVisitsPerSpecialty;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.repositories.AbstractDao;
+import com.dashda.enums.VisitStatusEnum;
 
 /**
  * @author mohamed.hanfy
@@ -36,6 +37,7 @@ public class ReportSpecialtyDaoImpl extends AbstractDao implements ReportSpecial
 		criteria.createAlias("employee.employeesHierarchies", "hierarchies");
 		criteria.createAlias("serviceProvider", "serviceProvider");
 		criteria.createAlias("serviceProvider.specialty", "specialty");
+		criteria.createAlias("visitStatus", "visitStatus");
 	
 		
 		
@@ -47,6 +49,7 @@ public class ReportSpecialtyDaoImpl extends AbstractDao implements ReportSpecial
 		criteria.setProjection(projectionList);
 		criteria.add(Restrictions.between("datetime", dateFrom, dateTo));
 		criteria.add(Restrictions.eq("hierarchies.manager", manager));
+		criteria.add(Restrictions.eq("visitStatus.id", VisitStatusEnum.COMPLETE.getValue()));
 
 		
 		criteria.addOrder(Order.asc("specialty.name"));
@@ -66,11 +69,13 @@ public class ReportSpecialtyDaoImpl extends AbstractDao implements ReportSpecial
 		criteria.createAlias("employeeByEmployeeId", "employee");
 		criteria.createAlias("employee.manager", "manager");
 		criteria.createAlias("employee.employeesHierarchies", "employeeHierarchy");
+		criteria.createAlias("visitStatus", "visitStatus");
 		
 		
 		criteria.add(Restrictions.eq("employeeHierarchy.manager", manager));
 		criteria.add(Restrictions.eq("specialty.id", specialtyId));
 		criteria.add(Restrictions.between("datetime", dateFrom, dateTo));
+		criteria.add(Restrictions.eq("visitStatus.id", VisitStatusEnum.COMPLETE.getValue()));
 		
 		return criteria.list();
 	}
