@@ -45,6 +45,7 @@ public class RestResponseEntityAspect {
 	    	  return delete(joinPoint, restResponseEntity);
 	      case LIST:
 	    	  return returnList(joinPoint, restResponseEntity);
+	    	  
 	      case UPDATE:
 	    	  return update(joinPoint, restResponseEntity);
 	    	  default: return null;

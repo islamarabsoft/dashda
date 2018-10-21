@@ -3,20 +3,29 @@
  */
 package com.dashda.data.repositories;
 
+import java.math.BigInteger;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.ServiceProvider;
+import com.dashda.controllers.dto.visit.VisitReportInputDTO;
 import com.dashda.data.entities.Employee;
+import com.dashda.data.entities.ReportUnVisit;
 import com.dashda.data.entities.Visit;
+import com.dashda.data.entities.VisitReportCount;
 import com.dashda.data.entities.VisitStatus;
 import com.dashda.enums.VisitStatusEnum;
 
@@ -133,6 +142,62 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 		query.setParameter("date", executionDate);
 		query.executeUpdate();
 		
+	}
+
+	@Override
+	public List<VisitReportCount> findVisitReportCount(VisitReportInputDTO input) {
+		// TODO Auto-generated method stub
+		List<VisitReportCount> visitReportCount=new ArrayList<>();
+		
+		 String sql="select count(distinct v.ID) as count ,pl.ID as productlineid, pl.NAME as productline,e1.ID as mpid,e1.NAME as mp,e2.ID as flmid,e2.name as flm,e3.ID as regionalid,e3.NAME as regional   from VISIT as v,PRODUCT as p,PRODUCT_VISIT  as pv, EMPLOYEE as e1,EMPLOYEE as e2,EMPLOYEE as e3,PRODUCT_LINE as pl ,PRODUCT_SPECIALTY as ps , SPECIALTY as s,SERVICE_PROVIDER as sv  where v.id=pv.VISIT_ID and pv.product_id=p.ID and p.PRODUCT_LINE_ID=pl.ID and  v.EMPLOYEE_ID=e1.ID and  e1.MANAGER_ID=e2.id and pv.PRODUCT_ID=ps.PRODUCT_ID and ps.SPECIALTY_ID=s.ID  \r\n" + 
+		 		"and e2.MANAGER_ID=e3.ID and v.SERVICE_PROVIDER_ID=sv.ID ";
+		 System.out.println("flm : "+input.getFlm());
+		   if(input.getMp()!=0)
+			   sql+="and e1.id="+input.getMp()+" ";
+		   if(input.getFlm()!=0)
+			   sql+="and e2.id="+input.getFlm()+" ";
+		   if(input.getRegional()!=0)
+			   sql+="and e3.id="+input.getRegional()+" ";
+		   if(input.getProductline()!=0)
+			   sql+="and pl.id="+input.getProductline()+" ";
+		   if(input.getProduct()!=0)
+			   sql+="and p.id="+input.getProduct()+" ";
+		   if(input.getSpecialty()!=0)
+			   sql+="and s.id="+input.getSpecialty()+" ";
+		   if(input.getAmpm()!=0)
+			   sql+="and sv.SERVICE_PROVIDER_TYPE_ID="+input.getAmpm()+" ";
+		   if(input.getDatefrom()!=null)
+			   sql+="and v.DATETIME >='"+input.getDatefrom()+"' ";
+		   if(input.getDateto()!=null)
+			   sql+="and v.DATETIME <='"+input.getDateto()+"' ";
+		   
+		 sql+=" group by  pl.NAME,e1.ID,e1.NAME ,pl.ID  ";
+		
+		 SQLQuery sqlQuery = getSession().createSQLQuery(sql);
+		 
+		 sqlQuery.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+			List<Map> result = (List<Map>) sqlQuery.list();
+		/* List <VisitReportCount> list= sqlQuery.addScalar("count").addScalar("productlineid").addScalar("productline").addScalar("mpid").addScalar("mp").addScalar("flmid").addScalar("flm").addScalar("regionalid").addScalar("regional").
+				 setResultTransformer(new AliasToBeanResultTransformer(VisitReportCount.class)).list();
+		 ResultSet s;*/
+		 for (Iterator iterator = result.iterator(); iterator.hasNext();) {
+				Map object = (Map) iterator.next();
+				
+				//VisitReportCount visitreport = new VisitReportCount((BigInteger)object.get("productlineid"),(String)object.get("productline"),(String)object.get("regional"),(BigInteger)object.get("regionalid"),(String)object.get("flm"),(BigInteger)object.get("flmid"),(String)object.get("mp"),(BigInteger)object.get("mpid"),(BigInteger)object.get("count"));
+				VisitReportCount visitreport = new VisitReportCount();
+				visitreport.setProductline((String)object.get("productline"));
+				visitreport.setProductlineid((Integer)object.get("productlineid"));
+				visitreport.setRegional((String)object.get("regional"));
+				visitreport.setRegionalid((Integer)object.get("regionalid"));
+				visitreport.setFlm((String)object.get("flm"));
+				visitreport.setFlmid((Integer)object.get("flmid"));
+				visitreport.setMp((String)object.get("mp"));
+				visitreport.setMpid((Integer)object.get("mpid"));
+				visitreport.setCount((BigInteger)object.get("count"));
+				visitReportCount.add(visitreport);
+			}
+		 
+		return visitReportCount ;
 	}
 
 

@@ -74,6 +74,7 @@ public interface NamedQueries {
 			+ " WHERE E.ID IN (:managerId)" 
 			+ " GROUP BY E.ID, E.NAME" 
 			+ " ORDER BY E.NAME";
+	
 	public final static String SQL_REPORT_SUMMARY_GROUPED_BY_EMPLOYEE_DATE_COUNT = "SELECT E.ID, E.NAME AS NAME,"
 			+ " V.DATETIME DATETIME, COUNT(DV.ID) AS E_COUNT FROM DOUBLE_VISIT DV" 
 			+ " INNER JOIN EMPLOYEE E ON E.ID = DV.EMPLOYEE_ID AND DV.MANAGER_ID = :managerId"

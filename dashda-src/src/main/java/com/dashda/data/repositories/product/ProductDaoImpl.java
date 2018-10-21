@@ -7,13 +7,18 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.stereotype.Repository;
 
 import com.dashda.data.entities.Account;
+import com.dashda.data.entities.EmployeeVisitFilter;
 import com.dashda.data.entities.Product;
 import com.dashda.data.entities.ProductLine;
 import com.dashda.data.entities.ProductSpecialty;
+import com.dashda.data.entities.ProductVisitFilters;
 import com.dashda.data.entities.Specialty;
 import com.dashda.data.repositories.AbstractDao;
 
@@ -29,6 +34,13 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 		this.setDAOClass(Product.class);
 	}
 
+	public <T> List<T> findall(Class<T> cls)
+	{
+		Criteria criteria = getSession().createCriteria(cls);
+		
+		return criteria.list();
+	}
+	
 	@Override
 	public List<ProductSpecialty> findProductBySpecialty(Specialty specialty, Account account) {
 		Criteria criteria = getSession().createCriteria(ProductSpecialty.class);
@@ -128,6 +140,28 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 		criteria.add(Restrictions.eq("id", lineId));
 		
 		return (ProductLine) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<ProductVisitFilters> findAllProductSpecialty() {
+		// TODO Auto-generated method stub
+		Criteria criteria = getSession().createCriteria(ProductSpecialty.class);
+		
+		criteria.createAlias("product", "product");
+		criteria.createAlias("specialty", "specialty");
+		
+		ProjectionList emplProj = Projections.projectionList()
+			    .add(Projections.property("product.id"), "productId")			    
+			    .add(Projections.property("product.name"), "productName")
+
+			    .add(Projections.property("specialty.id"), "specialId")
+			    .add(Projections.property("specialty.name"), "specialName");
+		
+		criteria.setProjection(emplProj);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ProductVisitFilters.class));
+
+		
+		return criteria.list();
 	}
 
 

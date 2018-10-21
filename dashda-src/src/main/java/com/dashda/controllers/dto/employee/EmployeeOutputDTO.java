@@ -14,8 +14,16 @@ public class EmployeeOutputDTO implements AbstractDTO {
 	private int Id;
 	private String name;
 	private int managerId;
+	private int type;
 	
 	
+	
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
 	public int getId() {
 		return Id;
 	}

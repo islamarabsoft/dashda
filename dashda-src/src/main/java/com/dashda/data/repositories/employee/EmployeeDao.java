@@ -21,4 +21,7 @@ public interface EmployeeDao {
 
 	public List<Employee> findEmployeeByScheduleList(Set<Schedule> schedulesHashset);
 
+	
+	public List findEmployeeBytypes();
+
 }

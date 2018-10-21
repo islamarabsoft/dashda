@@ -75,8 +75,7 @@ public class OffVisitServiceImpl extends ServicesManager implements OffVisitServ
 	private AddOffVisitOutputDTO persistOffVisit(String username, int offVisitId, Date scheduleDate
 			, int offVisitReasonId, String comment) throws OffVisitServiceException {
 
-		if(DateUtilities.compareTwoDates(new Date(), scheduleDate) == -1)
-			throw new OffVisitServiceException(ERROR_CODE_1013);
+		
 		
 		User user = userDao.findUserByUsername(username);
 		Employee employee = user.getEmployee();
