@@ -69,11 +69,20 @@ public class VisitReportController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/get-visitreport-count")
 	@RestResponseEntity(status = HttpStatus.OK, returnType = ReturnType.LIST)
-	public Object calendarActivitiesList( 
+	public Object getVisitsReportCount( 
 			@Valid @RequestBody VisitReportInputDTO visitReportInputDTO)
 					throws ParseException,  VisitReportException{
 		
 			return visitReportService.getVisitsReportCount(visitReportInputDTO);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/get-visitreport-comments")
+	@RestResponseEntity(status = HttpStatus.OK, returnType = ReturnType.LIST)
+	public Object getVisitsReportComments( 
+			@Valid @RequestBody VisitReportInputDTO visitReportInputDTO)
+					throws ParseException,  VisitReportException{
+		
+			return visitReportService.getVisitsReportComments(visitReportInputDTO);
 	}
 	
 }

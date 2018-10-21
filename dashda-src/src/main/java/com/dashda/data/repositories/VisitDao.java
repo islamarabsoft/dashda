@@ -10,6 +10,7 @@ import com.dashda.data.entities.ServiceProvider;
 import com.dashda.controllers.dto.visit.VisitReportInputDTO;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Visit;
+import com.dashda.data.entities.VisitReportComments;
 import com.dashda.data.entities.VisitReportCount;
 
 /**
@@ -38,5 +39,6 @@ public interface VisitDao {
 	
 	public List<VisitReportCount> findVisitReportCount(VisitReportInputDTO input);
 
+	public List<VisitReportComments> findVisitReportComments(VisitReportInputDTO input);
 	public void discardAllVisitsBeforeDate(Date executionDate);
 }

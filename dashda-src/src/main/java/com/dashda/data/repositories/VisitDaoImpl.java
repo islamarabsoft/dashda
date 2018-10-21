@@ -25,6 +25,7 @@ import com.dashda.controllers.dto.visit.VisitReportInputDTO;
 import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.ReportUnVisit;
 import com.dashda.data.entities.Visit;
+import com.dashda.data.entities.VisitReportComments;
 import com.dashda.data.entities.VisitReportCount;
 import com.dashda.data.entities.VisitStatus;
 import com.dashda.enums.VisitStatusEnum;
@@ -198,6 +199,57 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 			}
 		 
 		return visitReportCount ;
+	}
+
+	@Override
+	public List<VisitReportComments> findVisitReportComments(VisitReportInputDTO input) {
+		// TODO Auto-generated method stub
+		List<VisitReportComments> visitReportComment=new ArrayList<>();
+		
+		 String sql="select  e1.NAME as mr ,d.EN_NAME as district ,p.NAME as product ,s.NAME as specialty ,v.COMMENT as comment  from VISIT as v,PRODUCT as p,PRODUCT_VISIT  as pv, EMPLOYEE as e1,EMPLOYEE as e2,EMPLOYEE as e3,PRODUCT_LINE as pl ,PRODUCT_SPECIALTY as ps , SPECIALTY as s,SERVICE_PROVIDER as sv , DISTRICT as d  where v.id=pv.VISIT_ID and pv.product_id=p.ID and p.PRODUCT_LINE_ID=pl.ID and  v.EMPLOYEE_ID=e1.ID and  e1.MANAGER_ID=e2.id and pv.PRODUCT_ID=ps.PRODUCT_ID and ps.SPECIALTY_ID=s.ID \r\n" + 
+		 		"and e2.MANAGER_ID=e3.ID and v.SERVICE_PROVIDER_ID=sv.ID and sv.DISTRICT_ID=d.ID ";
+		 System.out.println("flm : "+input.getFlm());
+		   if(input.getMp()!=0)
+			   sql+="and e1.id="+input.getMp()+" ";
+		   if(input.getFlm()!=0)
+			   sql+="and e2.id="+input.getFlm()+" ";
+		   if(input.getRegional()!=0)
+			   sql+="and e3.id="+input.getRegional()+" ";
+		   if(input.getProductline()!=0)
+			   sql+="and pl.id="+input.getProductline()+" ";
+		   if(input.getProduct()!=0)
+			   sql+="and p.id="+input.getProduct()+" ";
+		   if(input.getSpecialty()!=0)
+			   sql+="and s.id="+input.getSpecialty()+" ";
+		   if(input.getAmpm()!=0)
+			   sql+="and sv.SERVICE_PROVIDER_TYPE_ID="+input.getAmpm()+" ";
+		   if(input.getDatefrom()!=null)
+			   sql+="and v.DATETIME >='"+input.getDatefrom()+"' ";
+		   if(input.getDateto()!=null)
+			   sql+="and v.DATETIME <='"+input.getDateto()+"' ";
+		   
+		
+		
+		 SQLQuery sqlQuery = getSession().createSQLQuery(sql);
+		 
+		 sqlQuery.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+			List<Map> result = (List<Map>) sqlQuery.list();
+		
+		 for (Iterator iterator = result.iterator(); iterator.hasNext();) {
+				Map object = (Map) iterator.next();
+				
+				VisitReportComments visitreport = new VisitReportComments();
+				visitreport.setMr((String)object.get("mr"));
+				visitreport.setDistrict((String)object.get("district"));
+				
+				visitreport.setProduct((String)object.get("product"));
+				visitreport.setSpecialty((String)object.get("specialty"));
+				visitreport.setComment((String)object.get("comment"));
+				
+				visitReportComment.add(visitreport);
+			}
+		 
+		return visitReportComment;
 	}
 
 

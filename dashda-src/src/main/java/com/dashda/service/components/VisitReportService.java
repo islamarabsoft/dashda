@@ -19,4 +19,6 @@ public interface VisitReportService {
 	Object getVisitSpecialtyFilter() throws VisitReportException, ParseException ;
 	
 	Object getVisitsReportCount(VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
+	Object getVisitsReportComments(VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
+
 }

@@ -14,6 +14,7 @@ import com.dashda.controllers.dto.employee.EmployeeOutputDTO;
 import com.dashda.controllers.dto.product.ProducLineOutputDTO;
 import com.dashda.controllers.dto.product.ProductOutputDTO;
 import com.dashda.controllers.dto.product.productVisitFiltersOutputDTO;
+import com.dashda.controllers.dto.visit.VisitReportCommnetsDTO;
 import com.dashda.controllers.dto.visit.VisitReportCountOutputDTO;
 import com.dashda.controllers.dto.visit.VisitReportInputDTO;
 import com.dashda.data.entities.EmployeeVisitFilter;
@@ -21,6 +22,7 @@ import com.dashda.data.entities.Product;
 import com.dashda.data.entities.ProductLine;
 import com.dashda.data.entities.ProductVisitFilters;
 import com.dashda.data.entities.Specialty;
+import com.dashda.data.entities.VisitReportComments;
 import com.dashda.data.entities.VisitReportCount;
 import com.dashda.data.repositories.SpecialtyDao;
 import com.dashda.data.repositories.VisitDao;
@@ -162,6 +164,29 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 					
 			
 			//mapper.map(special, productSpecialty.getSpecialty());
+			
+			output.add(visitOutput);
+			
+		}
+		
+		return output;
+	}
+
+	@Override
+	public Object getVisitsReportComments(VisitReportInputDTO visitReportInputDTO)
+			throws VisitReportException, ParseException {
+		
+		
+		List<VisitReportComments> data=visitdao.findVisitReportComments(visitReportInputDTO);
+		
+		List<VisitReportCommnetsDTO> output=new ArrayList<>();
+		for (Iterator iterator = data.iterator(); iterator.hasNext();)
+		{
+			
+			VisitReportComments tempdata=(VisitReportComments) iterator.next();
+			VisitReportCommnetsDTO visitOutput=new VisitReportCommnetsDTO(tempdata.getMr(),tempdata.getDistrict(),tempdata.getProduct(),tempdata.getSpecialty(),tempdata.getComment());
+					
+			
 			
 			output.add(visitOutput);
 			
