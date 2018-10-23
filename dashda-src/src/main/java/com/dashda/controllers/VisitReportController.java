@@ -85,4 +85,23 @@ public class VisitReportController {
 			return visitReportService.getVisitsReportComments(visitReportInputDTO);
 	}
 	
+	@RequestMapping(method = RequestMethod.POST, value = "/get-visitreport-count-by-day")
+	@RestResponseEntity(status = HttpStatus.OK, returnType = ReturnType.LIST)
+	public Object getVisitsReportCountByDay( 
+			@Valid @RequestBody VisitReportInputDTO visitReportInputDTO)
+					throws ParseException,  VisitReportException{
+		
+			return visitReportService.getVisitsReportCountByDay(visitReportInputDTO);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/get-visitreport-details-by-day")
+	@RestResponseEntity(status = HttpStatus.OK, returnType = ReturnType.LIST)
+	public Object getVisitsReportDetailsByDay( 
+			@Valid @RequestBody VisitReportInputDTO visitReportInputDTO)
+					throws ParseException,  VisitReportException{
+		
+			return visitReportService.getVisitsReportDetailsByDay(visitReportInputDTO);
+	}
+	
+	
 }

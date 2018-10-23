@@ -12,6 +12,8 @@ import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.entities.VisitReportComments;
 import com.dashda.data.entities.VisitReportCount;
+import com.dashda.data.entities.VisitReportCountByDay;
+import com.dashda.data.entities.VisitReportDetailsByDay;
 
 /**
  * @author mhanafy
@@ -39,6 +41,12 @@ public interface VisitDao {
 	
 	public List<VisitReportCount> findVisitReportCount(VisitReportInputDTO input);
 
+	public List<VisitReportCountByDay> findVisitReportCountByDay(VisitReportInputDTO input);
+	
+	public List<VisitReportDetailsByDay> findVisitReportDetailsByDay(VisitReportInputDTO input);
+	
 	public List<VisitReportComments> findVisitReportComments(VisitReportInputDTO input);
+	
+	
 	public void discardAllVisitsBeforeDate(Date executionDate);
 }

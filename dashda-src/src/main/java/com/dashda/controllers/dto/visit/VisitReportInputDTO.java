@@ -13,8 +13,16 @@ public class VisitReportInputDTO implements AbstractDTO {
 	private String datefrom=null;
 	private String dateto=null;
 	
+	private String specificDate=null;
+	
 	public String getDatefrom() {
 		return datefrom;
+	}
+	public String getSpecificDate() {
+		return specificDate;
+	}
+	public void setSpecificDate(String specificDate) {
+		this.specificDate = specificDate;
 	}
 	public void setDatefrom(String datefrom) {
 		this.datefrom = datefrom;

@@ -5,6 +5,7 @@ package com.dashda.data.repositories;
 
 import java.math.BigInteger;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -27,6 +28,8 @@ import com.dashda.data.entities.ReportUnVisit;
 import com.dashda.data.entities.Visit;
 import com.dashda.data.entities.VisitReportComments;
 import com.dashda.data.entities.VisitReportCount;
+import com.dashda.data.entities.VisitReportCountByDay;
+import com.dashda.data.entities.VisitReportDetailsByDay;
 import com.dashda.data.entities.VisitStatus;
 import com.dashda.enums.VisitStatusEnum;
 
@@ -250,6 +253,87 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 			}
 		 
 		return visitReportComment;
+	}
+
+	@Override
+	public List<VisitReportCountByDay> findVisitReportCountByDay(VisitReportInputDTO input) {
+		List<VisitReportCountByDay> visitReportCountByDay=new ArrayList<>();
+		
+		 String sql="select count(distinct v.ID) as count ,v.DATETIME as date from VISIT as v,PRODUCT as p,PRODUCT_VISIT  as pv, EMPLOYEE as e1,EMPLOYEE as e2,EMPLOYEE as e3,PRODUCT_LINE as pl   where v.id=pv.VISIT_ID and pv.product_id=p.ID and p.PRODUCT_LINE_ID=pl.ID and  v.EMPLOYEE_ID=e1.ID and  e1.MANAGER_ID=e2.id  \r\n" + 
+		 		"and e2.MANAGER_ID=e3.ID ";
+		 System.out.println("flm : "+input.getFlm());
+		   if(input.getMp()!=0)
+			   sql+="and e1.id="+input.getMp()+" ";
+		   if(input.getFlm()!=0)
+			   sql+="and e2.id="+input.getFlm()+" ";
+		   if(input.getRegional()!=0)
+			   sql+="and e3.id="+input.getRegional()+" ";
+		   if(input.getProductline()!=0)
+			   sql+="and pl.id="+input.getProductline()+" ";
+		   
+		 sql+=" group by  v.DATETIME order by v.DATETIME asc ";
+		
+		 SQLQuery sqlQuery = getSession().createSQLQuery(sql);
+		 
+		 sqlQuery.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+			List<Map> result = (List<Map>) sqlQuery.list();
+		/* List <VisitReportCount> list= sqlQuery.addScalar("count").addScalar("productlineid").addScalar("productline").addScalar("mpid").addScalar("mp").addScalar("flmid").addScalar("flm").addScalar("regionalid").addScalar("regional").
+				 setResultTransformer(new AliasToBeanResultTransformer(VisitReportCount.class)).list();
+		 ResultSet s;*/
+		 for (Iterator iterator = result.iterator(); iterator.hasNext();) {
+				Map object = (Map) iterator.next();
+				
+				//VisitReportCount visitreport = new VisitReportCount((BigInteger)object.get("productlineid"),(String)object.get("productline"),(String)object.get("regional"),(BigInteger)object.get("regionalid"),(String)object.get("flm"),(BigInteger)object.get("flmid"),(String)object.get("mp"),(BigInteger)object.get("mpid"),(BigInteger)object.get("count"));
+				VisitReportCountByDay visitreport = new VisitReportCountByDay();
+				visitreport.setDay((Timestamp)object.get("date"));
+				visitreport.setCount((BigInteger)object.get("count"));
+				
+				visitReportCountByDay.add(visitreport);
+			}
+		 
+		return visitReportCountByDay;
+	}
+
+	@Override
+	public List<VisitReportDetailsByDay> findVisitReportDetailsByDay(VisitReportInputDTO input) {
+		
+		List<VisitReportDetailsByDay> visitReportDetailsByDay=new ArrayList<>();
+		String sql="select distinct( v.ID) as visitId,e2.NAME as flmName,v.DATETIME as date,a.name as accountName,d.EN_NAME as districtName  from VISIT as v,PRODUCT as p,PRODUCT_VISIT  as pv, EMPLOYEE as e1,EMPLOYEE as e2,EMPLOYEE as e3,PRODUCT_LINE as pl ,PRODUCT_SPECIALTY as ps , SPECIALTY as s,SERVICE_PROVIDER as sv ,ACCOUNT as a,DISTRICT as d where v.id=pv.VISIT_ID and pv.product_id=p.ID and p.PRODUCT_LINE_ID=pl.ID and  v.EMPLOYEE_ID=e1.ID and  e1.MANAGER_ID=e2.id and pv.PRODUCT_ID=ps.PRODUCT_ID and ps.SPECIALTY_ID=s.ID \r\n" + 
+		 		"and e2.MANAGER_ID=e3.ID and v.SERVICE_PROVIDER_ID=sv.ID and e1.ACCOUNT_ID=a.id and sv.DISTRICT_ID=d.ID  ";
+			 System.out.println("flm : "+input.getFlm());
+			   if(input.getMp()!=0)
+				   sql+="and e1.id="+input.getMp()+" ";
+			   if(input.getFlm()!=0)
+				   sql+="and e2.id="+input.getFlm()+" ";
+			   if(input.getRegional()!=0)
+				   sql+="and e3.id="+input.getRegional()+" ";
+			   if(input.getProductline()!=0)
+				   sql+="and pl.id="+input.getProductline()+" ";
+			   if(input.getSpecificDate()!=null)
+			   {
+				   sql+="and v.DATETIME >='"+input.getSpecificDate()+"' ";
+				   sql+="and v.DATETIME <='"+input.getSpecificDate()+"' ";
+			   }
+			
+			 SQLQuery sqlQuery = getSession().createSQLQuery(sql);
+			 
+			 sqlQuery.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+				List<Map> result = (List<Map>) sqlQuery.list();
+			
+			 for (Iterator iterator = result.iterator(); iterator.hasNext();) {
+					Map object = (Map) iterator.next();
+					
+					VisitReportDetailsByDay visitreport = new VisitReportDetailsByDay();
+					visitreport.setVisitId((Integer)object.get("visitId"));
+					visitreport.setFlmName((String)object.get("flmName"));
+					visitreport.setDate((Timestamp)object.get("date"));
+					visitreport.setDistrictName((String)object.get("districtName"));
+					visitreport.setAccountName((String)object.get("accountName"));
+					
+					visitReportDetailsByDay.add(visitreport);
+				}
+			 
+			return visitReportDetailsByDay;
 	}
 
 

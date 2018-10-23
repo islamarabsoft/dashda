@@ -15,7 +15,9 @@ import com.dashda.controllers.dto.product.ProducLineOutputDTO;
 import com.dashda.controllers.dto.product.ProductOutputDTO;
 import com.dashda.controllers.dto.product.productVisitFiltersOutputDTO;
 import com.dashda.controllers.dto.visit.VisitReportCommnetsDTO;
+import com.dashda.controllers.dto.visit.VisitReportCountByDayOutputDTO;
 import com.dashda.controllers.dto.visit.VisitReportCountOutputDTO;
+import com.dashda.controllers.dto.visit.VisitReportDetailsByDayDTO;
 import com.dashda.controllers.dto.visit.VisitReportInputDTO;
 import com.dashda.data.entities.EmployeeVisitFilter;
 import com.dashda.data.entities.Product;
@@ -24,6 +26,8 @@ import com.dashda.data.entities.ProductVisitFilters;
 import com.dashda.data.entities.Specialty;
 import com.dashda.data.entities.VisitReportComments;
 import com.dashda.data.entities.VisitReportCount;
+import com.dashda.data.entities.VisitReportCountByDay;
+import com.dashda.data.entities.VisitReportDetailsByDay;
 import com.dashda.data.repositories.SpecialtyDao;
 import com.dashda.data.repositories.VisitDao;
 import com.dashda.data.repositories.employee.EmployeeDao;
@@ -189,6 +193,48 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 			
 			
 			output.add(visitOutput);
+			
+		}
+		
+		return output;
+	}
+
+	@Override
+	public Object getVisitsReportCountByDay(VisitReportInputDTO visitReportInputDTO)
+			throws VisitReportException, ParseException {
+		List<VisitReportCountByDay> data=visitdao.findVisitReportCountByDay(visitReportInputDTO);
+		
+		List<VisitReportCountByDayOutputDTO> output=new ArrayList<>();
+		for (Iterator iterator = data.iterator(); iterator.hasNext();)
+		{
+			
+			VisitReportCountByDay tempdata=(VisitReportCountByDay) iterator.next();
+			VisitReportCountByDayOutputDTO visitCountByDayOutput=new VisitReportCountByDayOutputDTO(tempdata.getCount(),tempdata.getDay().toString());
+					
+			
+			
+			output.add(visitCountByDayOutput);
+			
+		}
+		
+		return output;
+	}
+
+	@Override
+	public Object getVisitsReportDetailsByDay(VisitReportInputDTO visitReportInputDTO)
+			throws VisitReportException, ParseException {
+		List<VisitReportDetailsByDay> data=visitdao.findVisitReportDetailsByDay(visitReportInputDTO);
+		
+		List<VisitReportDetailsByDayDTO> output=new ArrayList<>();
+		for (Iterator iterator = data.iterator(); iterator.hasNext();)
+		{
+			
+			VisitReportDetailsByDay tempdata=(VisitReportDetailsByDay) iterator.next();
+			VisitReportDetailsByDayDTO visitCountByDayOutput=new VisitReportDetailsByDayDTO(tempdata.getVisitId(),tempdata.getFlmName(),tempdata.getDate().toString(),tempdata.getAccountName(),tempdata.getDistrictName());
+					
+			
+			
+			output.add(visitCountByDayOutput);
 			
 		}
 		
