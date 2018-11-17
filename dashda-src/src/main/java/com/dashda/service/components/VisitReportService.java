@@ -11,20 +11,20 @@ public interface VisitReportService {
 
 	
 	
-	Object getVisitEmployeesFilters() throws VisitReportException, ParseException;
+	Object getVisitEmployeesFilters(String userName) throws VisitReportException, ParseException;
 
-	Object getVisitProductFilter() throws VisitReportException, ParseException;
+	Object getVisitProductFilter(String userName) throws VisitReportException, ParseException;
 	
-	Object getVisitProductLineFilter() throws VisitReportException, ParseException;
-	Object getVisitSpecialtyFilter() throws VisitReportException, ParseException ;
+	Object getVisitProductLineFilter(String userName) throws VisitReportException, ParseException;
+	Object getVisitSpecialtyFilter(String userName) throws VisitReportException, ParseException ;
 	
-	Object getVisitsReportCount(VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
+	Object getVisitsReportCount(String userName, VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
 	
-	Object getVisitsReportCountByDay(VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
+	Object getVisitsReportCountByDay(String userName, VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
 	
-	Object getVisitsReportDetailsByDay(VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
+	Object getVisitsReportDetailsByDay(String userName, VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
 
 	
-	Object getVisitsReportComments(VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
+	Object getVisitsReportComments(String userName, VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException ;
 
 }

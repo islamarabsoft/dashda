@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -48,10 +49,14 @@ public class ReportDistrictDaoImpl extends AbstractDao implements ReportDistrict
 		criteria.setProjection(projectionList);
 		criteria.add(Restrictions.between("datetime", dateFrom, dateTo));
 		criteria.add(Restrictions.eq("visitStatus.id", VisitStatusEnum.COMPLETE.getValue()));
-		criteria.add(Restrictions.eq("hierarchies.manager", manager));
+		
+		Criterion critManager = Restrictions.eq("hierarchies.manager", manager);
+		Criterion critEmployee = Restrictions.eq("hierarchies.employee", manager);
+		
+		criteria.add(Restrictions.or(critManager, critEmployee));
 
 		
-		criteria.addOrder(Order.asc("district.enName"));
+		criteria.addOrder(Order.desc("count"));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReportVisitsPerDistrict.class));
 	

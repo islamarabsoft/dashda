@@ -3,29 +3,50 @@ package com.dashda.data.entities;
 public class VisitReportComments {
 	
 	private String mr;
+	private String account;
+	private String date;
 	private String district;
 	private String product;
 	private String specialty;
 	private String comment;
 	
 	
-	public VisitReportComments(String mr, String district, String product, String specialty, String comment) {
+	public VisitReportComments(String mr, String account, String date, String district, String product, String specialty, String comment) {
 		super();
 		this.mr = mr;
 		this.district = district;
 		this.product = product;
 		this.specialty = specialty;
 		this.comment = comment;
+		this.account = account;
+		this.date = date;
 	}
+	
 	public VisitReportComments() {
-		// TODO Auto-generated constructor stub
 	}
+	
 	public String getMr() {
 		return mr;
 	}
 	public void setMr(String mr) {
 		this.mr = mr;
 	}
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	public String getDistrict() {
 		return district;
 	}

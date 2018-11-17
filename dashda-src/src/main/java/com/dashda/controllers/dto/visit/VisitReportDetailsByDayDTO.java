@@ -10,12 +10,13 @@ public class VisitReportDetailsByDayDTO {
 	private String district;
 	
 	
-	public VisitReportDetailsByDayDTO(Integer visitId, String flm, String date, String account, 
+	public VisitReportDetailsByDayDTO(Integer visitId, String flm, String date, String specialty, String account, 
 			String district) {
 		super();
 		this.visitId = visitId;
 		this.flm = flm;
 		this.date = date;
+		this.specialty = specialty;
 		this.account = account;
 		this.district = district;
 	}

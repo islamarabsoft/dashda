@@ -39,13 +39,13 @@ public interface VisitDao {
 
 	public List<Visit> findVisitNotComplete(ServiceProvider serviceProvider, Employee employee);
 	
-	public List<VisitReportCount> findVisitReportCount(VisitReportInputDTO input);
+	public List<VisitReportCount> findVisitReportCount(Employee employee, VisitReportInputDTO input);
 
 	public List<VisitReportCountByDay> findVisitReportCountByDay(VisitReportInputDTO input);
 	
 	public List<VisitReportDetailsByDay> findVisitReportDetailsByDay(VisitReportInputDTO input);
 	
-	public List<VisitReportComments> findVisitReportComments(VisitReportInputDTO input);
+	public List<VisitReportComments> findVisitReportComments(Employee employee, VisitReportInputDTO input);
 	
 	
 	public void discardAllVisitsBeforeDate(Date executionDate);

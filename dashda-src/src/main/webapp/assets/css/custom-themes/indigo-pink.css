@@ -6,9 +6,6 @@
 /* Theme for the ripple elements.*/
 /* stylelint-disable material/no-prefixes */
 /* stylelint-enable */
-.example-card {
-  width: 400px; }
-
 app-root {
   display: flex;
   flex-direction: column;
@@ -1358,6 +1355,12 @@ md-sidenav-layout.my-sidenav-layout .md-sidenav-content {
 
 .card2-background {
   background-color: #e8eaf6; }
+
+.none-background {
+  background-color: white; }
+
+.example-card {
+  width: 323px; }
 
 app-navbar {
   color: white; }

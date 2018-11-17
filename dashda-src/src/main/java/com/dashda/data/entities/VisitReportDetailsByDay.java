@@ -7,6 +7,10 @@ public class VisitReportDetailsByDay {
 	private Integer visitId;
 	private String flmName;
 	private Timestamp date;
+	private String specialty;
+	private String accountName;
+	private String districtName;
+	
 	
 	public Integer getVisitId() {
 		return visitId;
@@ -26,6 +30,12 @@ public class VisitReportDetailsByDay {
 	public void setDate(Timestamp date) {
 		this.date = date;
 	}
+	public String getSpecialty() {
+		return specialty;
+	}
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
+	}
 	public String getAccountName() {
 		return accountName;
 	}
@@ -38,7 +48,6 @@ public class VisitReportDetailsByDay {
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
 	}
-	private String accountName;
-	private String districtName;
+
 
 }

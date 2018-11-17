@@ -183,7 +183,7 @@ public class ReportDaoImpl extends AbstractDao implements ReportDao, NamedQuerie
 		criteria.add(Restrictions.eq("user.active", new Byte("1")));
 		criteria.add(Restrictions.eq("user.userRole.id", 2));
 		
-		criteria.addOrder(Order.asc("name"));
+		criteria.addOrder(Order.desc("count"));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReportVisitsPerEmployee.class));
 	
@@ -210,7 +210,7 @@ public class ReportDaoImpl extends AbstractDao implements ReportDao, NamedQuerie
 		criteria.add(Restrictions.eq("user.active", new Byte("1")));
 		criteria.add(Restrictions.eq("user.userRole.id", 2));
 		
-		criteria.addOrder(Order.asc("name"));
+		criteria.addOrder(Order.desc("count"));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReportVisitsPerEmployee.class));
 	

@@ -24,11 +24,11 @@ public interface ProductDao {
 	
 	List<ProductSpecialty> findProductBySpecialty(Specialty specialty, Account account, ProductLine productLine);
 	
-	List<ProductVisitFilters> findAllProductSpecialty();
+	List<ProductVisitFilters> findAllProductSpecialty(Account account);
 	
 	Product findProductByIdAndAccount(int productId, Account account);
 
-	 <T> List<T> findall(Class<T> cls);	
+	 <T> List<T> findall(Account account, Class<T> cls);	
 	public void saveProduct(Product product);
 
 	void deleteProduct(Product product);

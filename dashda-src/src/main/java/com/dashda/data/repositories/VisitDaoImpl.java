@@ -149,12 +149,18 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 	}
 
 	@Override
-	public List<VisitReportCount> findVisitReportCount(VisitReportInputDTO input) {
+	public List<VisitReportCount> findVisitReportCount(Employee employee, VisitReportInputDTO input) {
 		// TODO Auto-generated method stub
 		List<VisitReportCount> visitReportCount=new ArrayList<>();
 		
-		 String sql="select count(distinct v.ID) as count ,pl.ID as productlineid, pl.NAME as productline,e1.ID as mpid,e1.NAME as mp,e2.ID as flmid,e2.name as flm,e3.ID as regionalid,e3.NAME as regional   from VISIT as v,PRODUCT as p,PRODUCT_VISIT  as pv, EMPLOYEE as e1,EMPLOYEE as e2,EMPLOYEE as e3,PRODUCT_LINE as pl ,PRODUCT_SPECIALTY as ps , SPECIALTY as s,SERVICE_PROVIDER as sv  where v.id=pv.VISIT_ID and pv.product_id=p.ID and p.PRODUCT_LINE_ID=pl.ID and  v.EMPLOYEE_ID=e1.ID and  e1.MANAGER_ID=e2.id and pv.PRODUCT_ID=ps.PRODUCT_ID and ps.SPECIALTY_ID=s.ID  \r\n" + 
-		 		"and e2.MANAGER_ID=e3.ID and v.SERVICE_PROVIDER_ID=sv.ID ";
+		 String sql="select count(distinct v.ID) as count ,pl.ID as productlineid, pl.NAME as productline,e1.ID as mpid"
+		 		+ ",e1.NAME as mp,e2.ID as flmid,e2.name as flm,e3.ID as regionalid,e3.NAME as regional   from VISIT as v"
+		 		+ ",PRODUCT as p,PRODUCT_VISIT  as pv, EMPLOYEE as e1,EMPLOYEE as e2,EMPLOYEE as e3,PRODUCT_LINE as pl "
+		 		+ ",PRODUCT_SPECIALTY as ps , SPECIALTY as s,SERVICE_PROVIDER as sv  where v.id=pv.VISIT_ID and pv.product_id=p.ID"
+		 		+ " and p.PRODUCT_LINE_ID=pl.ID and  v.EMPLOYEE_ID=e1.ID and  e1.MANAGER_ID=e2.id and pv.PRODUCT_ID=ps.PRODUCT_ID"
+		 		+ " and ps.SPECIALTY_ID=s.ID  " 
+		 		+ " and e2.MANAGER_ID=e3.ID and v.SERVICE_PROVIDER_ID=sv.ID "
+		 		+ " AND e1.ACCOUNT_ID = " + employee.getAccount().getId() + " ";
 		 System.out.println("flm : "+input.getFlm());
 		   if(input.getMp()!=0)
 			   sql+="and e1.id="+input.getMp()+" ";
@@ -168,8 +174,14 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 			   sql+="and p.id="+input.getProduct()+" ";
 		   if(input.getSpecialty()!=0)
 			   sql+="and s.id="+input.getSpecialty()+" ";
-		   if(input.getAmpm()!=0)
-			   sql+="and sv.SERVICE_PROVIDER_TYPE_ID="+input.getAmpm()+" ";
+		   if(input.getAmpm()!=0) {
+			   if(input.getAmpm() == 1)
+				   sql+="and sv.SPECIALTY_ID = 5 ";
+			   else if (input.getAmpm() == 2)
+				   sql+="and sv.SPECIALTY_ID != 5 ";
+				   
+		   }
+			   
 		   if(input.getDatefrom()!=null)
 			   sql+="and v.DATETIME >='"+input.getDatefrom()+"' ";
 		   if(input.getDateto()!=null)
@@ -205,31 +217,51 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 	}
 
 	@Override
-	public List<VisitReportComments> findVisitReportComments(VisitReportInputDTO input) {
-		// TODO Auto-generated method stub
-		List<VisitReportComments> visitReportComment=new ArrayList<>();
+	public List<VisitReportComments> findVisitReportComments(Employee employee, VisitReportInputDTO input) {
 		
-		 String sql="select  e1.NAME as mr ,d.EN_NAME as district ,p.NAME as product ,s.NAME as specialty ,v.COMMENT as comment  from VISIT as v,PRODUCT as p,PRODUCT_VISIT  as pv, EMPLOYEE as e1,EMPLOYEE as e2,EMPLOYEE as e3,PRODUCT_LINE as pl ,PRODUCT_SPECIALTY as ps , SPECIALTY as s,SERVICE_PROVIDER as sv , DISTRICT as d  where v.id=pv.VISIT_ID and pv.product_id=p.ID and p.PRODUCT_LINE_ID=pl.ID and  v.EMPLOYEE_ID=e1.ID and  e1.MANAGER_ID=e2.id and pv.PRODUCT_ID=ps.PRODUCT_ID and ps.SPECIALTY_ID=s.ID \r\n" + 
-		 		"and e2.MANAGER_ID=e3.ID and v.SERVICE_PROVIDER_ID=sv.ID and sv.DISTRICT_ID=d.ID ";
-		 System.out.println("flm : "+input.getFlm());
+		
+		List<VisitReportComments> visitReportComment = new ArrayList<>();
+		
+		String sql = "SELECT MR.NAME AS MR, CONCAT(SP.FIRST_NAME, ' ', SP.LAST_NAME) AS ACCOUNT," +
+				" V.DATETIME AS DATE, D.EN_NAME AS DISTRICT," + 
+				" P.NAME AS PRODUCT, S.NAME AS SPECIALTY, V.COMMENT AS COMMENT  FROM VISIT V" + 
+				" INNER JOIN EMPLOYEE MR ON MR.ID = V.EMPLOYEE_ID" + 
+				" INNER JOIN EMPLOYEE FLM ON FLM.ID = MR.MANAGER_ID" + 
+				" INNER JOIN EMPLOYEE REGIONAL ON REGIONAL.ID = FLM.MANAGER_ID" + 
+				" INNER JOIN SERVICE_PROVIDER SP ON SP.ID = V.SERVICE_PROVIDER_ID" + 
+				" INNER JOIN SPECIALTY S ON S.ID = SP.SPECIALTY_ID" +  
+				" INNER JOIN PRODUCT_VISIT PV ON PV.VISIT_ID = V.ID" + 
+				" INNER JOIN PRODUCT P ON P.ID = PV.PRODUCT_ID" + 
+				" INNER JOIN PRODUCT_LINE PL ON PL.ID = P.PRODUCT_LINE_ID" + 
+				" INNER JOIN DISTRICT D ON D.ID = SP.DISTRICT_ID" +
+				" AND MR.ACCOUNT_ID = " + employee.getAccount().getId() + " ";
+		 
+
 		   if(input.getMp()!=0)
-			   sql+="and e1.id="+input.getMp()+" ";
+			   sql+="AND MR.ID ="+input.getMp()+" ";
 		   if(input.getFlm()!=0)
-			   sql+="and e2.id="+input.getFlm()+" ";
+			   sql+="AND FLM.ID ="+input.getFlm()+" ";
 		   if(input.getRegional()!=0)
-			   sql+="and e3.id="+input.getRegional()+" ";
+			   sql+="AND REGIONAL.ID = "+input.getRegional()+" ";
 		   if(input.getProductline()!=0)
-			   sql+="and pl.id="+input.getProductline()+" ";
+			   sql+="AND PL.ID = "+input.getProductline()+" ";
 		   if(input.getProduct()!=0)
-			   sql+="and p.id="+input.getProduct()+" ";
+			   sql+="AND P.ID = "+input.getProduct()+" ";
 		   if(input.getSpecialty()!=0)
-			   sql+="and s.id="+input.getSpecialty()+" ";
-		   if(input.getAmpm()!=0)
-			   sql+="and sv.SERVICE_PROVIDER_TYPE_ID="+input.getAmpm()+" ";
+			   sql+="AND S.ID = "+input.getSpecialty()+" ";
+		   
+		   if(input.getAmpm()!=0) {
+			   if(input.getAmpm() == 1)
+				   sql+="AND SP.SPECIALTY_ID = 5 ";
+			   else if (input.getAmpm() == 2)
+				   sql+="AND SP.SPECIALTY_ID != 5 ";
+				   
+		   }
+		   
 		   if(input.getDatefrom()!=null)
-			   sql+="and v.DATETIME >='"+input.getDatefrom()+"' ";
+			   sql+="AND V.DATETIME >='"+input.getDatefrom()+"' ";
 		   if(input.getDateto()!=null)
-			   sql+="and v.DATETIME <='"+input.getDateto()+"' ";
+			   sql+="AND V.DATETIME <='"+input.getDateto()+"' ";
 		   
 		
 		
@@ -242,12 +274,14 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 				Map object = (Map) iterator.next();
 				
 				VisitReportComments visitreport = new VisitReportComments();
-				visitreport.setMr((String)object.get("mr"));
-				visitreport.setDistrict((String)object.get("district"));
+				visitreport.setMr((String)object.get("MR"));
+				visitreport.setAccount((String) object.get("ACCOUNT"));
+				visitreport.setDate(((Date) object.get("DATE")).toString());
+				visitreport.setDistrict((String)object.get("DISTRICT"));
 				
-				visitreport.setProduct((String)object.get("product"));
-				visitreport.setSpecialty((String)object.get("specialty"));
-				visitreport.setComment((String)object.get("comment"));
+				visitreport.setProduct((String)object.get("PRODUCT"));
+				visitreport.setSpecialty((String)object.get("SPECIALTY"));
+				visitreport.setComment((String)object.get("COMMENT"));
 				
 				visitReportComment.add(visitreport);
 			}
@@ -298,23 +332,47 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 	public List<VisitReportDetailsByDay> findVisitReportDetailsByDay(VisitReportInputDTO input) {
 		
 		List<VisitReportDetailsByDay> visitReportDetailsByDay=new ArrayList<>();
-		String sql="select distinct( v.ID) as visitId,e2.NAME as flmName,v.DATETIME as date,a.name as accountName,d.EN_NAME as districtName  from VISIT as v,PRODUCT as p,PRODUCT_VISIT  as pv, EMPLOYEE as e1,EMPLOYEE as e2,EMPLOYEE as e3,PRODUCT_LINE as pl ,PRODUCT_SPECIALTY as ps , SPECIALTY as s,SERVICE_PROVIDER as sv ,ACCOUNT as a,DISTRICT as d where v.id=pv.VISIT_ID and pv.product_id=p.ID and p.PRODUCT_LINE_ID=pl.ID and  v.EMPLOYEE_ID=e1.ID and  e1.MANAGER_ID=e2.id and pv.PRODUCT_ID=ps.PRODUCT_ID and ps.SPECIALTY_ID=s.ID \r\n" + 
-		 		"and e2.MANAGER_ID=e3.ID and v.SERVICE_PROVIDER_ID=sv.ID and e1.ACCOUNT_ID=a.id and sv.DISTRICT_ID=d.ID  ";
-			 System.out.println("flm : "+input.getFlm());
-			   if(input.getMp()!=0)
-				   sql+="and e1.id="+input.getMp()+" ";
+		
+		String sql = "SELECT V.ID ID, FLM.NAME AS FLM, V.DATETIME AS DATE, S.NAME AS SPECIALTY," +
+				" CONCAT(SP.FIRST_NAME, ' ', SP.LAST_NAME) AS ACCOUNT, D.EN_NAME AS DISTRICT" + 
+				" FROM VISIT V" + 
+				" INNER JOIN EMPLOYEE MR ON MR.ID = V.EMPLOYEE_ID" + 
+				" INNER JOIN EMPLOYEE FLM ON FLM.ID = MR.MANAGER_ID" + 
+				" INNER JOIN EMPLOYEE REGIONAL ON REGIONAL.ID = FLM.MANAGER_ID" + 
+				" INNER JOIN SERVICE_PROVIDER SP ON SP.ID = V.SERVICE_PROVIDER_ID" + 
+				" INNER JOIN SPECIALTY S ON S.ID = SP.SPECIALTY_ID" + 
+				" INNER JOIN ACCOUNT A ON A.ID = MR.ACCOUNT_ID" + 
+				" INNER JOIN PRODUCT_VISIT PV ON PV.VISIT_ID = V.ID" + 
+				" INNER JOIN PRODUCT P ON P.ID = PV.PRODUCT_ID" + 
+				" INNER JOIN PRODUCT_LINE PL ON PL.ID = P.PRODUCT_LINE_ID" + 
+				" INNER JOIN DISTRICT D ON D.ID = SP.DISTRICT_ID";
+	
+			 if(input.getMp()!=0)
+				   sql+=" AND MR.ID ="+input.getMp();
 			   if(input.getFlm()!=0)
-				   sql+="and e2.id="+input.getFlm()+" ";
+				   sql+=" AND FLM.ID ="+input.getFlm();
 			   if(input.getRegional()!=0)
-				   sql+="and e3.id="+input.getRegional()+" ";
+				   sql+=" AND REGIONAL.ID = "+input.getRegional();
 			   if(input.getProductline()!=0)
-				   sql+="and pl.id="+input.getProductline()+" ";
-			   if(input.getSpecificDate()!=null)
-			   {
-				   sql+="and v.DATETIME >='"+input.getSpecificDate()+"' ";
-				   sql+="and v.DATETIME <='"+input.getSpecificDate()+"' ";
+				   sql+=" AND PL.ID = "+input.getProductline();
+			   if(input.getProduct()!=0)
+				   sql+=" AND P.ID = "+input.getProduct();
+			   if(input.getSpecialty()!=0)
+				   sql+=" AND S.ID = "+input.getSpecialty();
+			   
+			   if(input.getAmpm()!=0) {
+				   if(input.getAmpm() == 1)
+					   sql+=" AND SP.SPECIALTY_ID = 5";
+				   else if (input.getAmpm() == 2)
+					   sql+=" AND SP.SPECIALTY_ID != 5";
+					   
 			   }
-			
+			   
+			   if(input.getDatefrom()!=null)
+				   sql+=" AND V.DATETIME >='"+input.getDatefrom()+"'";
+			   if(input.getDateto()!=null)
+				   sql+=" AND V.DATETIME <='"+input.getDateto()+"'";
+				
 			 SQLQuery sqlQuery = getSession().createSQLQuery(sql);
 			 
 			 sqlQuery.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
@@ -324,11 +382,12 @@ public class VisitDaoImpl extends AbstractDao implements VisitDao {
 					Map object = (Map) iterator.next();
 					
 					VisitReportDetailsByDay visitreport = new VisitReportDetailsByDay();
-					visitreport.setVisitId((Integer)object.get("visitId"));
-					visitreport.setFlmName((String)object.get("flmName"));
-					visitreport.setDate((Timestamp)object.get("date"));
-					visitreport.setDistrictName((String)object.get("districtName"));
-					visitreport.setAccountName((String)object.get("accountName"));
+					visitreport.setVisitId((Integer)object.get("ID"));
+					visitreport.setFlmName((String)object.get("FLM"));
+					visitreport.setDate((Timestamp)object.get("DATE"));
+					visitreport.setSpecialty((String)object.get("SPECIALTY"));
+					visitreport.setDistrictName((String)object.get("DISTRICT"));
+					visitreport.setAccountName((String)object.get("ACCOUNT"));
 					
 					visitReportDetailsByDay.add(visitreport);
 				}

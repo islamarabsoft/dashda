@@ -30,7 +30,7 @@ public class SpecialtyDaoImpl extends AbstractDao implements SpecialtyDao {
 	}
 
 	public List<Specialty> findAll(){
-    Criteria criteria = getSession().createCriteria(ProductSpecialty.class);
+    Criteria criteria = getSession().createCriteria(Specialty.class);
     
 		
 		return criteria.list();

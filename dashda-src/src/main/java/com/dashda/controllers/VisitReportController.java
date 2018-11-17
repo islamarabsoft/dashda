@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dashda.annotation.RestResponseEntity;
 import com.dashda.controllers.dto.plan.CalendarActivityInputDTO;
 import com.dashda.controllers.dto.visit.VisitReportInputDTO;
+import com.dashda.data.repositories.employee.EmployeeDetail;
 import com.dashda.enums.ReturnType;
 import com.dashda.exception.PlanServiceException;
 import com.dashda.exception.VisitReportException;
@@ -26,7 +27,8 @@ import com.dashda.service.components.VisitReportService;
 
 @RestController
 @RequestMapping("/visitreport")
-public class VisitReportController {
+@Secured("ROLE_REPORT_VISITS_DETAILS")
+public class VisitReportController extends AbstractController{
 
 	@Autowired
 	VisitReportService visitReportService;
@@ -34,73 +36,73 @@ public class VisitReportController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/visit-employess-filters")
 	@RestResponseEntity(returnType = ReturnType.LIST)
-	public Object getVisitEmployeesFilters() 
+	public Object getVisitEmployeesFilters(@AuthenticationPrincipal User user) 
 			throws ParseException,  VisitServiceException, VisitReportException{
 		
-			return visitReportService.getVisitEmployeesFilters();
+			return visitReportService.getVisitEmployeesFilters(user.getUsername());
 	}
 	
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/get-product-filter")
 	@RestResponseEntity(returnType = ReturnType.LIST)
-	public Object getVisitProductFilter() 
+	public Object getVisitProductFilter(@AuthenticationPrincipal User user) 
 			throws ParseException,   VisitReportException{
 		
-			return visitReportService.getVisitProductFilter();
+			return visitReportService.getVisitProductFilter(user.getUsername());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/get-product-line-filter")
 	@RestResponseEntity(returnType = ReturnType.LIST)
-	public Object getVisitProductLineFilter() 
+	public Object getVisitProductLineFilter(@AuthenticationPrincipal User user) 
 			throws ParseException,   VisitReportException{
 		
-			return visitReportService.getVisitProductLineFilter();
+			return visitReportService.getVisitProductLineFilter(user.getUsername());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/get-specialty-filter")
 	@RestResponseEntity(returnType = ReturnType.LIST)
-	public Object getVisitSpecialtyFilter() 
+	public Object getVisitSpecialtyFilter(@AuthenticationPrincipal User user) 
 			throws ParseException,   VisitReportException{
 		
-			return visitReportService.getVisitSpecialtyFilter();
+			return visitReportService.getVisitSpecialtyFilter(user.getUsername());
 	}
 	
 	
 
 	@RequestMapping(method = RequestMethod.POST, value = "/get-visitreport-count")
 	@RestResponseEntity(status = HttpStatus.OK, returnType = ReturnType.LIST)
-	public Object getVisitsReportCount( 
+	public Object getVisitsReportCount(@AuthenticationPrincipal User user,
 			@Valid @RequestBody VisitReportInputDTO visitReportInputDTO)
 					throws ParseException,  VisitReportException{
 		
-			return visitReportService.getVisitsReportCount(visitReportInputDTO);
+			return visitReportService.getVisitsReportCount(user.getUsername(), visitReportInputDTO);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/get-visitreport-comments")
 	@RestResponseEntity(status = HttpStatus.OK, returnType = ReturnType.LIST)
-	public Object getVisitsReportComments( 
+	public Object getVisitsReportComments(@AuthenticationPrincipal User user, 
 			@Valid @RequestBody VisitReportInputDTO visitReportInputDTO)
 					throws ParseException,  VisitReportException{
 		
-			return visitReportService.getVisitsReportComments(visitReportInputDTO);
+			return visitReportService.getVisitsReportComments(user.getUsername(), visitReportInputDTO);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/get-visitreport-count-by-day")
 	@RestResponseEntity(status = HttpStatus.OK, returnType = ReturnType.LIST)
-	public Object getVisitsReportCountByDay( 
+	public Object getVisitsReportCountByDay( @AuthenticationPrincipal User user,
 			@Valid @RequestBody VisitReportInputDTO visitReportInputDTO)
 					throws ParseException,  VisitReportException{
 		
-			return visitReportService.getVisitsReportCountByDay(visitReportInputDTO);
+			return visitReportService.getVisitsReportCountByDay(user.getUsername(), visitReportInputDTO);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/get-visitreport-details-by-day")
 	@RestResponseEntity(status = HttpStatus.OK, returnType = ReturnType.LIST)
-	public Object getVisitsReportDetailsByDay( 
+	public Object getVisitsReportDetailsByDay( @AuthenticationPrincipal User user,
 			@Valid @RequestBody VisitReportInputDTO visitReportInputDTO)
 					throws ParseException,  VisitReportException{
 		
-			return visitReportService.getVisitsReportDetailsByDay(visitReportInputDTO);
+			return visitReportService.getVisitsReportDetailsByDay(user.getUsername(), visitReportInputDTO);
 	}
 	
 	

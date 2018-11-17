@@ -19,6 +19,7 @@ import com.dashda.controllers.dto.visit.VisitReportCountByDayOutputDTO;
 import com.dashda.controllers.dto.visit.VisitReportCountOutputDTO;
 import com.dashda.controllers.dto.visit.VisitReportDetailsByDayDTO;
 import com.dashda.controllers.dto.visit.VisitReportInputDTO;
+import com.dashda.data.entities.Employee;
 import com.dashda.data.entities.EmployeeVisitFilter;
 import com.dashda.data.entities.Product;
 import com.dashda.data.entities.ProductLine;
@@ -32,6 +33,7 @@ import com.dashda.data.repositories.SpecialtyDao;
 import com.dashda.data.repositories.VisitDao;
 import com.dashda.data.repositories.employee.EmployeeDao;
 import com.dashda.data.repositories.product.ProductDao;
+import com.dashda.exception.AppExceptionHandler;
 import com.dashda.exception.VisitReportException;
 import com.dashda.utilities.DateUtilities;
 
@@ -49,14 +51,21 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 	ProductDao productdao;
 	
 	@Override
-	public Object getVisitEmployeesFilters() throws VisitReportException, ParseException {
+	public Object getVisitEmployeesFilters(String userName) throws VisitReportException, ParseException {
 		
+		Employee employee;
+		
+		try {
+			employee = getEmployee(userName);
+		} catch (AppExceptionHandler e) {
+			throw new VisitReportException(e.getErrorCode());
+		}
 		
 		List<EmployeeOutputDTO> employeesOutputDTO = new ArrayList<>();
 		
 
 	////////////e	
-	List<EmployeeVisitFilter> employeesfilter=	employeedao.findEmployeeBytypes();
+	List<EmployeeVisitFilter> employeesfilter =	employeedao.findEmployeeBytypes(employee);
 	for (Iterator iterator = employeesfilter.iterator(); iterator.hasNext();) {
 		EmployeeVisitFilter employeefilter = (EmployeeVisitFilter) iterator.next();
 		EmployeeOutputDTO employeeOutputDTO = new EmployeeOutputDTO();			 
@@ -76,10 +85,17 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 	}
 
 	@Override
-	public Object getVisitProductFilter() throws VisitReportException, ParseException {
-		// TODO Auto-generated method stub
+	public Object getVisitProductFilter(String userName) throws VisitReportException, ParseException {
 		
-		List<Product> products=productdao.findall(Product.class);
+		Employee employee;
+		
+		try {
+			employee = getEmployee(userName);
+		} catch (AppExceptionHandler e) {
+			throw new VisitReportException(e.getErrorCode());
+		}
+		
+		List<Product> products = productdao.findall(employee.getAccount(), Product.class);
 		
 		List<ProductOutputDTO> productsOutputDto=new ArrayList<>();
 		for (Iterator iterator = products.iterator(); iterator.hasNext();)
@@ -99,20 +115,25 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 	}
 
 	@Override
-	public Object getVisitProductLineFilter() throws VisitReportException, ParseException {
-		// TODO Auto-generated method stub
+	public Object getVisitProductLineFilter(String userName) throws VisitReportException, ParseException {
+		
+		Employee employee;
+		
+		try {
+			employee = getEmployee(userName);
+		} catch (AppExceptionHandler e) {
+			throw new VisitReportException(e.getErrorCode());
+		}
 		
 		
-		
-		
-		List<ProductLine> products=productdao.findall(ProductLine.class);
+		List<ProductLine> productLines = productdao.finPrductLines(employee.getAccount());
 		
 		List<ProducLineOutputDTO> productsOutputDto=new ArrayList<>();
-		for (Iterator iterator = products.iterator(); iterator.hasNext();)
+		for (Iterator iterator = productLines.iterator(); iterator.hasNext();)
 		{
 			
-			ProductLine product=(ProductLine) iterator.next();
-			ProducLineOutputDTO productvisitfilter=new ProducLineOutputDTO(product.getId(),product.getName());
+			ProductLine productLine = (ProductLine) iterator.next();
+			ProducLineOutputDTO productvisitfilter=new ProducLineOutputDTO(productLine.getId(),productLine.getName());
 					
 			
 			//mapper.map(special, productSpecialty.getSpecialty());
@@ -125,17 +146,25 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 	}
 	
 	@Override
-	public Object getVisitSpecialtyFilter() throws VisitReportException, ParseException {
-		// TODO Auto-generated method stub
+	public Object getVisitSpecialtyFilter(String userName) throws VisitReportException, ParseException {
 		
-		List<ProductVisitFilters> specialtys=productdao.findAllProductSpecialty();
+		Employee employee;
+		
+		try {
+			employee = getEmployee(userName);
+		} catch (AppExceptionHandler e) {
+			throw new VisitReportException(e.getErrorCode());
+		}
+		
+		List<ProductVisitFilters> specialtys = productdao.findAllProductSpecialty(employee.getAccount());
 		
 		List<productVisitFiltersOutputDTO> specialtysOutputDto=new ArrayList<>();
 		for (Iterator iterator = specialtys.iterator(); iterator.hasNext();)
 		{
 			
-			ProductVisitFilters specialty=(ProductVisitFilters) iterator.next();
-			productVisitFiltersOutputDTO specialtyOutput=new productVisitFiltersOutputDTO(specialty.getProductId(),specialty.getProductName(),specialty.getSpecialId(),specialty.getSpecialName());
+			ProductVisitFilters specialty = (ProductVisitFilters) iterator.next();
+			productVisitFiltersOutputDTO specialtyOutput=new productVisitFiltersOutputDTO(specialty.getProductId(),
+					specialty.getProductName(),specialty.getSpecialId(),specialty.getSpecialName());
 					
 			
 			//mapper.map(special, productSpecialty.getSpecialty());
@@ -149,14 +178,17 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 	
 	
 	@Override
-	public Object getVisitsReportCount(VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException {
-		// TODO Auto-generated method stub
+	public Object getVisitsReportCount(String userName, VisitReportInputDTO visitReportInputDTO) throws VisitReportException, ParseException {
 		
-		/*Date dateFrom = DateUtilities.convertToDate(visitReportInputDTO.getDatefrom(), 
-				DateUtilities.DATE_FORMATE_PATTERN);
-		Date dateTo = DateUtilities.convertToDate(visitReportInputDTO.getDateto(), 
-				DateUtilities.DATE_FORMATE_PATTERN);*/
-		List<VisitReportCount> data=visitdao.findVisitReportCount(visitReportInputDTO);
+		Employee employee;
+		
+		try {
+			employee = getEmployee(userName);
+		} catch (AppExceptionHandler e) {
+			throw new VisitReportException(e.getErrorCode());
+		}
+		
+		List<VisitReportCount> data = visitdao.findVisitReportCount(employee, visitReportInputDTO);
 		
 		List<VisitReportCountOutputDTO> output=new ArrayList<>();
 		for (Iterator iterator = data.iterator(); iterator.hasNext();)
@@ -177,18 +209,28 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 	}
 
 	@Override
-	public Object getVisitsReportComments(VisitReportInputDTO visitReportInputDTO)
+	public Object getVisitsReportComments(String userName, VisitReportInputDTO visitReportInputDTO)
 			throws VisitReportException, ParseException {
 		
+		Employee employee;
 		
-		List<VisitReportComments> data=visitdao.findVisitReportComments(visitReportInputDTO);
+		try {
+			employee = getEmployee(userName);
+		} catch (AppExceptionHandler e) {
+			throw new VisitReportException(e.getErrorCode());
+		}
+		
+		List<VisitReportComments> visitReportComments = visitdao.findVisitReportComments(employee, visitReportInputDTO);
 		
 		List<VisitReportCommnetsDTO> output=new ArrayList<>();
-		for (Iterator iterator = data.iterator(); iterator.hasNext();)
+		for (Iterator iterator = visitReportComments.iterator(); iterator.hasNext();)
 		{
 			
-			VisitReportComments tempdata=(VisitReportComments) iterator.next();
-			VisitReportCommnetsDTO visitOutput=new VisitReportCommnetsDTO(tempdata.getMr(),tempdata.getDistrict(),tempdata.getProduct(),tempdata.getSpecialty(),tempdata.getComment());
+			VisitReportComments visitReportComment = (VisitReportComments) iterator.next();
+			
+			VisitReportCommnetsDTO visitOutput=new VisitReportCommnetsDTO(visitReportComment.getMr(), 
+					visitReportComment.getAccount(), DateUtilities.dateFormate(visitReportComment.getDate()), 
+					visitReportComment.getDistrict(),visitReportComment.getProduct(),visitReportComment.getSpecialty(),visitReportComment.getComment());
 					
 			
 			
@@ -200,7 +242,7 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 	}
 
 	@Override
-	public Object getVisitsReportCountByDay(VisitReportInputDTO visitReportInputDTO)
+	public Object getVisitsReportCountByDay(String userName, VisitReportInputDTO visitReportInputDTO)
 			throws VisitReportException, ParseException {
 		List<VisitReportCountByDay> data=visitdao.findVisitReportCountByDay(visitReportInputDTO);
 		
@@ -221,16 +263,26 @@ public class VisitReportServiceImpl extends ServicesManager implements VisitRepo
 	}
 
 	@Override
-	public Object getVisitsReportDetailsByDay(VisitReportInputDTO visitReportInputDTO)
+	public Object getVisitsReportDetailsByDay(String userName, VisitReportInputDTO visitReportInputDTO)
 			throws VisitReportException, ParseException {
-		List<VisitReportDetailsByDay> data=visitdao.findVisitReportDetailsByDay(visitReportInputDTO);
+		
+		Employee employee;
+		
+		try {
+			employee = getEmployee(userName);
+		} catch (AppExceptionHandler e) {
+			throw new VisitReportException(e.getErrorCode());
+		}
+		
+		List<VisitReportDetailsByDay> data = visitdao.findVisitReportDetailsByDay(visitReportInputDTO);
 		
 		List<VisitReportDetailsByDayDTO> output=new ArrayList<>();
 		for (Iterator iterator = data.iterator(); iterator.hasNext();)
 		{
 			
 			VisitReportDetailsByDay tempdata=(VisitReportDetailsByDay) iterator.next();
-			VisitReportDetailsByDayDTO visitCountByDayOutput=new VisitReportDetailsByDayDTO(tempdata.getVisitId(),tempdata.getFlmName(),tempdata.getDate().toString(),tempdata.getAccountName(),tempdata.getDistrictName());
+			VisitReportDetailsByDayDTO visitCountByDayOutput=new VisitReportDetailsByDayDTO(tempdata.getVisitId(),tempdata.getFlmName(),
+					DateUtilities.dateFormate(tempdata.getDate()),tempdata.getSpecialty(), tempdata.getAccountName(),tempdata.getDistrictName());
 					
 			
 			

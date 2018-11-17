@@ -54,7 +54,7 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 	}
 
 	@Override
-	public List findEmployeeBytypes() {
+	public List findEmployeeBytypes(Employee employee) {
 		// TODO Auto-generated method stub
 		Criteria criteria = getSession().createCriteria(User.class);
 		
@@ -69,10 +69,13 @@ public class EmployeeDaoImpl extends AbstractDao implements EmployeeDao {
 		Criterion c1=Restrictions.eq("userRole.id",  UserRoleEnum.MEDICAL_REP.getValue());
 		Criterion c2=Restrictions.eq("userRole.id",  UserRoleEnum.DISTRICT_MANAGER.getValue());
 		Criterion c3=Restrictions.eq("userRole.id",  UserRoleEnum.REGIONAL_MANAGER.getValue());
+		
 	//	criteria.add(Restrictions.eq("userRole.id",  UserRoleEnum.MEDICAL_REP.getValue()));
 	//	criteria.add(Restrictions.eq("userRole.id",  UserRoleEnum.DISTRICT_MANAGER.getValue()));
 	//	criteria.add(Restrictions.eq("userRole.id",  UserRoleEnum.REGIONAL_MANAGER.getValue()));
 		criteria.add(Restrictions.or(c1, c2,c3));
+		criteria.add(Restrictions.eq("employee.account", employee.getAccount()));
+		criteria.add(Restrictions.eq("employee.account", employee.getAccount()));
 		
 		criteria.setProjection(emplProj);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(EmployeeVisitFilter.class));

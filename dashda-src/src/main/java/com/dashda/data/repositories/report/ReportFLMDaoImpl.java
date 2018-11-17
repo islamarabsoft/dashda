@@ -54,7 +54,7 @@ public class ReportFLMDaoImpl extends AbstractDao implements ReportFLMDao {
 		criteria.add(Restrictions.eq("user.userRole.id", 3));
 		criteria.add(Restrictions.eq("visitStatus.id", VisitStatusEnum.COMPLETE.getValue()));
 		
-		criteria.addOrder(Order.asc("manager.name"));
+		criteria.addOrder(Order.desc("count"));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ReportVisitsPerFLM.class));
 	

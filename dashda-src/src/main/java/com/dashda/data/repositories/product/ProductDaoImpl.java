@@ -34,9 +34,11 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 		this.setDAOClass(Product.class);
 	}
 
-	public <T> List<T> findall(Class<T> cls)
+	public <T> List<T> findall(Account account, Class<T> cls)
 	{
-		Criteria criteria = getSession().createCriteria(cls);
+		Criteria criteria = getSession().createCriteria(Product.class);
+		criteria.createAlias("account", "account");
+		criteria.add(Restrictions.eq("account", account));
 		
 		return criteria.list();
 	}
@@ -143,7 +145,7 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 	}
 
 	@Override
-	public List<ProductVisitFilters> findAllProductSpecialty() {
+	public List<ProductVisitFilters> findAllProductSpecialty(Account account) {
 		// TODO Auto-generated method stub
 		Criteria criteria = getSession().createCriteria(ProductSpecialty.class);
 		
@@ -158,6 +160,7 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 			    .add(Projections.property("specialty.name"), "specialName");
 		
 		criteria.setProjection(emplProj);
+		criteria.add(Restrictions.eq("product.account", account));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ProductVisitFilters.class));
 
 		
